@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Home Page</title>
+    <link href="/webjars/bootstrap/4.5.0/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../static/css/application.css" th:href="@{../../css/application.css}" rel="stylesheet" media="screen"/>
+</head>
+
+<body>
+<div class="title main">
+    <h1>Hello !</h1>
+</div>
+<p>Witamy w <span th:text="${appName}"></span> miejscu na twoje zakupy!</p>
+<div>
+    <a href="/administration" title="Idź do sekcji administracyjnej">Administracja</a>
+
+    <section>
+        <div class="jumbotron">
+            <div class="container">
+                <h1>Produkty</h1>
+                <p>Lista wszystkich produktów</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="row">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Nazwa</th>
+                    <th>Cena</th>
+                    <th>Ilość</th>
+                    <th>Edytuj</th>
+                    <th>Usuń</th>
+                </tr>
+
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.productId}"></td>
+                    <td th:text="${product.productName}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.quantity}"></td>
+                    <td class="editCustom"><a th:href="${'/administration/product/edit/' + product.productId}" class="btn btn-info"
+                                              id="editButton">Edytuj</a></td>
+                    <td><a th:href="${'/administration/product/delete/' + product.productId}" class="btn btn-danger"
+                           id="deleteButton">Usuń</a></td>
+                </tr>
+            </table>
+
+
+        </div>
+    </section>
+</div>
+</body>
+</html>
