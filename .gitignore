@@ -33,3 +33,9 @@ build/
 
 ### Docker ###
 /docker/
+
+### LaTex ###
+*.aux
+*.log
+*.pyg
+*.synctex.gz

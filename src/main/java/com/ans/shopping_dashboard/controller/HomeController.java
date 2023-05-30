@@ -20,8 +20,14 @@ public class HomeController {
 
     @GetMapping("/products")
     public String getAllProducts(Model model) {
-        model.addAttribute("appName", appName);
+
         model.addAttribute("products", productListRepository.findAll());
+        return "products";
+    }
+
+    @GetMapping("/")
+    public String getHomePage(Model model) {
+        model.addAttribute("appName", appName);
         return "home";
     }
 }
