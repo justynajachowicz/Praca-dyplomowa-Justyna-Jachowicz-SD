@@ -16,7 +16,7 @@
             <div class="mt-2">Nazwa użytkownika: <span sec:authentication="principal.username"/></div>
             <div class="mt-2"> Rola: <span sec:authentication="principal.authorities"/></div>
             <div class="container-fluid">
-                <h1>Listy dotychczasowych zakupów</h1>
+                <h1 th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">Listy dotychczasowych zakupów</h1>
 
             </div>
             <a href="/products" title="Przejdź do listy produktów">Nowy lista zakupów</a>

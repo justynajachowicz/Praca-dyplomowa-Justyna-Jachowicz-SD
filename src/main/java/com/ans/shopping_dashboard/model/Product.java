@@ -22,5 +22,6 @@ public class Product {
     private Double weight;
     private Double price;
     private String brand;
-    private Integer quantity;
+    @Column(name = "shop_id")
+    private Long shopId;
 }

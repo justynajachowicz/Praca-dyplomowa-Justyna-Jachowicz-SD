@@ -1,9 +1,16 @@
-INSERT INTO shopping_dashboard.product (brand, price, product_name, weight,  quantity) VALUES('Bielmar',6.2, 'Margaryna palma', 0.4, 120);
-INSERT INTO shopping_dashboard.product (brand, price, product_name, weight,  quantity) VALUES('Cola Co',8.6, 'Coca Cola', 1, 1500);
-INSERT INTO shopping_dashboard.product (brand, price, product_name, weight,  quantity) VALUES('Piekarnia Grześ',4.5, 'Chleb', 0.6, 80);
-INSERT INTO shopping_dashboard.product (brand, price, product_name, weight,  quantity) VALUES('Nestle',2.8, 'Snickers', 0.4, 120);
-INSERT INTO shopping_dashboard.product (brand, price, product_name, weight,  quantity) VALUES('Kryniczanka',2.2, 'Woda mineralna gazowana', 1.5, 300);
-INSERT INTO shopping_dashboard.product (brand, price, product_name, weight,  quantity) VALUES('Nestle',6.2, 'Płatki śniadaniowe', 5.5, 120);
+INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("LIDL", "Nowy Sącz");
+INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("BIEDRONKA", "Nowy Sącz");
+INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("AUCHAN", "Nowy Sącz");
+INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("CAREFOUR", "Nowy Sącz");
+INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("LIDL", "KRAKÓW");
+INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("BIEDRONKA", "KRAKÓW");
+
+INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Bielmar', 'Margaryna palma', 0.4);
+INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Cola Co', 'Coca Cola', 1);
+INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Piekarnia Grześ', 'Chleb', 0.6);
+INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Nestle', 'Snickers', 0.4);
+INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Kryniczanka', 'Woda mineralna gazowana', 1.5);
+INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Nestle', 'Płatki śniadaniowe', 5.5);
 
 INSERT IGNORE INTO shopping_dashboard.roles(id, name) VALUES (1, 'ROLE_ADMIN');
 INSERT IGNORE INTO shopping_dashboard.roles(id, name) VALUES (2, 'ROLE_USER');
