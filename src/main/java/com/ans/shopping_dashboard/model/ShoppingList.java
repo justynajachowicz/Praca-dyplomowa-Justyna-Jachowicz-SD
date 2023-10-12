@@ -29,8 +29,5 @@ public class ShoppingList {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    private Long shop_id;
-
-    private Long product_id;
-
+//purchase list
 }

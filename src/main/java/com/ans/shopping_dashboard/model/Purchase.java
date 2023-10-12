@@ -6,19 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "product")
+@Table(name = "purchase")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Purchase {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
+    private Long id;
+
     private Long productId;
-
-    @Column(name = "product_name", nullable = false)
-    private String productName;
-
-    private Double weight;
-    private String brand;
+    private Long userId;
+    private Double price;
+    private Long shop_id;
 }
