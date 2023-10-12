@@ -19,5 +19,5 @@ public class Purchase {
     private Long productId;
     private Long userId;
     private Double price;
-    private Long shop_id;
+    private Long shoppingListId;
 }

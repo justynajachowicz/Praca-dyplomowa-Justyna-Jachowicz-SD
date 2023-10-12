@@ -1,9 +1,9 @@
-INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("LIDL", "Nowy Sącz");
-INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("BIEDRONKA", "Nowy Sącz");
-INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("AUCHAN", "Nowy Sącz");
-INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("CAREFOUR", "Nowy Sącz");
-INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("LIDL", "KRAKÓW");
-INSERT INTO  shopping_dashboard.shop (name, city) VALUES ("BIEDRONKA", "KRAKÓW");
+INSERT IGNORE INTO shopping_dashboard.shop (id, name, city) VALUES (1, "LIDL", "Nowy Sącz");
+INSERT IGNORE INTO shopping_dashboard.shop (id, name, city) VALUES (2, "BIEDRONKA", "Nowy Sącz");
+INSERT IGNORE INTO shopping_dashboard.shop (id, name, city) VALUES (3, "AUCHAN", "Nowy Sącz");
+INSERT IGNORE INTO shopping_dashboard.shop (id, name, city) VALUES (4, "CAREFOUR", "Nowy Sącz");
+INSERT IGNORE INTO shopping_dashboard.shop (id, name, city) VALUES (5, "LIDL", "KRAKÓW");
+INSERT IGNORE INTO shopping_dashboard.shop (id, name, city) VALUES (6, "BIEDRONKA", "KRAKÓW");
 
 INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Bielmar', 'Margaryna palma', 0.4);
 INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Cola Co', 'Coca Cola', 1);
@@ -22,3 +22,14 @@ INSERT IGNORE INTO shopping_dashboard.users_roles (user_id, role_id) VALUES(1, 1
 INSERT IGNORE INTO shopping_dashboard.users_roles (user_id, role_id) VALUES(2, 2);
 
 
+INSERT IGNORE INTO shopping_dashboard.shopping_list
+(id, created_at, list_name, user_id, shop_id)
+VALUES(1, now(), 'testowa lista 1', (select id from users where email = 'justyna@gmail.com'), 1);
+
+INSERT IGNORE INTO shopping_dashboard.shopping_list
+(id, created_at, list_name, user_id, shop_id)
+VALUES(2, now(), 'testowa lista 2', (select id from users where email = 'justyna@gmail.com'), 2);
+
+INSERT IGNORE INTO shopping_dashboard.shopping_list
+(id, created_at, list_name, user_id, shop_id)
+VALUES(3, now(), 'Zakupy lidlowe', (select id from users where email = 'justyna@gmail.com'), 5);
