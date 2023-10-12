@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <title>Szczegóły zakupów</title>
+
+
+</head>
+<body>
+<section>
+    <div class="title main">
+        <h2>Podsumowanie zakupów z dnia: <span th:text="${details.createdAt} + ' w sklepie: ' + ${details.shop.name} + ' ' + ${details.shop.city}" class="app-name"></span></h2>
+    </div>
+    <div class="jumbotron">
+        <section class="container">
+            <div class="row">
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>Nazwa produktu</th>
+                        <th>Waga</th>
+                        <th>Marka</th>
+                        <th>Cena</th>
+                    </tr>
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.product.productName}"></td>
+                        <td th:text="${product.product.weight}"></td>
+                        <td th:text="${product.product.brand}"></td>
+                        <td th:text="${product.price} + ' zł'"></td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <div class="title main">
+            <h3>Razem: <span th:text="${total} + 'zł'"></span></h3>
+        </div>
+    </div>
+</section>
+</body>
+</html>

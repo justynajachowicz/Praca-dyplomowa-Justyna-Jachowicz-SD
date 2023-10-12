@@ -3,8 +3,13 @@ package com.ans.shopping_dashboard.service;
 import com.ans.shopping_dashboard.model.ShoppingList;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ShoppingListService {
 
     List<ShoppingList> findShoppingListsByUserId(Long id);
+
+    Optional<ShoppingList> findById(Long id);
+
+    void deleteById(Long id);
 }

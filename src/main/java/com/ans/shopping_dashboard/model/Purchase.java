@@ -16,8 +16,13 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
     private Long userId;
     private Double price;
-    private Long shoppingListId;
+
+    @ManyToOne
+    @JoinColumn(name = "shopping_list_id", nullable = false)
+    private ShoppingList shopping;
 }
