@@ -24,7 +24,7 @@ public class SpringSecurity {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/registration/**").permitAll()
                         .requestMatchers("/").permitAll()
-                        .requestMatchers("/styles.css").permitAll()
+                        .requestMatchers("/css/styles.css").permitAll()
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/products/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
@@ -42,6 +42,4 @@ public class SpringSecurity {
                 .exceptionHandling().accessDeniedPage("/access-denied");
         return http.build();
     }
-
-
 }
