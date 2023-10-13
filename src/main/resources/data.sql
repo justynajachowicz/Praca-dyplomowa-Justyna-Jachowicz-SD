@@ -31,21 +31,21 @@ VALUES(2, now(), 'testowa biedronkowe', (select id from users where email = 'jus
 INSERT IGNORE INTO shopping_dashboard.shopping_list (id, created_at, list_name, user_id, shop_id)
 VALUES(3, now(), 'Zakupy lidlowe', (select id from users where email = 'justyna@gmail.com'), 5);
 
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(4.25, 1, 2, 1);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(6.15, 1, 2, 2);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(2.99, 1, 2, 3);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(4.25, 1, 1);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(6.15, 1, 2);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(2.99, 1, 3);
 
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(4.25, 2, 2, 1);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(6.15, 2, 2, 2);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(2.99, 2, 2, 3);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(4.25, 2, 2, 1);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(6.15, 2, 2, 2);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(2.99, 2, 2, 3);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(4.25, 2, 1);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(6.15, 2, 2);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(2.99, 2, 3);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(4.25, 2, 1);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(6.15, 2, 2);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(2.99, 2, 3);
 
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(3.25, 3, 2, 3);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(1.15, 3, 2, 2);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(2.99, 3, 2, 3);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(8.25, 3, 2, 1);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(6.15, 3, 2, 2);
-INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, user_id, product_id) VALUES(1.99, 3, 2, 3);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(3.25, 3, 3);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(1.15, 3, 2);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(2.99, 3, 3);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(8.25, 3, 1);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(6.15, 3, 2);
+INSERT IGNORE INTO shopping_dashboard.purchase(price, shopping_list_id, product_id) VALUES(1.99, 3, 3);
 

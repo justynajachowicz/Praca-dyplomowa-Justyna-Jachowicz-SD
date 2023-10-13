@@ -4,7 +4,7 @@
     <title>Produkty</title>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet"/>
     <script type="text/javascript" src="/webjars/jquery/3.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/4.6.2/js/bootstrap.min.js"></script>
     <script type="text/javascript" th:src="@{../js/application.js}"></script>
@@ -40,13 +40,16 @@
                     <td th:text="${product.productName}"></td>
                     <td th:text="${product.brand}"></td>
                     <td th:text="${product.weight}"></td>
-                    <td class="editCustom"><a th:href="${'/administration/product/edit/' + product.productId}" class="btn btn-info"
-                                              id="editButton" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Edytuj</a>
-                    <a th:href="${'/product/delete/' + product.productId}" class="btn btn-danger"
-                       id="deleteButton" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Usuń</a>
-                    <a th:href="${'/user/cart/add/' + product.productId}" class="btn btn-warning" id="addProductButton">
-                        Dodaj do listy
-                    </a></td>
+                    <td class="editCustom"><a th:href="${'/administration/product/edit/' + product.productId}"
+                                              class="btn btn-info"
+                                              id="editButton"
+                                              th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Edytuj</a>
+                        <a th:href="${'/product/delete/' + product.productId}" class="btn btn-danger"
+                           id="deleteButton" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Usuń</a>
+                        <a th:href="${'/user/cart/add/' + product.productId}" class="btn btn-warning"
+                           id="addProductButton" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
+                            Dodaj do listy
+                        </a></td>
 
                 </tr>
             </table>
