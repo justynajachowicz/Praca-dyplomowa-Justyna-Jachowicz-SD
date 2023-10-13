@@ -16,11 +16,11 @@
             <h1>Profil użytkownika</h1>
             <div class="mt-2">Nazwa użytkownika: <span sec:authentication="principal.username"/></div>
             <div class="mt-2"> Rola: <span sec:authentication="principal.authorities"/></div>
-            <a href="/products" title="Przejdź do listy produktów">Nowa lista zakupów</a>
+            <a href="/products" title="Przeglądaj produkty">Przeglądaj produkty</a>
             <div class="mt-5"><a class="link-primary" th:href="@{/logout}">Wyloguj się</a></div>
             <div class="container-fluid">
-                <h1 th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">Listy dotychczasowych zakupów</h1>
-                <section class="container">
+                <section th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}" class="container">
+                    <h1 >Lista dotychczasowych zakupów</h1>
                     <div class="row">
                         <table class="table table-bordered table-hover">
                             <tr>
