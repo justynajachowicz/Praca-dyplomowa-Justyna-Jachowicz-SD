@@ -7,4 +7,6 @@ import java.util.List;
 public interface PurchaseService {
 
     List<Purchase> findPurchaseListByShoppingId(Long id);
+
+    void setNullForShoppingListId(Long id);
 }

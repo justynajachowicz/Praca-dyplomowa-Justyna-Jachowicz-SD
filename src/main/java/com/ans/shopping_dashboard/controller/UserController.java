@@ -50,6 +50,7 @@ public class UserController {
 
     @RequestMapping(value = "/shopping/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
     public String deleteProduct(@PathVariable Long id) {
+        purchaseService.setNullForShoppingListId(id);
         shoppingListService.deleteById(id);
         return "redirect:/user/";
     }

@@ -23,6 +23,6 @@ public class Purchase {
     private Double price;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_list_id", nullable = false)
+    @JoinColumn(name = "shopping_list_id")
     private ShoppingList shopping;
 }
