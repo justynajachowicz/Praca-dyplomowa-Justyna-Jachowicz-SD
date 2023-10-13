@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Controller
@@ -53,11 +54,13 @@ public class UserController {
         return "redirect:/user/";
     }
 
-    private Double calculateTotalPrice(List<Purchase> purchaseList) {
+    private String calculateTotalPrice(List<Purchase> purchaseList) {
+        var decimalFormat = new DecimalFormat("0.00");
+
         var total = 0.0;
         for (Purchase purchase : purchaseList) {
             total += purchase.getPrice();
         }
-        return total;
+        return decimalFormat.format(total);
     }
 }
