@@ -10,6 +10,12 @@
     padding: 10px;
 }
 
+.subtitle {
+    background-color: #91da0d;
+    color: white;
+    padding: 10px;
+}
+
 .main {
     text-align: center;
 }

@@ -26,4 +26,9 @@ public class PurchaseServiceImpl implements PurchaseService {
         affectedPurchases.forEach(x -> x.setShopping(null));
         purchaseRepository.saveAll(affectedPurchases);
     }
+
+    @Override
+    public Purchase findTheCheapest(Long productId) {
+        return purchaseRepository.findPurchaseByPrice(productId);
+    }
 }

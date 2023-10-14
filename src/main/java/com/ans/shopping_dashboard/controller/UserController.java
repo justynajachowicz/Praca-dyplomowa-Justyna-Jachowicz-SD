@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -41,10 +42,14 @@ public class UserController {
     @GetMapping("/shopping/details/{id}")
     public String getShoppingDetails(@PathVariable Long id, Model model) {
         var purchaseList = purchaseService.findPurchaseListByShoppingId(id);
+        var cheapestPurchases = findCheapestPurchase(purchaseList);
         var total = calculateTotalPrice(purchaseList);
+        var totalCheapest = calculateTotalPrice(cheapestPurchases);
         model.addAttribute("details", shoppingListService.findById(id).orElseThrow());
         model.addAttribute("products", purchaseList);
+        model.addAttribute("cheapest", cheapestPurchases);
         model.addAttribute("total", total);
+        model.addAttribute("totalCheapest", totalCheapest);
         return "shoppingDetails";
     }
 
@@ -63,5 +68,12 @@ public class UserController {
             total += purchase.getPrice();
         }
         return decimalFormat.format(total);
+    }
+
+
+    private List<Purchase> findCheapestPurchase(List<Purchase> existingPurchases) {
+        List<Purchase> theCheapest = new ArrayList<>();
+        existingPurchases.forEach(x -> theCheapest.add(purchaseService.findTheCheapest(x.getProduct().getProductId())));
+        return theCheapest;
     }
 }

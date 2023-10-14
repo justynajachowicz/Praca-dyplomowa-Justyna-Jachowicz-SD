@@ -9,4 +9,6 @@ public interface PurchaseService {
     List<Purchase> findPurchaseListByShoppingId(Long id);
 
     void setNullForShoppingListId(Long id);
+
+    Purchase findTheCheapest(Long purchaseId);
 }

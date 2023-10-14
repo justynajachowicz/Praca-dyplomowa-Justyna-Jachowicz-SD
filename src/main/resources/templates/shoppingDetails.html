@@ -35,5 +35,36 @@
         </div>
     </div>
 </section>
+
+<section>
+    <div class="subtitle main">
+        <h3>Najtańsze znalezione zakupy: </h3>
+    </div>
+    <div class="jumbotron">
+        <section class="container">
+            <div class="row">
+                <table class="table table-bordered table-borderless">
+                    <tr>
+                        <th>Nazwa produktu</th>
+                        <th>Waga</th>
+                        <th>Marka</th>
+                        <th>Cena</th>
+                        <th>Sklep</th>
+                    </tr>
+                    <tr th:each="cheap : ${cheapest}">
+                        <td th:text="${cheap.product.productName}"></td>
+                        <td th:text="${cheap.product.weight}"></td>
+                        <td th:text="${cheap.product.brand}"></td>
+                        <td th:text="${cheap.price} + ' zł'"></td>
+                        <td th:text="${cheap.shopping.shop.name} + ' ' + ${cheap.shopping.shop.city} "></td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <div class="title main">
+            <h3>Razem: <span th:text="${totalCheapest} + 'zł'"></span></h3>
+        </div>
+    </div>
+</section>
 </body>
 </html>
