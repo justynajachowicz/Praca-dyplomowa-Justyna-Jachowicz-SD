@@ -32,7 +32,6 @@
                     <th>Marka</th>
                     <th>Gramatura</th>
                     <th>Akcja</th>
-
                 </tr>
 
                 <tr th:each="product : ${products}">
@@ -40,17 +39,13 @@
                     <td th:text="${product.productName}"></td>
                     <td th:text="${product.brand}"></td>
                     <td th:text="${product.weight}"></td>
-                    <td class="editCustom"><a th:href="${'/administration/product/edit/' + product.productId}"
+                    <td class="editCustom"><a th:href="${'/admin/product/edit/' + product.productId}"
                                               class="btn btn-info"
                                               id="editButton"
                                               th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Edytuj</a>
-                        <a th:href="${'/product/delete/' + product.productId}" class="btn btn-danger"
+                        <a th:href="${'/admin/product/delete/' + product.productId}" class="btn btn-danger"
                            id="deleteButton" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Usuń</a>
-                        <a th:href="${'/user/cart/add/' + product.productId}" class="btn btn-warning"
-                           id="addProductButton" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
-                            Dodaj do listy
-                        </a></td>
-
+                    </td>
                 </tr>
             </table>
         </div>

@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <title>Nowa lista</title>
+
+</head>
+
+<body>
+<div class="title">
+    <h1>Add Shopping List</h1>
+</div>
+
+<div class="jumbotron">
+    <section class="container">
+        <div class="row">
+            <form th:action="@{/user/shopping/new}" th:object="${shoppingList}" method="post">
+                <label for="listName">List Name:</label>
+                <input type="text" id="listName" th:field="*{listName}" required="required"/>
+                <label for="shop">Shop:</label>
+                <select id="shop" th:field="*{shop}">
+                    <option th:each="shop : ${shops}" th:value="${shop.id}"
+                            th:text="${shop.name} + ' ' + ${shop.city}"></option>
+                </select>
+
+                <!-- You can add more fields here if needed -->
+
+                <button type="submit">Add Shopping List</button>
+            </form>
+        </div>
+    </section>
+</div>
+</body>
+</html>

@@ -12,4 +12,6 @@ public interface ShoppingListService {
     Optional<ShoppingList> findById(Long id);
 
     void deleteById(Long id);
+
+    void save(ShoppingList shoppingListService);
 }

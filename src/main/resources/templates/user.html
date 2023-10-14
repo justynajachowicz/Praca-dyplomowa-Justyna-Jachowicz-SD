@@ -4,7 +4,7 @@
     <title>Użytkownik</title>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet"/>
     <script type="text/javascript" src="/webjars/jquery/3.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/4.6.2/js/bootstrap.min.js"></script>
     <script type="text/javascript" th:src="@{../js/application.js}"></script>
@@ -14,13 +14,21 @@
     <div class="row mt-5">
         <div class="col-6 mx-auto">
             <h1>Profil użytkownika</h1>
-            <div class="mt-2">Nazwa użytkownika: <span sec:authentication="principal.username"/></div>
-            <div class="mt-2"> Rola: <span sec:authentication="principal.authorities"/></div>
-            <a href="/products" title="Przeglądaj produkty">Przeglądaj produkty</a>
+            <div class="mt-2">Nazwa użytkownika: <span sec:authentication="principal.username"></span></div>
+            <div class="mt-2"> Rola: <span sec:authentication="principal.authorities"></span></div>
+
             <div class="mt-5"><a class="link-primary" th:href="@{/logout}">Wyloguj się</a></div>
+
+            <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                <a href="/admin/products" title="Przeglądaj produkty">Przeglądaj produkty</a>
+            </div>
+            <div th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
+                <a href="/user/shopping/new" title="Utwórz nową listę zakupówy">Utwórz nową listę zakupów</a>
+            </div>
+
             <div class="container-fluid">
                 <section th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}" class="container">
-                    <h1 >Lista dotychczasowych zakupów</h1>
+                    <h1>Lista dotychczasowych zakupów</h1>
                     <div class="row">
                         <table class="table table-bordered table-hover">
                             <tr>
@@ -35,10 +43,7 @@
                                 <td th:text="${list.createdAt}"></td>
                                 <td th:text="${list.user.email}"></td>
                                 <td th:text="${list.shop.name} + ' ' + ${list.shop.city}"></td>
-                                <td class="editCustom"><a th:href="${'/administration/product/edit/' + list.id}"
-                                                          class="btn btn-info"
-                                                          id="editButton"
-                                                          th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Edytuj</a>
+                                <td class="editCustom">
                                     <a th:href="${'/user/shopping/delete/' + list.id}" class="btn btn-danger"
                                        id="deleteButton">Usuń</a>
                                     <a th:href="${'/user/shopping/details/' + list.id}" class="btn btn-warning"
@@ -69,9 +74,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>

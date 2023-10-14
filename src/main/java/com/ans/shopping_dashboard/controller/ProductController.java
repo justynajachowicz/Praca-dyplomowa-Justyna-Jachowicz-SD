@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@RequestMapping("/admin")
 public class ProductController {
 
     private final ProductListRepository productListRepository;
@@ -34,6 +35,6 @@ public class ProductController {
     @RequestMapping(value ="/product/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
     public String deleteProduct(@PathVariable Long id) {
         productListRepository.deleteById(id);
-        return "redirect:/products";
+        return "redirect:/admin/products";
     }
 }

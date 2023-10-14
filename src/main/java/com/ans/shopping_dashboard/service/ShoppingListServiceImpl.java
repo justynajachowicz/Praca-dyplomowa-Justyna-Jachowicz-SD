@@ -30,4 +30,9 @@ public class ShoppingListServiceImpl implements ShoppingListService {
     public void deleteById(Long id) {
         shoppingListRepository.deleteById(id);
     }
+
+    @Override
+    public void save(ShoppingList shoppingListService) {
+        shoppingListRepository.save(shoppingListService);
+    }
 }

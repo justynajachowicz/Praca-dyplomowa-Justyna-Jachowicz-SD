@@ -27,7 +27,6 @@ public class SpringSecurity {
                         .requestMatchers("/css/styles.css").permitAll()
                         .requestMatchers("/webjars/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
-                        .requestMatchers("/products/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
