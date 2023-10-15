@@ -38,6 +38,9 @@ public class ShoppingController {
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
     public String deleteShoppingList(@PathVariable Long id) {
+        if(validateAccessToDetailedList(id)) {
+            return "redirect:/user/";
+        }
         purchaseService.setNullForShoppingListId(id);
         shoppingListService.deleteById(id);
         return "redirect:/user/";
@@ -45,7 +48,12 @@ public class ShoppingController {
 
     @GetMapping("/details/{id}")
     public String getShoppingDetails(@PathVariable Long id, Model model) {
+        if(validateAccessToDetailedList(id)) {
+            return "redirect:/user/";
+        }
+
         var purchaseList = purchaseService.findPurchaseListByShoppingId(id);
+
         var cheapestPurchases = findCheapestPurchase(purchaseList);
         var total = calculateTotalPrice(purchaseList);
         var totalCheapest = calculateTotalPrice(cheapestPurchases);
@@ -90,8 +98,10 @@ public class ShoppingController {
 
     @RequestMapping(value = "/deletePurchase/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
     public String deletePurchase(@PathVariable Long id) {
+        if(validateAccessToPurchase(id)) {
+            return "redirect:/user/shopping/new";
+        }
         purchaseService.remove(id);
-
         return "redirect:/user/shopping/new";
     }
 
@@ -110,5 +120,20 @@ public class ShoppingController {
         List<Purchase> theCheapest = new ArrayList<>();
         existingPurchases.forEach(x -> theCheapest.add(purchaseService.findTheCheapest(x.getProduct().getProductId())));
         return theCheapest;
+    }
+
+    private boolean validateAccessToDetailedList(Long shoppingListId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        long id = userService.findUserByEmail(user.getUsername()).getId();
+        var existingLists = shoppingListService.findShoppingListsByUserId(id);
+        return !existingLists.contains(shoppingListService.findById(shoppingListId).orElseThrow());
+    }
+
+    private boolean validateAccessToPurchase(Long purchaseId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        long id = userService.findUserByEmail(user.getUsername()).getId();
+        var userPurchases = purchaseService.findPurchaseListByUserId(id);
+
+        return !userPurchases.contains(purchaseService.findPurchaseById(purchaseId));
     }
 }

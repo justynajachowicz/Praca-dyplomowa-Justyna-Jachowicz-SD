@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface PurchaseService {
 
+    Purchase findPurchaseById(Long id);
+
     List<Purchase> findPurchaseListByShoppingId(Long id);
 
     List<Purchase> findPurchaseListByUserId(Long id);
