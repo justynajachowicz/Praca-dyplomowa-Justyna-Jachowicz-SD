@@ -8,9 +8,9 @@ INSERT IGNORE INTO shopping_dashboard.shop (id, name, city) VALUES (6, "BIEDRONK
 INSERT IGNORE INTO shopping_dashboard.product (product_id, brand, product_name, weight) VALUES(1, 'Bielmar', 'Margaryna palma', 0.4);
 INSERT IGNORE INTO shopping_dashboard.product (product_id, brand, product_name, weight) VALUES(2, 'Cola Co', 'Coca Cola', 1);
 INSERT IGNORE INTO shopping_dashboard.product (product_id, brand, product_name, weight) VALUES(3, 'Piekarnia Grześ', 'Chleb', 0.6);
-INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Nestle', 'Snickers', 0.4);
-INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Kryniczanka', 'Woda mineralna gazowana', 1.5);
-INSERT INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Nestle', 'Płatki śniadaniowe', 5.5);
+INSERT IGNORE INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Nestle', 'Snickers', 0.4);
+INSERT IGNORE INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Kryniczanka', 'Woda mineralna gazowana', 1.5);
+INSERT IGNORE INTO shopping_dashboard.product (brand, product_name, weight) VALUES('Nestle', 'Płatki śniadaniowe', 5.5);
 
 INSERT IGNORE INTO shopping_dashboard.roles(id, name) VALUES (1, 'ROLE_ADMIN');
 INSERT IGNORE INTO shopping_dashboard.roles(id, name) VALUES (2, 'ROLE_USER');

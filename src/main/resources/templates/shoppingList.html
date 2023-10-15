@@ -52,8 +52,38 @@
                 <input id="price" required="required" type="number" step="0.01" th:field="*{price}"
                        placeholder="cena"/>
 
-                <button type="submit">Dodaj zakup do listy</button>
+                <label for="lista">Lista:</label>
+                <select required="required" id="lista" th:field="*{shopping}">
+                    <option value="">Wybierz listę</option>
+                    <option th:each="list : ${existingLists}" th:value="${list.id}" th:text="${list.listName}"></option>
+                </select>
+                <button class="btn btn-success" type="submit">Dodaj zakup do listy</button>
             </form>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="row">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Nazwa listy</th>
+                    <th>Sklep</th>
+                    <th>Nazwa produktu</th>
+                    <th>Cena</th>
+                    <th>Usuń</th>
+                </tr>
+
+                <tr th:each="purchase : ${existingPurchases}">
+                    <td th:text="${purchase.shopping.listName}"></td>
+                    <td th:text="${purchase.shopping.shop.name} + ' ' + ${purchase.shopping.shop.city}"></td>
+                    <td th:text="${purchase.product.productName}"></td>
+                    <td th:text="${purchase.price}"></td>
+                    <td class="editCustom">
+                        <a th:href="${'/user/shopping/deletePurchase/' + purchase.id}" class="btn btn-danger"
+                           id="deleteButton" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">Usuń</a>
+                    </td>
+                </tr>
+            </table>
         </div>
     </section>
 </div>

@@ -37,7 +37,7 @@ public class ShoppingController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
-    public String deleteProduct(@PathVariable Long id) {
+    public String deleteShoppingList(@PathVariable Long id) {
         purchaseService.setNullForShoppingListId(id);
         shoppingListService.deleteById(id);
         return "redirect:/user/";
@@ -59,10 +59,15 @@ public class ShoppingController {
 
     @GetMapping("/new")
     public String getNewShoppingListForm(Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        long id = userService.findUserByEmail(user.getUsername()).getId();
+
         model.addAttribute("shops", shopService.findAll());
         model.addAttribute("products", productListRepository.findAll());
         model.addAttribute("shoppingList", new ShoppingList());
         model.addAttribute("purchase", new Purchase());
+        model.addAttribute("existingLists", shoppingListService.findShoppingListsByUserId(id));
+        model.addAttribute("existingPurchases", purchaseService.findPurchaseListByUserId(id));
         return "shoppingList";
     }
 
@@ -79,9 +84,14 @@ public class ShoppingController {
 
     @PostMapping("/addPurchase")
     public String addPurchase(@ModelAttribute("purchase") Purchase purchase) {
+        purchaseService.save(purchase);
+        return "redirect:/user/shopping/new";
+    }
 
+    @RequestMapping(value = "/deletePurchase/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+    public String deletePurchase(@PathVariable Long id) {
+        purchaseService.remove(id);
 
-        System.out.println(purchase.toString());
         return "redirect:/user/shopping/new";
     }
 
