@@ -62,7 +62,7 @@ public class ShoppingController {
         model.addAttribute("shops", shopService.findAll());
         model.addAttribute("products", productListRepository.findAll());
         model.addAttribute("shoppingList", new ShoppingList());
-        model.addAttribute("purchases", new ArrayList<Purchase>());
+        model.addAttribute("purchase", new Purchase());
         return "shoppingList";
     }
 
@@ -74,8 +74,17 @@ public class ShoppingController {
 
         shoppingListService.save(shoppingList);
 
-        return "redirect:/user/";
+        return "redirect:/user/shopping/new";
     }
+
+    @PostMapping("/addPurchase")
+    public String addPurchase(@ModelAttribute("purchase") Purchase purchase) {
+
+
+        System.out.println(purchase.toString());
+        return "redirect:/user/shopping/new";
+    }
+
 
     private String calculateTotalPrice(List<Purchase> purchaseList) {
         var decimalFormat = new DecimalFormat("0.00");

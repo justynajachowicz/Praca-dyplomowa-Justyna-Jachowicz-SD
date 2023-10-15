@@ -7,11 +7,18 @@
     <title>Szczegóły zakupów</title>
 </head>
 <body>
-<section>
-    <div class="title main">
-        <h2>Podsumowanie zakupów z dnia: <span th:text="${details.createdAt} + ' w sklepie: ' + ${details.shop.name} + ' ' + ${details.shop.city}" class="app-name"></span></h2>
+<div class="jumbotron">
+<div class="row">
+        <div class="mt-5"><a class="btn btn-secondary" style="padding: 2px" th:href="@{/logout}">Wyloguj się</a></div>
+        <div class="mt-5"><a class="btn btn-secondary" style="padding: 2px" th:href="@{/user/}">Powrót</a></div>
+</div>
+    <div class="title">
+        <h2>Podsumowanie zakupów z dnia: <span
+                th:text="${details.createdAt} + ' w sklepie: ' + ${details.shop.name} + ' ' + ${details.shop.city}"
+                class="app-name"></span></h2>
     </div>
-    <div class="jumbotron">
+
+    <section>
         <section class="container">
             <div class="row">
                 <table class="table table-bordered table-hover">
@@ -30,17 +37,18 @@
                 </table>
             </div>
         </section>
+
         <div class="title main">
             <h3>Razem: <span th:text="${total} + 'zł'"></span></h3>
         </div>
-    </div>
-</section>
 
-<section>
-    <div class="subtitle main">
-        <h3>Najtańsze znalezione zakupy: </h3>
-    </div>
-    <div class="jumbotron">
+    </section>
+
+    <section>
+        <div class="subtitle main">
+            <h3>Najtańsze znalezione zakupy: </h3>
+        </div>
+
         <section class="container">
             <div class="row">
                 <table class="table table-bordered table-borderless">
@@ -64,7 +72,8 @@
         <div class="title main">
             <h3>Razem: <span th:text="${totalCheapest} + 'zł'"></span></h3>
         </div>
-    </div>
-</section>
+
+    </section>
+</div>
 </body>
 </html>

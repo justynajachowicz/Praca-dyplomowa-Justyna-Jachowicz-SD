@@ -8,29 +8,51 @@
     <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/styles.css}" rel="stylesheet">
     <title>Nowa lista</title>
-
 </head>
-
 <body>
-<div class="title">
-    <h1>Add Shopping List</h1>
-</div>
-
 <div class="jumbotron">
+    <div>
+        <div class="mt-4"><a class="link-primary" th:href="@{/logout}">Wyloguj się</a></div>
+        <div class="mt-4"><a class="link-primary" th:href="@{/user/}">Powrót</a></div>
+    </div>
+    <div class="title">
+        <h4>Dodawanie listy zakupów</h4>
+    </div>
+
     <section class="container">
         <div class="row">
             <form th:action="@{/user/shopping/new}" th:object="${shoppingList}" method="post">
-                <label for="listName">List Name:</label>
+                <label for="listName">Nazwa listy:</label>
                 <input type="text" id="listName" th:field="*{listName}" required="required"/>
-                <label for="shop">Shop:</label>
-                <select id="shop" th:field="*{shop}">
+                <label for="shop">Sklep:</label>
+                <select required="required" id="shop" th:field="*{shop}">
+                    <option value="">Wybierz sklep</option>
                     <option th:each="shop : ${shops}" th:value="${shop.id}"
                             th:text="${shop.name} + ' ' + ${shop.city}"></option>
                 </select>
+                <button type="submit">Dodaj listę zakupową</button>
+            </form>
+        </div>
+    </section>
+</div>
+<div class="jumbotron">
+    <div class="subtitle2">
+        <h4>Przypisanie zakupu do listy zakupowej</h4>
+    </div>
+    <section class="container">
+        <div class="row">
+            <form th:action="@{/user/shopping/addPurchase}" th:object="${purchase}" method="post">
+                <label for="product">Produkt:</label>
+                <select required="required" id="product" th:field="*{product}">
+                    <option value="">Wybierz produkt</option>
+                    <option th:each="product : ${products}" th:value="${product.productId}"
+                            th:text="${product.productName} + ' ' + ${product.brand} + ', waga: ' +${product.weight}"></option>
+                </select>
+                <label for="price">Cena:</label>
+                <input id="price" required="required" type="number" step="0.01" th:field="*{price}"
+                       placeholder="cena"/>
 
-                <!-- You can add more fields here if needed -->
-
-                <button type="submit">Add Shopping List</button>
+                <button type="submit">Dodaj zakup do listy</button>
             </form>
         </div>
     </section>

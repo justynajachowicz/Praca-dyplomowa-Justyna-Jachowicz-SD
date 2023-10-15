@@ -7,13 +7,19 @@
 .title {
     background-color: #64690a;
     color: white;
-    padding: 10px;
+    text-align: center;
 }
 
 .subtitle {
     background-color: #91da0d;
     color: white;
     padding: 10px;
+}
+
+.subtitle2 {
+    background-color: #ecc157;
+    color: white;
+    text-align: center;
 }
 
 .main {
