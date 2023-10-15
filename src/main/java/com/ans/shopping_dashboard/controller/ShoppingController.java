@@ -38,7 +38,7 @@ public class ShoppingController {
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
     public String deleteShoppingList(@PathVariable Long id) {
-        if(validateAccessToDetailedList(id)) {
+        if (validateAccessToDetailedList(id)) {
             return "redirect:/user/";
         }
         purchaseService.setNullForShoppingListId(id);
@@ -48,7 +48,7 @@ public class ShoppingController {
 
     @GetMapping("/details/{id}")
     public String getShoppingDetails(@PathVariable Long id, Model model) {
-        if(validateAccessToDetailedList(id)) {
+        if (validateAccessToDetailedList(id)) {
             return "redirect:/user/";
         }
 
@@ -67,16 +67,25 @@ public class ShoppingController {
 
     @GetMapping("/new")
     public String getNewShoppingListForm(Model model) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        long id = userService.findUserByEmail(user.getUsername()).getId();
+        addToModel(model);
+        return "shoppingList";
+    }
 
+    @GetMapping("/searchList/{id}")
+    public String searchList(@PathVariable Long id, Model model) {
+        addToModel(model);
+        model.addAttribute("existingPurchases", purchaseService.findPurchaseListByShoppingId(id));
+        model.addAttribute("listName", shoppingListService.findById(id).orElseThrow().getListName());
+        return "shoppingList";
+    }
+
+    private void addToModel(Model model) {
+        long userId = getUserIdFromSession();
         model.addAttribute("shops", shopService.findAll());
         model.addAttribute("products", productListRepository.findAll());
         model.addAttribute("shoppingList", new ShoppingList());
         model.addAttribute("purchase", new Purchase());
-        model.addAttribute("existingLists", shoppingListService.findShoppingListsByUserId(id));
-        model.addAttribute("existingPurchases", purchaseService.findPurchaseListByUserId(id));
-        return "shoppingList";
+        model.addAttribute("existingLists", shoppingListService.findShoppingListsByUserId(userId));
     }
 
     @PostMapping("/new")
@@ -85,20 +94,21 @@ public class ShoppingController {
         shoppingList.setUser(userService.findUserByEmail(user.getUsername()));
         shoppingList.setCreatedAt(LocalDateTime.now());
 
-        shoppingListService.save(shoppingList);
+        var shoppingListId = shoppingListService.save(shoppingList).getId();
 
-        return "redirect:/user/shopping/new";
+        return "redirect:/user/shopping/searchList/" + shoppingListId;
     }
 
     @PostMapping("/addPurchase")
     public String addPurchase(@ModelAttribute("purchase") Purchase purchase) {
         purchaseService.save(purchase);
-        return "redirect:/user/shopping/new";
+        var shoppingListId = shoppingListService.findById(purchase.getShopping().getId()).orElseThrow().getId();
+        return "redirect:/user/shopping/searchList/" + shoppingListId;
     }
 
     @RequestMapping(value = "/deletePurchase/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
     public String deletePurchase(@PathVariable Long id) {
-        if(validateAccessToPurchase(id)) {
+        if (validateAccessToPurchase(id)) {
             return "redirect:/user/shopping/new";
         }
         purchaseService.remove(id);
@@ -123,17 +133,17 @@ public class ShoppingController {
     }
 
     private boolean validateAccessToDetailedList(Long shoppingListId) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        long id = userService.findUserByEmail(user.getUsername()).getId();
-        var existingLists = shoppingListService.findShoppingListsByUserId(id);
+        var existingLists = shoppingListService.findShoppingListsByUserId(getUserIdFromSession());
         return !existingLists.contains(shoppingListService.findById(shoppingListId).orElseThrow());
     }
 
     private boolean validateAccessToPurchase(Long purchaseId) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        long id = userService.findUserByEmail(user.getUsername()).getId();
-        var userPurchases = purchaseService.findPurchaseListByUserId(id);
-
+        var userPurchases = purchaseService.findPurchaseListByUserId(getUserIdFromSession());
         return !userPurchases.contains(purchaseService.findPurchaseById(purchaseId));
+    }
+
+    private Long getUserIdFromSession() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userService.findUserByEmail(user.getUsername()).getId();
     }
 }

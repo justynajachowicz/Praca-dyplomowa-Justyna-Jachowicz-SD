@@ -30,7 +30,7 @@
                     <option th:each="shop : ${shops}" th:value="${shop.id}"
                             th:text="${shop.name} + ' ' + ${shop.city}"></option>
                 </select>
-                <button type="submit">Dodaj listę zakupową</button>
+                <button class="btn btn-success" type="submit">Dodaj listę zakupową</button>
             </form>
         </div>
     </section>
@@ -61,10 +61,28 @@
             </form>
         </div>
     </section>
+    <div class="jumbotron">
+        <div class="subtitle2">
+            <h4>Edytowanie listy zakupowej</h4>
+        </div>
+    <section class="container" >
 
-    <section class="container">
         <div class="row">
+
+                <label for="categorySelect">Wybierz listę</label>
+                <select id="categorySelect">
+                    <option value="">Wybierz listę</option>
+                    <option th:each="list : ${existingLists}" th:value="${list.id}" th:text="${list.listName}"></option>
+                </select>
+
+                <button id="submitButton">Wybierz</button>
+
+
+            <div class ="container" th:if="${listName!=null}">
+                <h4><br/>Edytujesz: <span th:text="${listName}" class="app-name"></span></h4>
+            </div>
             <table class="table table-bordered table-hover">
+
                 <tr>
                     <th>Nazwa listy</th>
                     <th>Sklep</th>
@@ -86,6 +104,20 @@
             </table>
         </div>
     </section>
+    </div>
 </div>
+
+<script>
+    var categorySelect = document.getElementById("categorySelect");
+    var submitButton = document.getElementById("submitButton");
+    submitButton.addEventListener("click", function () {
+        var selectedValue = categorySelect.value;
+        if (selectedValue) {
+            var link = "/user/shopping/searchList/" + selectedValue;
+            window.location.href = link;
+        }
+    });
+</script>
+
 </body>
 </html>

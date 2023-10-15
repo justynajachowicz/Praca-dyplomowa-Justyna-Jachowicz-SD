@@ -32,7 +32,7 @@ public class ShoppingListServiceImpl implements ShoppingListService {
     }
 
     @Override
-    public void save(ShoppingList shoppingListService) {
-        shoppingListRepository.save(shoppingListService);
+    public ShoppingList save(ShoppingList shoppingListService) {
+        return shoppingListRepository.save(shoppingListService);
     }
 }

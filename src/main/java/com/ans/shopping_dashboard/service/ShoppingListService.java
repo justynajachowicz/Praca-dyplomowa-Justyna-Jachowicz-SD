@@ -13,5 +13,5 @@ public interface ShoppingListService {
 
     void deleteById(Long id);
 
-    void save(ShoppingList shoppingListService);
+    ShoppingList save(ShoppingList shoppingListService);
 }
