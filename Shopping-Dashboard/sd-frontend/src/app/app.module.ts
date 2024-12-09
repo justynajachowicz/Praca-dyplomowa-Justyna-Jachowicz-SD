@@ -1,20 +1,22 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';  // Do obsługi ngModel (formularzy)
-import { AppComponent } from './app.component';  // Główny komponent
-import { LoginComponent } from './login/login.component'; // Komponent logowania
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
+
+import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
-    AppComponent,  // Deklarowanie głównego komponentu
-    LoginComponent  // Dodanie komponentu logowania
+    AppComponent,
+    LoginComponent
   ],
   imports: [
-    BrowserModule,  // Importowanie modułów Angulara (np. BrowserModule)
-    FormsModule     // Importowanie modułu formularzy, aby używać ngModel
+    BrowserModule,
+    FormsModule,
+    HttpClientModule // Dodaj HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent],  // Komponent, który zostanie uruchomiony na początku
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]  // Dodajemy do schemas, jeśli chcesz używać Web Components
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

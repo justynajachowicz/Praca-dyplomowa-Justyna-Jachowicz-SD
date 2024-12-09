@@ -1,7 +1,13 @@
-import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';  // Import komponentu logowania
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
 
-export const routes: Routes = [
-  { path: '', component: LoginComponent },  // Domyślna trasa
-  { path: 'login', component: LoginComponent }  // Trasa logowania
+const routes: Routes = [
+  { path: 'login', component: LoginComponent }
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
