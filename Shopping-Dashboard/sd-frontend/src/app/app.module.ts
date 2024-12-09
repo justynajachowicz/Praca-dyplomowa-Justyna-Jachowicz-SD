@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
-
+import { AppRoutingModule } from './app.routes'; // Gdzie skonfigurowano routing
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
@@ -14,7 +14,8 @@ import { LoginComponent } from './login/login.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule // Dodaj HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
