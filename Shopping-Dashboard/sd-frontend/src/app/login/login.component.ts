@@ -1,15 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']  
+
 })
 export class LoginComponent {
   username: string = '';
   password: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
+
 
   onSubmit() {
     const loginData = { username: this.username, password: this.password };
@@ -21,5 +25,9 @@ export class LoginComponent {
         console.error('Login failed', err);
       }
     });
+  }
+
+  onRegister(){
+    this.router.navigate(['/register']); // Przekierowanie na stronę rejestracji
   }
 }

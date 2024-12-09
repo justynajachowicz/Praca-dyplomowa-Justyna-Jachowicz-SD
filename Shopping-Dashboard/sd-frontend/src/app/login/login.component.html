@@ -1,6 +1,6 @@
 <div class="login-container">
   <h2>Login</h2>
-  
+
   <!-- Formularz logowania -->
   <form (ngSubmit)="onSubmit()">
     <!-- Pole dla nazwy użytkownika -->
@@ -11,6 +11,7 @@
         id="username" 
         [(ngModel)]="username" 
         name="username" 
+        placeholder="Enter your username"
         required />
     </div>
 
@@ -22,10 +23,17 @@
         id="password" 
         [(ngModel)]="password" 
         name="password" 
+        placeholder="Enter your password"
         required />
     </div>
 
     <!-- Przycisk logowania -->
-    <button type="submit">Login</button>
+    <button type="submit" class="btn btn-primary">Login</button>
   </form>
+
+  <!-- Sekcja rejestracji -->
+  <div class="register-section">
+    <p>Don't have an account?</p>
+    <button class="btn btn-secondary" (click)="onRegister()">Create Account</button>
+  </div>
 </div>
