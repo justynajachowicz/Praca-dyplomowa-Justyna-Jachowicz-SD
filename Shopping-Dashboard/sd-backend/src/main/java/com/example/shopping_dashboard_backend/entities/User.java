@@ -3,9 +3,11 @@ package com.example.shopping_dashboard_backend.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "\"user\"") // Poprawka: Nazwa tabeli opakowana w podwójne cudzysłowy
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Dodanie generacji ID
     private Long id;
     private String username;
     private String password;
