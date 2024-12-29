@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
 import { of } from 'rxjs';
+import { Shop, Product, ShoppingList, Purchase } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingService {
-  private apiUrl = 'http://localhost:8080'; // Podmień na właściwy URL
+  private apiUrl = 'http://localhost:8080/user/shopping'; // Podmień na właściwy URL
 
   constructor(private http: HttpClient) {}
 
   getShops(): Observable<Shop[]> {
-    return this.http.get<Shop[]>(`${this.apiUrl}/shops`).pipe(
+    return this.http.get<Shop[]>(`${this.apiUrl}/lists`).pipe(
       catchError(error => {
         console.error('Błąd podczas pobierania sklepów:', error);
         return of([]); // Zwrócenie pustej tablicy w przypadku błędu

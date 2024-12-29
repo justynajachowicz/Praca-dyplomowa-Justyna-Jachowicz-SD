@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <title>Logowanie</title>
+</head>
+<body>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-6 mx-auto">
+            <h1>Formularz logowania</h1>
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">Niepoprawny login lub hasło !!!</div>
+            </div>
+            <div th:if="${param.logout}">
+                <div class="alert alert-success">Zostałeś pomyślnie wylogowany !!!</div>
+            </div>
+            <form
+                    class="form-horizontal"
+                    method="post"
+                    role="form"
+                    th:action="@{/login}"
+            >
+                <div class="mb-3">
+                    <label class="form-label" for="password">Email</label>
+                    <input class="form-control" id="username" name="username" placeholder="Wprowadź adres email"
+                           type="email">
+                </div>
+                <div class="mb-3">
+                    <label class="col-sm-2 col-form-label" for="password">Password</label>
+                    <input class="form-control" id="password" name="password" placeholder="Wprowadź hasło"
+                           type="password">
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary mb-3" type="submit">Zaloguj</button>
+                    lub <a class="link-primary" th:href="@{/registration}">Zarejestruj się</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

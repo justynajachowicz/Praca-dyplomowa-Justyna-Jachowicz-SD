@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  shopping_dashboard-application:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - TZ=Europe/Warsaw
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/shopping_dashboard
+      - SPRING_DATASOURCE_USERNAME=shop_user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  database:
+    image: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      - TZ=Europe/Warsaw
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=shop_user
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=shopping_dashboard
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
+      interval: 5s
+      timeout: 50s
+      retries: 10
+volumes:
+  db_data:
