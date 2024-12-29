@@ -32,4 +32,7 @@ public class ShoppingList {
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
+
+    public void setUser(User userByEmail) {
+    }
 }

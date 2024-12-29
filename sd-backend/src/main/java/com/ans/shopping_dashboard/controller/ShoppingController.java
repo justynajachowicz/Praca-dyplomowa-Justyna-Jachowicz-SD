@@ -4,9 +4,12 @@ import com.ans.shopping_dashboard.model.Purchase;
 import com.ans.shopping_dashboard.repository.ProductListRepository;
 import com.ans.shopping_dashboard.service.PurchaseService;
 import com.ans.shopping_dashboard.service.ShopService;
+import com.ans.shopping_dashboard.service.PdfGeneratorService;
 import com.ans.shopping_dashboard.service.ShoppingListService;
 import com.ans.shopping_dashboard.model.ShoppingList;
 import com.ans.shopping_dashboard.service.UserService;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -27,13 +30,16 @@ public class ShoppingController {
     private final ProductListRepository productListRepository;
     private final ShopService shopService;
     private final UserService userService;
+    private final PdfGeneratorService pdfGeneratorService;
 
-    public ShoppingController(ShoppingListService shoppingListService, PurchaseService purchaseService, ProductListRepository productListRepository, ShopService shopService, UserService userService) {
+
+    public ShoppingController(ShoppingListService shoppingListService, PurchaseService purchaseService, ProductListRepository productListRepository, ShopService shopService, UserService userService, PdfGeneratorService pdfGeneratorService) {
         this.shoppingListService = shoppingListService;
         this.purchaseService = purchaseService;
         this.productListRepository = productListRepository;
         this.shopService = shopService;
         this.userService = userService;
+        this.pdfGeneratorService = pdfGeneratorService;
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
@@ -114,6 +120,20 @@ public class ShoppingController {
         purchaseService.remove(id);
         return "redirect:/user/shopping/new";
     }
+
+    @GetMapping("/generatePdf/{id}")
+    public ResponseEntity<byte[]> generatePdf(@PathVariable Long id) {
+        var shoppingList = shoppingListService.findById(id).orElseThrow(() -> new IllegalArgumentException("Lista nie istnieje"));
+
+        var pdfBytes = pdfGeneratorService.generatePdf(shoppingList).toByteArray();
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=shopping_list_" + id + ".pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdfBytes);
+    }
+
+
 
 
     private String calculateTotalPrice(List<Purchase> purchaseList) {

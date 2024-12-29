@@ -88,7 +88,7 @@
                     <th>Sklep</th>
                     <th>Nazwa produktu</th>
                     <th>Cena</th>
-                    <th>Usuń</th>
+                    <th>Edycja</th>
                 </tr>
 
                 <tr th:each="purchase : ${existingPurchases}">
@@ -99,7 +99,17 @@
                     <td class="editCustom">
                         <a th:href="${'/user/shopping/deletePurchase/' + purchase.id}" class="btn btn-danger"
                            id="deleteButton" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">Usuń</a>
+                        <a th:href="@{/user/shopping/generatePdf/{id}(id=${purchase.shopping.id})}" class="btn btn-primary">
+                            Generuj PDF
+                        </a>
                     </td>
+
+                    <!--                    <td class="editCustom">-->
+                    <!--                        <a th:href="@{'/user/shopping/deletePurchase/' + ${purchase.id}}" class="btn btn-danger"-->
+                    <!--                           id="deleteButton" th:if="${#authorization.expression('hasRole(''ROLE_USER'')}">Usuń</a>-->
+                    <!--                        <a th:href="@{'/user/shopping/generatePdf/' + ${purchase.shopping.id}}" class="btn btn-primary"-->
+                    <!--                           id="generatePdfButton">Generuj PDF</a>-->
+                    <!--                    </td>-->
                 </tr>
             </table>
         </div>
