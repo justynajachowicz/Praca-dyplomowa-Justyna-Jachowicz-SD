@@ -1,13 +1,80 @@
 <!doctype html>
-
 <html xmlns:th="http://www.thymeleaf.org" lang="pl">
-
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/styles.css}" rel="stylesheet">
     <title>Nowa lista</title>
+    <style>
+        body {
+            background-color: #f5f5dc; /* Beżowe tło */
+        }
+
+        .jumbotron {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .title, .subtitle2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select, button {
+            margin-bottom: 1rem;
+            display: block;
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        button {
+            color: #fff;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .table {
+            margin-top: 2rem;
+            background-color: #ffffff;
+        }
+
+        .editCustom a {
+            margin-right: 0.5rem;
+        }
+
+        #categorySelect, #submitButton {
+            max-width: 300px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        h4 span {
+            font-style: italic;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
 <div class="jumbotron">
@@ -18,7 +85,6 @@
     <div class="title">
         <h4>Dodawanie listy zakupów</h4>
     </div>
-
     <section class="container">
         <div class="row">
             <form th:action="@{/user/shopping/new}" th:object="${shoppingList}" method="post">
@@ -27,8 +93,7 @@
                 <label for="shop">Sklep:</label>
                 <select required="required" id="shop" th:field="*{shop}">
                     <option value="">Wybierz sklep</option>
-                    <option th:each="shop : ${shops}" th:value="${shop.id}"
-                            th:text="${shop.name} + ' ' + ${shop.city}"></option>
+                    <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name} + ' ' + ${shop.city}"></option>
                 </select>
                 <button class="btn btn-success" type="submit">Dodaj listę zakupową</button>
             </form>
@@ -45,13 +110,10 @@
                 <label for="product">Produkt:</label>
                 <select required="required" id="product" th:field="*{product}">
                     <option value="">Wybierz produkt</option>
-                    <option th:each="product : ${products}" th:value="${product.productId}"
-                            th:text="${product.productName} + ' ' + ${product.brand} + ', waga: ' +${product.weight}"></option>
+                    <option th:each="product : ${products}" th:value="${product.productId}" th:text="${product.productName} + ' ' + ${product.brand} + ', waga: ' + ${product.weight}"></option>
                 </select>
                 <label for="price">Cena:</label>
-                <input id="price" required="required" type="number" step="0.01" th:field="*{price}"
-                       placeholder="cena"/>
-
+                <input id="price" required="required" type="number" step="0.01" th:field="*{price}" placeholder="cena"/>
                 <label for="lista">Lista:</label>
                 <select required="required" id="lista" th:field="*{shopping}">
                     <option value="">Wybierz listę</option>
@@ -61,52 +123,48 @@
             </form>
         </div>
     </section>
-    <div class="jumbotron">
-        <div class="subtitle2">
-            <h4>Edytowanie listy zakupowej</h4>
-        </div>
-    <section class="container" >
-
+</div>
+<div class="jumbotron">
+    <div class="subtitle2">
+        <h4>Edytowanie listy zakupowej</h4>
+    </div>
+    <section class="container">
         <div class="row">
-
-                <label for="categorySelect">Wybierz listę</label>
-                <select id="categorySelect">
-                    <option value="">Wybierz listę</option>
-                    <option th:each="list : ${existingLists}" th:value="${list.id}" th:text="${list.listName}"></option>
-                </select>
-
-                <button id="submitButton">Wybierz</button>
-
-
-            <div class ="container" th:if="${listName!=null}">
+            <label for="categorySelect">Wybierz listę</label>
+            <select id="categorySelect">
+                <option value="">Wybierz listę</option>
+                <option th:each="list : ${existingLists}" th:value="${list.id}" th:text="${list.listName}"></option>
+            </select>
+            <button id="submitButton" class="btn btn-primary mt-3">Wybierz</button>
+            <div class="container" th:if="${listName!=null}">
                 <h4><br/>Edytujesz: <span th:text="${listName}" class="app-name"></span></h4>
             </div>
             <table class="table table-bordered table-hover">
-
+                <thead>
                 <tr>
                     <th>Nazwa listy</th>
                     <th>Sklep</th>
                     <th>Nazwa produktu</th>
                     <th>Cena</th>
-                    <th>Usuń</th>
+                    <th>Edycja</th>
                 </tr>
-
+                </thead>
+                <tbody>
                 <tr th:each="purchase : ${existingPurchases}">
                     <td th:text="${purchase.shopping.listName}"></td>
                     <td th:text="${purchase.shopping.shop.name} + ' ' + ${purchase.shopping.shop.city}"></td>
                     <td th:text="${purchase.product.productName}"></td>
                     <td th:text="${purchase.price}"></td>
                     <td class="editCustom">
-                        <a th:href="${'/user/shopping/deletePurchase/' + purchase.id}" class="btn btn-danger"
-                           id="deleteButton" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">Usuń</a>
+                        <a th:href="${'/user/shopping/deletePurchase/' + purchase.id}" class="btn btn-danger" id="deleteButton">Usuń</a>
+                        <a th:href="@{/user/shopping/generatePdf/{id}(id=${purchase.shopping.id})}" class="btn btn-primary">Generuj PDF</a>
                     </td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </section>
-    </div>
 </div>
-
 <script>
     var categorySelect = document.getElementById("categorySelect");
     var submitButton = document.getElementById("submitButton");
@@ -118,6 +176,144 @@
         }
     });
 </script>
-
 </body>
 </html>
+
+
+
+
+
+
+<!--<!doctype html>-->
+
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="pl">-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta content="width=device-width, initial-scale=1" name="viewport">-->
+<!--    <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet"/>-->
+<!--    <link th:href="@{/css/styles.css}" rel="stylesheet">-->
+<!--    <title>Nowa lista</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="jumbotron">-->
+<!--    <div>-->
+<!--        <div class="mt-4"><a class="link-primary" th:href="@{/logout}">Wyloguj się</a></div>-->
+<!--        <div class="mt-4"><a class="link-primary" th:href="@{/user/}">Powrót</a></div>-->
+<!--    </div>-->
+<!--    <div class="title">-->
+<!--        <h4>Dodawanie listy zakupów</h4>-->
+<!--    </div>-->
+
+<!--    <section class="container">-->
+<!--        <div class="row">-->
+<!--            <form th:action="@{/user/shopping/new}" th:object="${shoppingList}" method="post">-->
+<!--                <label for="listName">Nazwa listy:</label>-->
+<!--                <input type="text" id="listName" th:field="*{listName}" required="required"/>-->
+<!--                <label for="shop">Sklep:</label>-->
+<!--                <select required="required" id="shop" th:field="*{shop}">-->
+<!--                    <option value="">Wybierz sklep</option>-->
+<!--                    <option th:each="shop : ${shops}" th:value="${shop.id}"-->
+<!--                            th:text="${shop.name} + ' ' + ${shop.city}"></option>-->
+<!--                </select>-->
+<!--                <button class="btn btn-success" type="submit">Dodaj listę zakupową</button>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--</div>-->
+<!--<div class="jumbotron">-->
+<!--    <div class="subtitle2">-->
+<!--        <h4>Przypisanie zakupu do listy zakupowej</h4>-->
+<!--    </div>-->
+<!--    <section class="container">-->
+<!--        <div class="row">-->
+<!--            <form th:action="@{/user/shopping/addPurchase}" th:object="${purchase}" method="post">-->
+<!--                <label for="product">Produkt:</label>-->
+<!--                <select required="required" id="product" th:field="*{product}">-->
+<!--                    <option value="">Wybierz produkt</option>-->
+<!--                    <option th:each="product : ${products}" th:value="${product.productId}"-->
+<!--                            th:text="${product.productName} + ' ' + ${product.brand} + ', waga: ' +${product.weight}"></option>-->
+<!--                </select>-->
+<!--                <label for="price">Cena:</label>-->
+<!--                <input id="price" required="required" type="number" step="0.01" th:field="*{price}"-->
+<!--                       placeholder="cena"/>-->
+
+<!--                <label for="lista">Lista:</label>-->
+<!--                <select required="required" id="lista" th:field="*{shopping}">-->
+<!--                    <option value="">Wybierz listę</option>-->
+<!--                    <option th:each="list : ${existingLists}" th:value="${list.id}" th:text="${list.listName}"></option>-->
+<!--                </select>-->
+<!--                <button class="btn btn-success" type="submit">Dodaj zakup do listy</button>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--    <div class="jumbotron">-->
+<!--        <div class="subtitle2">-->
+<!--            <h4>Edytowanie listy zakupowej</h4>-->
+<!--        </div>-->
+<!--    <section class="container" >-->
+
+<!--        <div class="row">-->
+
+<!--                <label for="categorySelect">Wybierz listę</label>-->
+<!--                <select id="categorySelect">-->
+<!--                    <option value="">Wybierz listę</option>-->
+<!--                    <option th:each="list : ${existingLists}" th:value="${list.id}" th:text="${list.listName}"></option>-->
+<!--                </select>-->
+
+<!--                <button id="submitButton">Wybierz</button>-->
+
+
+<!--            <div class ="container" th:if="${listName!=null}">-->
+<!--                <h4><br/>Edytujesz: <span th:text="${listName}" class="app-name"></span></h4>-->
+<!--            </div>-->
+<!--            <table class="table table-bordered table-hover">-->
+
+<!--                <tr>-->
+<!--                    <th>Nazwa listy</th>-->
+<!--                    <th>Sklep</th>-->
+<!--                    <th>Nazwa produktu</th>-->
+<!--                    <th>Cena</th>-->
+<!--                    <th>Edycja</th>-->
+<!--                </tr>-->
+
+<!--                <tr th:each="purchase : ${existingPurchases}">-->
+<!--                    <td th:text="${purchase.shopping.listName}"></td>-->
+<!--                    <td th:text="${purchase.shopping.shop.name} + ' ' + ${purchase.shopping.shop.city}"></td>-->
+<!--                    <td th:text="${purchase.product.productName}"></td>-->
+<!--                    <td th:text="${purchase.price}"></td>-->
+<!--                    <td class="editCustom">-->
+<!--                        <a th:href="${'/user/shopping/deletePurchase/' + purchase.id}" class="btn btn-danger"-->
+<!--                           id="deleteButton" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">Usuń</a>-->
+<!--                        <a th:href="@{/user/shopping/generatePdf/{id}(id=${purchase.shopping.id})}" class="btn btn-primary">-->
+<!--                            Generuj PDF-->
+<!--                        </a>-->
+<!--                    </td>-->
+
+<!--                    &lt;!&ndash;                    <td class="editCustom">&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        <a th:href="@{'/user/shopping/deletePurchase/' + ${purchase.id}}" class="btn btn-danger"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                           id="deleteButton" th:if="${#authorization.expression('hasRole(''ROLE_USER'')}">Usuń</a>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        <a th:href="@{'/user/shopping/generatePdf/' + ${purchase.shopping.id}}" class="btn btn-primary"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                           id="generatePdfButton">Generuj PDF</a>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                    </td>&ndash;&gt;-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    var categorySelect = document.getElementById("categorySelect");-->
+<!--    var submitButton = document.getElementById("submitButton");-->
+<!--    submitButton.addEventListener("click", function () {-->
+<!--        var selectedValue = categorySelect.value;-->
+<!--        if (selectedValue) {-->
+<!--            var link = "/user/shopping/searchList/" + selectedValue;-->
+<!--            window.location.href = link;-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->

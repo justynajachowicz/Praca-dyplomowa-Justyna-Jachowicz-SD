@@ -4,51 +4,169 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet" />
-
     <title>Rejestracja</title>
+    <style>
+        body {
+            background-color: #f5f5dc; /* Beżowe tło */
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 3rem;
+            margin-top: 5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .alert {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            border-radius: 5px;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            padding: 0.75rem;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .link-primary {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .link-primary:hover {
+            text-decoration: underline;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="row mt-5">
-        <div class="col-6 mx-auto">
-            <form
-                    method="post"
-                    role="form"
-                    th:action="@{/registration}"
-                    th:object="${user}"
-            >
-                <h1>Formularz rejestracji</h1>
+        <div class="col-12 col-md-6 mx-auto">
+            <form method="post" role="form" th:action="@{/registration}" th:object="${user}">
+                <h1>Shopping dashboard</h1>
+                <h2>Załóż konto</h2>
                 <div th:if="${param.success}">
                     <div class="alert alert-info">
                         Rejestracja udana!!!
                     </div>
                 </div>
-                <div class="mb-3">
+                <div class="form-group mb-3">
                     <label class="form-label" for="name">Imię</label>
-                    <input class="form-control" id="name" name="name" type="text">
-                    <p class="text-danger" th:errors="*{name}"
-                       th:if="${#fields.hasErrors('name')}"></p>
+                    <input class="form-control" id="name" name="name" type="text" required placeholder="Podaj swoje imię">
+                    <p class="text-danger" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></p>
                 </div>
-                <div class="mb-3">
+                <div class="form-group mb-3">
                     <label class="form-label" for="email">Email</label>
-                    <input class="form-control" id="email" name="email" type="email">
-                    <p class="text-danger" th:errors="*{email}"
-                       th:if="${#fields.hasErrors('email')}"></p>
+                    <input class="form-control" id="email" name="email" type="email" required placeholder="Podaj adres e-mail">
+                    <p class="text-danger" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></p>
                 </div>
-                <div class="mb-3">
-                    <label class="col-sm-2 col-form-label" for="password">Hasło</label>
-                    <input class="form-control" id="password" name="password" type="password">
-                    <p class="text-danger" th:errors="*{password}"
-                       th:if="${#fields.hasErrors('password')}"></p>
+                <div class="form-group mb-3">
+                    <label class="form-label" for="password">Hasło</label>
+                    <input class="form-control" id="password" name="password" type="password" required placeholder="Podaj hasło">
+                    <p class="text-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></p>
                 </div>
-                <div class="mb-3">
-                    <button class="btn btn-primary mb-3" type="submit">Zarejestruj</button>
-                    or <a class="link-primary" th:href="@{/login}">Zaloguj</a>
+                <div class="form-group mb-3">
+                    <button class="btn btn-primary" type="submit">Zarejestruj</button>
+                </div>
+                <div class="text-center">
+                    lub <a class="link-primary" th:href="@{/login}">Zaloguj się</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
 </body>
 </html>
+
+
+
+<!--<!doctype html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta content="width=device-width, initial-scale=1" name="viewport">-->
+<!--    <link th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" rel="stylesheet" />-->
+
+<!--    <title>Rejestracja</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <div class="row mt-5">-->
+<!--        <div class="col-6 mx-auto">-->
+<!--            <form-->
+<!--                    method="post"-->
+<!--                    role="form"-->
+<!--                    th:action="@{/registration}"-->
+<!--                    th:object="${user}"-->
+<!--            >-->
+<!--                <h1>Formularz rejestracji</h1>-->
+<!--                <div th:if="${param.success}">-->
+<!--                    <div class="alert alert-info">-->
+<!--                        Rejestracja udana!!!-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label class="form-label" for="name">Imię</label>-->
+<!--                    <input class="form-control" id="name" name="name" type="text">-->
+<!--                    <p class="text-danger" th:errors="*{name}"-->
+<!--                       th:if="${#fields.hasErrors('name')}"></p>-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label class="form-label" for="email">Email</label>-->
+<!--                    <input class="form-control" id="email" name="email" type="email">-->
+<!--                    <p class="text-danger" th:errors="*{email}"-->
+<!--                       th:if="${#fields.hasErrors('email')}"></p>-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label class="col-sm-2 col-form-label" for="password">Hasło</label>-->
+<!--                    <input class="form-control" id="password" name="password" type="password">-->
+<!--                    <p class="text-danger" th:errors="*{password}"-->
+<!--                       th:if="${#fields.hasErrors('password')}"></p>-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <button class="btn btn-primary mb-3" type="submit">Zarejestruj</button>-->
+<!--                    or <a class="link-primary" th:href="@{/login}">Zaloguj</a>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
