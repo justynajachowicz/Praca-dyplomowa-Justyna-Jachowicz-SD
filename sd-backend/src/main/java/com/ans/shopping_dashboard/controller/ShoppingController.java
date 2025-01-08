@@ -1,13 +1,9 @@
 package com.ans.shopping_dashboard.controller;
 
 import com.ans.shopping_dashboard.model.Purchase;
-import com.ans.shopping_dashboard.repository.ProductListRepository;
-import com.ans.shopping_dashboard.service.PurchaseService;
-import com.ans.shopping_dashboard.service.ShopService;
-import com.ans.shopping_dashboard.service.PdfGeneratorService;
-import com.ans.shopping_dashboard.service.ShoppingListService;
 import com.ans.shopping_dashboard.model.ShoppingList;
-import com.ans.shopping_dashboard.service.UserService;
+import com.ans.shopping_dashboard.repository.ProductListRepository;
+import com.ans.shopping_dashboard.service.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
