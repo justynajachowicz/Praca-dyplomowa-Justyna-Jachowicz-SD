@@ -49,11 +49,21 @@
                 <div class="card-body">
                     <h3 class="card-title text-center">Profil użytkownika</h3>
                     <p><strong>Nazwa użytkownika:</strong> <span sec:authentication="principal.username"></span></p>
-                    <p><strong>Rola:</strong> <span sec:authentication="principal.authorities"></span></p>
+                    <p><strong>Rola:</strong>
+                        <span th:each="auth : ${#authentication.authorities}">
+            <span th:switch="${auth.authority}">
+                <span th:case="'ROLE_USER'">Użytkownik</span>
+                <span th:case="'ROLE_ADMIN'">Administrator</span>
+                <span th:case="*">Nieznana rola</span>
+            </span>
+        </span>
+                    </p>
                     <div class="text-center mt-3">
                         <a th:href="@{/logout}" class="btn btn-primary">Wyloguj się</a>
                     </div>
                 </div>
+
+
             </div>
 
             <!-- Links for User Actions -->
@@ -126,7 +136,6 @@
 <script th:src="@{/webjars/fontawesome/5.15.4/js/all.min.js}"></script>
 </body>
 </html>
-
 
 
 <!--<!doctype html>-->
