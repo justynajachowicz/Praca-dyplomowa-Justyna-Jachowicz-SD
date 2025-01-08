@@ -157,7 +157,6 @@
                     <td th:text="${purchase.price}"></td>
                     <td class="editCustom">
                         <a th:href="${'/user/shopping/deletePurchase/' + purchase.id}" class="btn btn-danger" id="deleteButton">Usuń</a>
-                        <a th:href="@{/user/shopping/generatePdf/{id}(id=${purchase.shopping.id})}" class="btn btn-primary">Generuj PDF</a>
                     </td>
                 </tr>
                 </tbody>
