@@ -157,7 +157,6 @@
                     <td th:text="${purchase.price}"></td>
                     <td class="editCustom">
                         <a th:href="${'/user/shopping/deletePurchase/' + purchase.id}" class="btn btn-danger" id="deleteButton">Usuń</a>
-                        <a th:href="@{/user/shopping/generatePdf/{id}(id=${purchase.shopping.id})}" class="btn btn-primary">Generuj PDF</a>
                     </td>
                 </tr>
                 </tbody>
@@ -205,21 +204,7 @@
 <!--        <h4>Dodawanie listy zakupów</h4>-->
 <!--    </div>-->
 
-<!--    <section class="container">-->
-<!--        <div class="row">-->
-<!--            <form th:action="@{/user/shopping/new}" th:object="${shoppingList}" method="post">-->
-<!--                <label for="listName">Nazwa listy:</label>-->
-<!--                <input type="text" id="listName" th:field="*{listName}" required="required"/>-->
-<!--                <label for="shop">Sklep:</label>-->
-<!--                <select required="required" id="shop" th:field="*{shop}">-->
-<!--                    <option value="">Wybierz sklep</option>-->
-<!--                    <option th:each="shop : ${shops}" th:value="${shop.id}"-->
-<!--                            th:text="${shop.name} + ' ' + ${shop.city}"></option>-->
-<!--                </select>-->
-<!--                <button class="btn btn-success" type="submit">Dodaj listę zakupową</button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </section>-->
+
 <!--</div>-->
 <!--<div class="jumbotron">-->
 <!--    <div class="subtitle2">-->

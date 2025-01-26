@@ -22,6 +22,14 @@
 
 <section class="container">
     <h1>Produkty</h1>
+
+
+    <!-- Formularz wyszukiwania -->
+    <form action="/admin/products" method="get" class="form-inline mb-3">
+        <input type="text" name="name" class="form-control mr-2" placeholder="Wyszukaj produkty" th:value="${param.name}" />
+        <button type="submit" class="btn btn-primary">Szukaj </button>
+    </form>
+
     <p>Lista wszystkich produktów</p>
     <div class="row">
         <table class="table table-bordered table-hover">

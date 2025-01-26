@@ -33,7 +33,4 @@ public class ShoppingList {
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
-    public void setUser(User userByEmail) {
-
-    }
 }

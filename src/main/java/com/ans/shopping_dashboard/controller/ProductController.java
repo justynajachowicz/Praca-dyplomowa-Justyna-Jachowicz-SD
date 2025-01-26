@@ -17,8 +17,12 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public String getAllProducts(Model model) {
-        model.addAttribute("products", productListRepository.findAll());
+    public String getAllProducts(Model model, @RequestParam(value= "name", required = false) String name) {
+        if (name != null && !name.isEmpty()) {
+            model.addAttribute("products", productListRepository.findByProductNameContainingIgnoreCase(name));
+        } else {
+            model.addAttribute("products", productListRepository.findAll());
+    }
         return "products";
     }
 
