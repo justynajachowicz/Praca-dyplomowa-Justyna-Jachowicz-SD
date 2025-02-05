@@ -4,7 +4,7 @@ import { LoginRequest } from '../models/login-request';
 import { Observable } from 'rxjs';
 import { LoginResponse } from '../models/login-response';
 
-const API_URL = "http://localhost:8080/api/doLogin";
+const API_URL = "http://localhost:8080/api/auth/login";
 
 @Injectable({
   providedIn: 'root'

@@ -1,3 +1,7 @@
-export class LoginResponse {
-    token?: string;
+export interface LoginResponse {
+    token: string;
+    user?: {
+        email: string;
+        role: string;
+    };
 }

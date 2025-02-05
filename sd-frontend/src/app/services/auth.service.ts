@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { catchError} from 'rxjs/operators';
+import { LoginRequest } from '../models/login-request';
+import { LoginResponse } from '../models/login-response';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +13,38 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { username, password });
+  login(credentials:LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.apiUrl, credentials ).pipe(
+      tap(response => {
+        localStorage.setItem ('token', response.token);
+        console.log ('Login success, token saved:', response.token);
+      }
+
+      ),
+      catchError(error =>  {
+        console.error ('Login failed', error);
+        throw error;
+
+      })
+
+      );
+      
+    
+  }
+  
+  saveToken(token:string): void{
+    localStorage.setItem('jwt', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('jwt');
+  }
+
+  isAuthenticated(): boolean {
+    return !! this.getToken();
+  }
+
+  logout(): void {
+    localStorage.removeItem('jwt');
   }
 }

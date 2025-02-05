@@ -62,12 +62,17 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "shopping-dashboard:build:production"
             },
             "development": {
-              "buildTarget": "shopping-dashboard:build:development"
+              "buildTarget": "shopping-dashboard:build:development",
+               "proxyConfig": "proxy.conf.json"
+              
             }
           },
           "defaultConfiguration": "development"

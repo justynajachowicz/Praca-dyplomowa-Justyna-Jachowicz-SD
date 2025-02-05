@@ -2,67 +2,62 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IntegrationService } from '../services/integration.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { LoginRequest } from '../models/login-request';
+import { LoginResponse } from '../models/login-response';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']  
-
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
-
-  // Jeden konstruktor, który wstrzykuje wszystkie wymagane zależności
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private integration: IntegrationService
-  ){}
-
-  userForm : FormGroup = new FormGroup ({
-    username: new FormControl(''),
+  // Zainicjowane wartości w formularzu
+  userForm: FormGroup = new FormGroup({
+    email: new FormControl(''),
     password: new FormControl('')
   });
 
-  request: LoginRequest = new LoginRequest;
+  request: LoginRequest = { email: '', password: '' };
 
+  constructor(
+    private router: Router,
+    private integration: IntegrationService
+  ) {}
+
+  // Funkcja logowania
   doLogin() {
     const formValue = this.userForm.value;
-
-    if(formValue.username == '' || formValue.password == '') {
-      alert('wrong Credentilas');
-      return;
-    }
-    this.request.username = formValue.username;
+    
+    // Przypisanie danych z formularza do obiektu request
+    this.request.email = formValue.email;
     this.request.password = formValue.password;
 
+    // Sprawdzenie czy formularz jest poprawnie wypełniony
+    if (this.userForm.invalid) {
+      alert('Proszę wypełnić wszystkie pola.');
+      return;
+    }
+
+    // Wywołanie integracji logowania
     this.integration.doLogin(this.request).subscribe({
-      next:(res) => {
-        console.log("Received Response:" +res.token);
-      }, error: (err) => {
-        console.log("Error Received Response:"+err);
-      }
-
-    });
-  }
-
-
-  onSubmit() {
-    const loginData = { username: this.username, password: this.password };
-    this.http.post('/login', loginData, { withCredentials: true }).subscribe({
-      next: () => {
-        window.location.href = '/dashboard'; // Przekierowanie po zalogowaniu
+      next: (res: LoginResponse) => {
+        console.log("Received Response:", res.token);
+        localStorage.setItem('jwt', res.token);
+        if (res.user) {
+          localStorage.setItem('userEmail', res.user.email);
+          localStorage.setItem('userRole', res.user.role);
+        }
+        this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        console.error('Login failed', err);
+        console.log("Error Received Response:", err);
       }
     });
   }
 
-  onRegister(){
-    this.router.navigate(['/register']); // Przekierowanie na stronę rejestracji
+  // Funkcja rejestracji
+  onRegister() {
+    this.router.navigate(['/register']);
   }
 }

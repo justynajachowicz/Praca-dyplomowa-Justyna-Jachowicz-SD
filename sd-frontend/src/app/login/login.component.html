@@ -1,17 +1,16 @@
 <div class="login-container">
   <h2>Login</h2>
 
-  <!-- Formularz logowania -->
-  <form (ngSubmit)="onSubmit()">
-    <!-- Pole dla nazwy użytkownika -->
+  <form [formGroup]="userForm" (ngSubmit)="doLogin()">
+
+    <!-- Pole dla emaila -->
     <div class="form-group">
-      <label for="username">Username</label>
+      <label for="email">Email</label>
       <input 
-        type="text" 
-        id="username" 
-        [(ngModel)]="username" 
-        name="username" 
-        placeholder="Enter your username"
+        type="email" 
+        id="email" 
+        formControlName="email" 
+        placeholder="Enter your email"
         required />
     </div>
 
@@ -21,11 +20,11 @@
       <input 
         type="password" 
         id="password" 
-        [(ngModel)]="password" 
-        name="password" 
+        formControlName="password" 
         placeholder="Enter your password"
         required />
     </div>
+    
     <div class="remember">
       <label for="#">
         <input type="checkbox"> remember me
