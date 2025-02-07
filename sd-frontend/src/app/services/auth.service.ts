@@ -10,6 +10,8 @@ import { LoginResponse } from '../models/login-response';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth/login'; // URL do endpointa logowania
+  private logoutUrl = 'http://localhost:8080/api/auth/logout'; // Endpoint wylogowania
+
 
   constructor(private http: HttpClient) {}
 
@@ -45,6 +47,17 @@ export class AuthService {
   }
 
   logout(): void {
+    this.http.post(this.logoutUrl, {}, { withCredentials: true }).subscribe({
+      next: () => {
+        console.log('Logout successful');
+        localStorage.removeItem('jwt'); // Usunięcie tokena
+        console.log('User logged out');
+        window.location.href = '/login'; // Przekierowanie do ekranu logowania
+      },
+      error: (err) => {
+        console.error('Logout failed', err);
+      }
+    });
     localStorage.removeItem('jwt');
   }
 }
