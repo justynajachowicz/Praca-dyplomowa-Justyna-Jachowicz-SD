@@ -16,16 +16,27 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
-@AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")  // Pozwala Angularowi na dostęp do API
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/login")
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider) {
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
+
+    }
+    @PostMapping("/api/auth/logout")
+    public ResponseEntity<String> logout() {
+        SecurityContextHolder.clearContext(); // Usunięcie kontekstu uwierzytelnienia
+        return ResponseEntity.ok("Wylogowano pomyślnie");
+
+    }
+
+
+    @PostMapping("/api/auth/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -34,11 +45,11 @@ public class AuthController {
                 )
         );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtTokenProvider.generateToken(loginRequest.getEmail());
+      //  SecurityContextHolder.getContext().setAuthentication(authentication);
+      //  String token = jwtTokenProvider.generateToken(loginRequest.getEmail());
         userService.findUserByEmail(loginRequest.getEmail());
 
-        return ResponseEntity.ok(new LoginResponse(token));
+        return ResponseEntity.ok(new LoginResponse("token"));
     }
 
     @PostMapping("/register")
