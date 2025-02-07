@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # Java compiled files
 *.class
 
@@ -67,17 +65,12 @@ testem.log
 Thumbs.db
 
 # Maven & Gradle
->>>>>>> b294ef33dc0acc4d7cce2ac339c2d88fbf1cbb77
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-<<<<<<< HEAD
-### STS ###
-=======
 # Spring Tools Suite (STS)
->>>>>>> b294ef33dc0acc4d7cce2ac339c2d88fbf1cbb77
 .apt_generated
 .classpath
 .factorypath
@@ -86,21 +79,13 @@ target/
 .springBeans
 .sts4-cache
 
-<<<<<<< HEAD
-### IntelliJ IDEA ###
-=======
 # IntelliJ IDEA
->>>>>>> b294ef33dc0acc4d7cce2ac339c2d88fbf1cbb77
 .idea
 *.iws
 *.iml
 *.ipr
 
-<<<<<<< HEAD
-### NetBeans ###
-=======
 # NetBeans
->>>>>>> b294ef33dc0acc4d7cce2ac339c2d88fbf1cbb77
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -110,19 +95,5 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-<<<<<<< HEAD
-### VS Code ###
-.vscode/
-
-### Docker ###
-/docker/
-
-### LaTex ###
-*.aux
-*.log
-*.pyg
-*.synctex.gz
-=======
 # VS Code
 .vscode/
->>>>>>> b294ef33dc0acc4d7cce2ac339c2d88fbf1cbb77
