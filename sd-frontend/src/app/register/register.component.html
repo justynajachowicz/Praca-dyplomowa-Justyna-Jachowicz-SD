@@ -1,52 +1,53 @@
 <div class="register-container">
-    <h2>Register</h2>
-  
-    <!-- Formularz rejestracji -->
-    <form (ngSubmit)="onSubmit()">
-      <!-- Pole dla nazwy użytkownika -->
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input 
-          type="text" 
-          id="username" 
-          [(ngModel)]="username" 
-          name="username" 
-          placeholder="Enter your username"
-          required />
-      </div>
-  
-      <!-- Pole dla hasła -->
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input 
-          type="password" 
-          id="password" 
-          [(ngModel)]="password" 
-          name="password" 
-          placeholder="Enter your password"
-          required />
-      </div>
-  
-      <!-- Pole do potwierdzenia hasła -->
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <input 
-          type="password" 
-          id="confirmPassword" 
-          [(ngModel)]="confirmPassword" 
-          name="confirmPassword" 
-          placeholder="Re-enter your password"
-          required />
-      </div>
-  
-      <!-- Przycisk rejestracji -->
-      <button type="submit" class="btn btn-primary">Register</button>
-    </form>
-  
-    <!-- Sekcja powrotu do logowania -->
-    <div class="login-section">
-      <p>Already have an account?</p>
-      <button class="btn btn-secondary" (click)="onLogin()">Back to Login</button>
+  <h2>Załóż konto</h2>
+
+  <!-- Formularz rejestracji -->
+  <form (ngSubmit)="onSubmit()">
+    <!-- Pole dla adresu e-mail -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input 
+        type="email" 
+        id="email" 
+        [(ngModel)]="email" 
+        name="email" 
+        placeholder="Podaj adres email"
+        required />
     </div>
+
+    <!-- Pole dla hasła -->
+    <div class="form-group">
+      <label for="password">Hasło</label>
+      <input 
+        type="password" 
+        id="password" 
+        [(ngModel)]="password" 
+        name="password" 
+        placeholder="Wprowadź hasło"
+        required />
+    </div>
+
+    <!-- Pole do potwierdzenia hasła -->
+    <div class="form-group">
+      <label for="confirmPassword">Potwierdź hasło</label>
+      <input 
+        type="password" 
+        id="confirmPassword" 
+        [(ngModel)]="confirmPassword" 
+        name="confirmPassword" 
+        placeholder="Wprowadź ponownie hasło"
+        required />
+      <!-- Komunikat o błędzie, jeśli hasła się różnią -->
+      <div *ngIf="passwordMismatch" class="error-message">{{ passwordMismatch }}</div>
+    </div>
+
+    <!-- Przycisk rejestracji -->
+    <button type="submit" class="btn btn-primary">Zarejestruj</button>
+  </form>
+
+  <!-- Sekcja powrotu do logowania -->
+  <div class="login-section">
+    <p>Masz już konto?</p>
+    <button class="btn" (click)="onLogin()">Wróć do logowania</button>
   </div>
-  
+</div>

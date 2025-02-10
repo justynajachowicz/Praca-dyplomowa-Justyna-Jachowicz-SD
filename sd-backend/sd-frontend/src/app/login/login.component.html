@@ -1,0 +1,44 @@
+<div class="login-container">
+  <h2>Login</h2>
+
+  <form [formGroup]="userForm" (ngSubmit)="doLogin()">
+
+    <!-- Pole dla emaila -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input 
+        type="email" 
+        id="email" 
+        formControlName="email" 
+        placeholder="Enter your email"
+        required />
+    </div>
+
+    <!-- Pole dla hasła -->
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input 
+        type="password" 
+        id="password" 
+        formControlName="password" 
+        placeholder="Enter your password"
+        required />
+    </div>
+    
+    <div class="remember">
+      <label for="#">
+        <input type="checkbox"> remember me
+      </label>
+      <a href="#">Forgot password?</a>
+    </div>
+
+    <!-- Przycisk logowania -->
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+
+  <!-- Sekcja rejestracji -->
+  <div class="register-section">
+    <p>Don't have an account?</p>
+    <button class="btn btn-secondary" (click)="onRegister()">Create Account</button>
+  </div>
+</div>

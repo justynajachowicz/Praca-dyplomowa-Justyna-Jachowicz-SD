@@ -10,7 +10,7 @@
         type="email" 
         id="email" 
         formControlName="email" 
-        placeholder="Enter your email"
+        placeholder="Podaj adres email"
         required />
     </div>
 
@@ -21,24 +21,24 @@
         type="password" 
         id="password" 
         formControlName="password" 
-        placeholder="Enter your password"
+        placeholder="Wprowadź hasło"
         required />
     </div>
     
-    <div class="remember">
+    <!-- <div class="remember">
       <label for="#">
         <input type="checkbox"> remember me
       </label>
       <a href="#">Forgot password?</a>
-    </div>
+    </div> -->
 
     <!-- Przycisk logowania -->
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary">Zaloguj</button>
   </form>
 
   <!-- Sekcja rejestracji -->
   <div class="register-section">
-    <p>Don't have an account?</p>
-    <button class="btn btn-secondary" (click)="onRegister()">Create Account</button>
+    <p>Nie masz konta?</p>
+    <button class="btn" (click)="onRegister()">Zarejestruj się</button>
   </div>
 </div>
