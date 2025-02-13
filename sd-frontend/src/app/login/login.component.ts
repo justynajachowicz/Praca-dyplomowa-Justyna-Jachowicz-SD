@@ -1,10 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { IntegrationService } from '../services/integration.service';
-import { FormControl, FormGroup } from '@angular/forms';
-import { LoginRequest } from '../models/login-request';
-import { LoginResponse } from '../models/login-response';
 
 @Component({
   selector: 'app-login',
@@ -12,52 +9,37 @@ import { LoginResponse } from '../models/login-response';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  // Zainicjowane wartości w formularzu
-  userForm: FormGroup = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl('')
-  });
-
-  request: LoginRequest = { email: '', password: '' };
+  userForm: FormGroup;
+  errorMessage = '';
 
   constructor(
-    private router: Router,
-    private integration: IntegrationService
-  ) {}
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.userForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
 
-  // Funkcja logowania
   doLogin() {
-    const formValue = this.userForm.value;
+    if (this.userForm.invalid) return;
+
+    const loginData = this.userForm.value;
     
-    // Przypisanie danych z formularza do obiektu request
-    this.request.email = formValue.email;
-    this.request.password = formValue.password;
-
-    // Sprawdzenie czy formularz jest poprawnie wypełniony
-    if (this.userForm.invalid) {
-      alert('Proszę wypełnić wszystkie pola.');
-      return;
-    }
-
-    // Wywołanie integracji logowania
-    this.integration.doLogin(this.request).subscribe({
-      next: (res: LoginResponse) => {
-        console.log("Received Response:", res.token);
-        localStorage.setItem('jwt', res.token);
-        if (res.user) {
-          localStorage.setItem('userEmail', res.user.email);
-          localStorage.setItem('userRole', res.user.role);
-        }
-        this.router.navigate(['/dashboard']);
+    this.authService.login(loginData).subscribe({
+      next: (response) => {
+        localStorage.setItem('jwt', response.token); // Zapisujemy token
+        this.router.navigate(['/dashboard']); // Przekierowanie do panelu
       },
-      error: (err) => {
-        console.log("Error Received Response:", err);
+      error: () => {
+        this.errorMessage = 'Niepoprawny email lub hasło!';
       }
     });
   }
 
-  // Funkcja rejestracji
   onRegister() {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/register']); // Przekierowanie do rejestracji
   }
 }

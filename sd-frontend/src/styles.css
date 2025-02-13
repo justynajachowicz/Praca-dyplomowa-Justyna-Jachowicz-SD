@@ -1,9 +1,9 @@
 :root {
   --primary-color: #3B82F6; /* Główny kolor (niebieski) */
   --accent-color: #F43F5E; /* Kolor akcentu (różowy) */
-  --background-color: #1E293B; /* Kolor tła */
+  --background-color: #F5F5DC  ; /* Kolor tła */
   --card-color: #334155; /* Kolor kart */
-  --text-color: #E2E8F0; /* Kolor tekstu */
+  --text-color: #334155; /* Kolor tekstu */
   --green-button-color: #3bea61;
   --border-color: #475569; /* Kolor granicy */
   --border-radius: 8px; /* Zaokrąglenia */

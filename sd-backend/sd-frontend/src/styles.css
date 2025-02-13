@@ -1,0 +1,35 @@
+:root {
+  --primary-color: #3B82F6; /* Główny kolor (niebieski) */
+  --accent-color: #F43F5E; /* Kolor akcentu (różowy) */
+  --background-color: #1E293B; /* Kolor tła */
+  --card-color: #334155; /* Kolor kart */
+  --text-color: #E2E8F0; /* Kolor tekstu */
+  --green-button-color: #3bea61;
+  --border-color: #475569; /* Kolor granicy */
+  --border-radius: 8px; /* Zaokrąglenia */
+  --shadow-color: rgba(0, 0, 0, 0.5); /* Cień */
+}
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+h1, h2 {
+  color: var(--primary-color);
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  opacity: 0.9;
+}

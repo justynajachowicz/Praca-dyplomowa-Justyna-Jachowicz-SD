@@ -5,6 +5,7 @@
     <a routerLink="/">Home</a>
     <a routerLink="/login">Login</a>
     <a routerLink="/dashboard">Dashboard</a>
+    <button *ngIf="isAuthenticated()" (click)="logout()">Wyloguj</button>
   </nav> -->
 
   <router-outlet></router-outlet> 
