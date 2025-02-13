@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';  // import AuthService
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-register',
@@ -29,38 +31,44 @@ export class RegisterComponent {
     this.loading = true; // Rozpoczynamy stan ładowania
 
     // Tworzenie obiektu rejestracyjnego
-    // const registerRequest: RegisterRequest = {
-    //   email: this.email,  // użycie 'email' zamiast 'username'
-    //   password: this.password,
-    //   confirmPassword: this.confirmPassword  // Dodanie 'confirmPassword' tutaj
-    // };
+    const registerRequest = {
+      email: this.email,  // użycie 'email' zamiast 'username'
+      password: this.password,
+      confirmPassword: this.confirmPassword  // Dodanie 'confirmPassword' tutaj
+    };
 
     // Wywołanie metody rejestracji z serwisu
-    // this.authService.register(registerRequest).subscribe({
-    //   next: (response) => {
-    //     alert('Rejestracja udana');
-    //     this.router.navigate(['/login']);
-    //   },
-    //   error: (error) => {
-    //     this.loading = false; // Kończymy stan ładowania
+    this.authService.register(registerRequest).subscribe({
+      next: (response: HttpResponse<any>) => {  // Typowanie odpowiedzi
+        alert('Rejestracja udana');
+        this.router.navigate(['/login']);
+      },
+      error: (error: any) => {  // Typowanie błędów
+        this.loading = false; // Kończymy stan ładowania
 
-    //     // Sprawdzamy, czy odpowiedź z serwera zawiera bardziej szczegółowy błąd
-    //     if (error.error && error.error.message) {
-    //       this.passwordMismatch = 'Błąd rejestracji: ' + error.error.message;
-    //     } else if (error.status === 400 && error.error) {
-    //       // Dodatkowa obsługa dla błędów statusu 400, np. jeśli backend zwróci JSON z komunikatem
-    //       this.passwordMismatch = 'Błąd rejestracji: ' + (error.error.message || 'Nieprawidłowe dane');
-    //     } else {
-    //       this.passwordMismatch = 'Błąd rejestracji: ' + (error.message || 'Nieznany błąd');
-    //     }
-    //   },
-    //   complete: () => {
-    //     this.loading = false; // Kończymy stan ładowania
-    //   }
-    // });
+        // Sprawdzamy, czy odpowiedź z serwera zawiera bardziej szczegółowy błąd
+        if (error.error && error.error.message) {
+          this.passwordMismatch = 'Błąd rejestracji: ' + error.error.message;
+        } else if (error.status === 400 && error.error) {
+          // Dodatkowa obsługa dla błędów statusu 400, np. jeśli backend zwróci JSON z komunikatem
+          this.passwordMismatch = 'Błąd rejestracji: ' + (error.error.message || 'Nieprawidłowe dane');
+        } else {
+          this.passwordMismatch = 'Błąd rejestracji: ' + (error.message || 'Nieznany błąd');
+        }
+      },
+      complete: () => {
+        this.loading = false; // Kończymy stan ładowania
+      }
+    });
+
   }
+  
 
   onLogin() {
     this.router.navigate(['/login']);
+  }
+
+  onRegister() {
+    this.router.navigate(['/login']); // Przekierowanie do logowania
   }
 }
