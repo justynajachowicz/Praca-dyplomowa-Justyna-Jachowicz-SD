@@ -6,8 +6,8 @@ import com.ans.shopping_dashboard.dto.UserDto;
 import com.ans.shopping_dashboard.model.User;
 import com.ans.shopping_dashboard.security.JwtTokenProvider;
 import com.ans.shopping_dashboard.service.UserService;
-import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Bean;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,28 +16,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider) {
-        this.authenticationManager = authenticationManager;
-        this.userService = userService;
-        this.jwtTokenProvider = jwtTokenProvider;
-
-    }
-    @PostMapping("/api/auth/logout")
-    public ResponseEntity<String> logout() {
-        SecurityContextHolder.clearContext(); // Usunięcie kontekstu uwierzytelnienia
-        return ResponseEntity.ok("Wylogowano pomyślnie");
-
-    }
-
-
-    @PostMapping("/api/auth/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -45,16 +33,33 @@ public class AuthController {
                 )
         );
 
-      //  SecurityContextHolder.getContext().setAuthentication(authentication);
-      //  String token = jwtTokenProvider.generateToken(loginRequest.getEmail());
-        userService.findUserByEmail(loginRequest.getEmail());
+        // Ustawienie użytkownika w kontekście Spring Security
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return ResponseEntity.ok(new LoginResponse("token"));
+        // Pobranie użytkownika z bazy
+        User user = userService.findUserByEmail(loginRequest.getEmail());
+
+        // Wygenerowanie tokenu JWT
+        String token = jwtTokenProvider.generateToken(user.getEmail());
+
+        return ResponseEntity.ok(new LoginResponse(token));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        SecurityContextHolder.clearContext(); // Usunięcie kontekstu uwierzytelnienia
+        return ResponseEntity.ok("Wylogowano pomyślnie");
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDto userDto) {
-        userService.saveUser(userDto);
-        return ResponseEntity.ok("User registered successfully");
+    public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto) {
+        try {
+            userService.saveUser(userDto);
+            return ResponseEntity.ok("User registered successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); // Email już zajęty
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Błąd serwera podczas rejestracji");
+        }
     }
 }
