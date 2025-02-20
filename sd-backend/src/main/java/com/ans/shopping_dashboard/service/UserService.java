@@ -7,4 +7,6 @@ public interface UserService {
     void saveUser(UserDto userDto);
 
     User findUserByEmail(String email);
+
+    boolean existsByEmail(String email); // Nowa metoda
 }

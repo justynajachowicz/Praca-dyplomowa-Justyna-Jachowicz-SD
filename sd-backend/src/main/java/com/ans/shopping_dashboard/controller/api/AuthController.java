@@ -54,12 +54,18 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto) {
         try {
+            // Sprawdzenie, czy użytkownik już istnieje
+            if (userService.existsByEmail(userDto.getEmail())) {
+                return ResponseEntity.badRequest().body("Email jest już zajęty");
+            }
+
+            // Zapisanie użytkownika
             userService.saveUser(userDto);
-            return ResponseEntity.ok("User registered successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage()); // Email już zajęty
+            return ResponseEntity.ok("Użytkownik zarejestrowany pomyślnie");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Błąd serwera podczas rejestracji");
+            e.printStackTrace(); // Wypisze błąd do konsoli
+            return ResponseEntity.status(500).body("Błąd serwera podczas rejestracji" + e.getMessage());
         }
     }
+
 }

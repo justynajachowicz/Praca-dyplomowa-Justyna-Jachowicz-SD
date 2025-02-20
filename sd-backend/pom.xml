@@ -128,10 +128,21 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
+        <!-- Spring Security Dependency (jeśli nie masz) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
 
     </dependencies>
+
+
 
     <build>
         <plugins>
