@@ -15,6 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -52,19 +55,23 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<Map<String, String>> register(@RequestBody @Valid UserDto userDto) {
         try {
-            // Sprawdzenie, czy użytkownik już istnieje
             if (userService.existsByEmail(userDto.getEmail())) {
-                return ResponseEntity.badRequest().body("Email jest już zajęty");
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Email jest już zajęty");
+                return ResponseEntity.badRequest().body(response);
             }
 
-            // Zapisanie użytkownika
             userService.saveUser(userDto);
-            return ResponseEntity.ok("Użytkownik zarejestrowany pomyślnie");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Użytkownik zarejestrowany pomyślnie");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            e.printStackTrace(); // Wypisze błąd do konsoli
-            return ResponseEntity.status(500).body("Błąd serwera podczas rejestracji" + e.getMessage());
+            e.printStackTrace();
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Błąd serwera podczas rejestracji: " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
         }
     }
 

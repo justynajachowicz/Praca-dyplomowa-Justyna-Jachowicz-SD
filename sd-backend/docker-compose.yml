@@ -9,27 +9,27 @@ services:
         condition: service_healthy
     environment:
       - TZ=Europe/Warsaw
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/shopping_dashboard
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/shopping_dashboard
       - SPRING_DATASOURCE_USERNAME=shop_user
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
   database:
-    image: mysql
+    image: postgres
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
     environment:
       - TZ=Europe/Warsaw
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=shop_user
-      - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=shopping_dashboard
+      - POSTGRES_USER=shop_user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=shopping_dashboard
     healthcheck:
-      test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
+      test: "pg_isready -U shop_user -d shopping_dashboard"
       interval: 5s
       timeout: 50s
       retries: 10
+
 volumes:
   db_data:

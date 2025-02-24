@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Komunikacja między Java (Spring Boot), Angular i PostgreSQL
 
 ## 1. Java (Spring Boot) i PostgreSQL
@@ -133,4 +132,3 @@ Praca dyplomowa na kierunku Informatyka stosowana w Akademii Nauk Stosowanych w 
 Student: Justyna Jachowicz (31830)
 
 Promotor: dr hab. Witold Przygoda
->>>>>>> b294ef33dc0acc4d7cce2ac339c2d88fbf1cbb77
