@@ -9,6 +9,7 @@ import com.ans.shopping_dashboard.util.TbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 import java.util.Arrays;
 
@@ -45,4 +46,27 @@ public class UserServiceImpl implements UserService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email); // Korzystamy z metody repozytorium
     }
-}
+    // Nowa metoda - pobieranie wszystkich użytkowników
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+    @Override
+    public void updateUserRole(Long userId, String roleName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Użytkownik nie znaleziony"));
+
+        Role role = roleRepository.findByName(roleName);
+        if (role == null) {
+            role = roleRepository.save(new Role(roleName)); // Tworzy nową rolę, jeśli nie istnieje
+        }
+        user.setRoles(List.of(role));
+        userRepository.save(user);
+    }
+    }

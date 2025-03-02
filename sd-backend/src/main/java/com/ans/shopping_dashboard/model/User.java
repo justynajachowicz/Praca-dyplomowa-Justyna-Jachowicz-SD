@@ -45,4 +45,15 @@ public class User {
         this.password = password;
         this.roles = roles;
     }
+    // 🔹 METODA SPRAWDZAJĄCA, CZY UŻYTKOWNIK JEST ADMINISTRATOREM
+    public boolean isAdmin() {
+        return roles.stream().anyMatch(role -> role.getName().equalsIgnoreCase("ADMIN"));
+    }
+
+    // 🔹 METODA DODAJĄCA ROLĘ UŻYTKOWNIKOWI
+    public void addRole(Role role) {
+        if (!roles.contains(role)) {
+            roles.add(role);
+        }
+    }
 }
