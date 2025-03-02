@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 
