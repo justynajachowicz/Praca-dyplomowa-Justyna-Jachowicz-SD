@@ -52,6 +52,18 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    // Dodaj to do interfejsu UserService i implementacji UserServiceImpl
+    @Override
+    public boolean existsById(Long userId) {
+        return userRepository.existsById(userId);  // Sprawdzamy, czy użytkownik o danym ID istnieje
+    }
+    // Dodanie metody pobierającej użytkownika po ID
+    @Override
+    public User findUserById(Long userId) {
+        return userRepository.findById(userId).orElse(null);  // Zwracamy użytkownika, jeśli istnieje, lub null, jeśli nie
+    }
+
+
     @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);

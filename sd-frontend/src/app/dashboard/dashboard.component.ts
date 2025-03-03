@@ -18,4 +18,8 @@ export class DashboardComponent {
     this.authService.logout();  // Wywołanie metody logout z serwisu AuthService
     this.router.navigate(['/login']);  // Przekierowanie na stronę logowania
   }
+  goToUserManagement() {
+    this.router.navigate(['/admin/users']);
+  }
+
 }

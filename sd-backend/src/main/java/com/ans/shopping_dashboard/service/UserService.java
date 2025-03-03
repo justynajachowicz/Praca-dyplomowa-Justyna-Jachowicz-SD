@@ -19,5 +19,9 @@ import java.util.List;
         void deleteUser(Long userId);  // Nowa metoda
 
         void updateUserRole(Long userId, String roleName);
+
+
+        boolean existsById(Long userId);  // Metoda sprawdzająca, czy użytkownik o danym ID istnieje
+        User findUserById(Long userId);   // Metoda pobierająca użytkownika po ID
     }
 
