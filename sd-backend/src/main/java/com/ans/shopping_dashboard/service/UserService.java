@@ -2,26 +2,25 @@ package com.ans.shopping_dashboard.service;
 
 import com.ans.shopping_dashboard.dto.UserDto;
 import com.ans.shopping_dashboard.model.User;
+
 import java.util.List;
 
+public interface UserService {
 
+    void saveUser(UserDto userDto);
 
+    User findUserByEmail(String email);
 
-    public interface UserService {
-        void saveUser(UserDto userDto);
+    boolean existsByEmail(String email);
 
-        User findUserByEmail(String email);
+    List<User> findAllUsers();
 
-        boolean existsByEmail(String email); // Nowa metoda
+    void deleteUser(Long userId);
 
-        List<User> findAllUsers();  // Dodaj tę metodę
+    void updateUserRole(Long userId, String roleName);
 
-        void deleteUser(Long userId);  // Nowa metoda
+    boolean existsById(Long userId);
 
-        void updateUserRole(Long userId, String roleName);
-
-
-        boolean existsById(Long userId);  // Metoda sprawdzająca, czy użytkownik o danym ID istnieje
-        User findUserById(Long userId);   // Metoda pobierająca użytkownika po ID
-    }
+    User findUserById(Long userId);
+}
 

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 
-
-
 @Component({
   selector: 'app-admin-user-management',
   templateUrl: './admin-user-management.component.html',
@@ -30,13 +28,13 @@ export class AdminUserManagementComponent implements OnInit {
 
   deleteUser(userId: number): void {
     this.userService.deleteUser(userId).subscribe(() => {
-      this.getUsers(); // Odświeżenie listy po usunięciu
+      this.getUsers();
     });
   }
 
   updateRole(userId: number, newRole: string): void {
     this.userService.updateUserRole(userId, newRole).subscribe(() => {
-      this.getUsers(); // Odświeżenie listy po zmianie roli
+      this.getUsers();
     });
   }
 }

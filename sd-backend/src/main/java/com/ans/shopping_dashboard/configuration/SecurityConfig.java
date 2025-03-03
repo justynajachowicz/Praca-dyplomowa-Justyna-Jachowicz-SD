@@ -37,10 +37,10 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/api/auth/login", "/api/auth/register").permitAll() //publiczne
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")  // Dostęp tylko dla roli ADMIN
-                .requestMatchers("/api/user/**").hasRole("USER")    // Dostęp tylko dla roli USER
-                .anyRequest().authenticated();  // Pozostałe wymagają autentykacji
+                .requestMatchers("/api/auth/login", "/api/auth/register", "/api/admin/users").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/user/**").hasRole("USER")
+                .anyRequest().authenticated();
 
         return http.build();
     }

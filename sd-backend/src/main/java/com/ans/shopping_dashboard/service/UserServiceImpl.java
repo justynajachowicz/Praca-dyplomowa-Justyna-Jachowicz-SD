@@ -9,9 +9,9 @@ import com.ans.shopping_dashboard.util.TbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,25 +44,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email); // Korzystamy z metody repozytorium
+        return userRepository.existsByEmail(email);
     }
-    // Nowa metoda - pobieranie wszystkich użytkowników
+
     @Override
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
-    // Dodaj to do interfejsu UserService i implementacji UserServiceImpl
+
     @Override
     public boolean existsById(Long userId) {
-        return userRepository.existsById(userId);  // Sprawdzamy, czy użytkownik o danym ID istnieje
-    }
-    // Dodanie metody pobierającej użytkownika po ID
-    @Override
-    public User findUserById(Long userId) {
-        return userRepository.findById(userId).orElse(null);  // Zwracamy użytkownika, jeśli istnieje, lub null, jeśli nie
+        return userRepository.existsById(userId);
     }
 
+    @Override
+    public User findUserById(Long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
 
     @Override
     public void deleteUser(Long userId) {
@@ -76,9 +75,9 @@ public class UserServiceImpl implements UserService {
 
         Role role = roleRepository.findByName(roleName);
         if (role == null) {
-            role = roleRepository.save(new Role(roleName)); // Tworzy nową rolę, jeśli nie istnieje
+            role = roleRepository.save(new Role(roleName));
         }
         user.setRoles(List.of(role));
         userRepository.save(user);
     }
-    }
+}
