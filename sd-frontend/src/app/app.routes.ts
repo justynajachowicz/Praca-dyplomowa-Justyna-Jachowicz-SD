@@ -5,6 +5,9 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterComponent } from './register/register.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { AdminUserManagementComponent } from './admin-user-management/admin-user-management.component';
+
+
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Strona główna
@@ -12,6 +15,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent }, // Panel użytkownika];
   { path: 'shopping-list', component: ShoppingListComponent },
+  { path: 'admin/users', component: AdminUserManagementComponent }
 ]
 
 @NgModule({

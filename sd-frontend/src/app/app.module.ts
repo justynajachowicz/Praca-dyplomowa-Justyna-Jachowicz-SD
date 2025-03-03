@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { AdminUserManagementComponent } from './admin-user-management/admin-user-management.component';
 
 
 
@@ -17,6 +18,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
     LoginComponent,
     RegisterComponent,
     ShoppingListComponent,
+    AdminUserManagementComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,23 @@
+<h2>Zarządzanie użytkownikami</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Rola</th>
+        <th>Akcje</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>
+            <button (click)="deleteUser(user.id)">Usuń</button>
+            <button (click)="updateRole(user.id, 'ADMIN')">Ustaw Admina</button>
+            <button (click)="updateRole(user.id, 'USER')">Ustaw Użytkownika</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
