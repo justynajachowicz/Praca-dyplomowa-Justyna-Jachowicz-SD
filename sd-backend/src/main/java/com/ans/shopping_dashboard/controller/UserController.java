@@ -41,13 +41,6 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/admin/delete/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.ok("Użytkownik usunięty");
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/admin/update-role/{userId}")
     public ResponseEntity<?> updateUserRole(@PathVariable Long userId, @RequestParam String roleName) {
         userService.updateUserRole(userId, roleName);

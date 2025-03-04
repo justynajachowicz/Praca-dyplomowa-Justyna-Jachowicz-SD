@@ -36,13 +36,9 @@ public class AuthController {
                 )
         );
 
-        // Ustawienie użytkownika w kontekście Spring Security
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Pobranie użytkownika z bazy
         User user = userService.findUserByEmail(loginRequest.getEmail());
 
-        // Wygenerowanie tokenu JWT
         String token = jwtTokenProvider.generateToken(user.getEmail());
 
         return ResponseEntity.ok(new LoginResponse(token));
@@ -50,7 +46,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout() {
-        SecurityContextHolder.clearContext(); // Usunięcie kontekstu uwierzytelnienia
+        SecurityContextHolder.clearContext();
         return ResponseEntity.ok("Wylogowano pomyślnie");
     }
 
