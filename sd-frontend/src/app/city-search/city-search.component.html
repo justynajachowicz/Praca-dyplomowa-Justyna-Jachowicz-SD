@@ -1,0 +1,16 @@
+<div>
+    <input type="text" [(ngModel)]="query" placeholder="Wpisz nazwę miasta" /> <!-- Wiązanie dwukierunkowe -->
+    <button (click)="searchCities()">Wyszukaj miasto</button>  <!-- Wywołanie metody searchCities() -->
+
+    <div *ngIf="errorMessage" class="error">
+        {{ errorMessage }}  <!-- Wyświetlanie komunikatu o błędzie -->
+    </div>
+
+</div>
+
+
+<ul *ngIf="cities.length > 0">
+        <li *ngFor="let city of cities">
+            {{ city }}  <!-- Wyświetlanie miast -->
+        </li>
+    </ul>

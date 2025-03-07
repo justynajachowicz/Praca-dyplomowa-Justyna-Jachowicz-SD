@@ -24,5 +24,10 @@ export class UserService {
     updateUserRole(userId: number, newRole: string): Observable<any> {
         return this.http.put<any>(`${this.apiUrl}/update-role/${userId}`, {role: newRole});
     }
+    searchCities(query: string): Observable<string[]> {
+        return this.http.get<string[]>(`${this.apiUrl}?q=${query}`);
+    }
+
+
 
 }

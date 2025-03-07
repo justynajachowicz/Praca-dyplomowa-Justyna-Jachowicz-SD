@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {Router, RouterOutlet} from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import {CitySearchComponent} from "../city-search/city-search.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterOutlet,
+    CitySearchComponent
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
