@@ -36,10 +36,11 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
+                .requestMatchers("/api/auth/login", "/api/auth/register", "/api/cities/search").permitAll() // Wyszukiwarka miast dostępna publicznie
                 .requestMatchers("/api/auth/login", "/api/auth/register", "/api/admin/**").permitAll()
-              //  .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/user/**").hasRole("USER")
-                .anyRequest().authenticated();
+                .requestMatchers("/api/admin/**").permitAll()
+                .requestMatchers("/api/user/**").permitAll()
+                .anyRequest().permitAll();
 
         return http.build();
     }
