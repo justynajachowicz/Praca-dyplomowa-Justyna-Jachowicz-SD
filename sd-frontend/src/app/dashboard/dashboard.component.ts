@@ -6,17 +6,16 @@ import {CommonModule, NgIf} from "@angular/common";
 
 
 @Component({
-  selector: 'app-dashboard',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    CitySearchComponent,
-    RouterLink,
-    NgIf
-  ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+    selector: 'app-dashboard',
+    imports: [
+        CommonModule,
+        RouterOutlet,
+        CitySearchComponent,
+        RouterLink,
+        NgIf
+    ],
+    templateUrl: './dashboard.component.html',
+    styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
 

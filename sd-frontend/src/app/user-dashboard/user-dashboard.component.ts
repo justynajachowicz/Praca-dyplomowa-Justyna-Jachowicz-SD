@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service'; // Twój serwis autoryzacji
 
 @Component({
-  selector: 'app-user-dashboard',
-  templateUrl: './user-dashboard.component.html',
-  styleUrls: ['./user-dashboard.component.css']
+    selector: 'app-user-dashboard',
+    templateUrl: './user-dashboard.component.html',
+    styleUrls: ['./user-dashboard.component.css'],
+    standalone: false
 })
 export class UserDashboardComponent {
 

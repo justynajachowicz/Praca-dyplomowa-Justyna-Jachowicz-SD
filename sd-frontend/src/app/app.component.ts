@@ -3,9 +3,11 @@ import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-root',  // Element, który będzie używany w HTML
-  templateUrl: './app.component.html',  // Plik HTML komponentu
-  styleUrls: ['./app.component.css']  // Plik CSS komponentu
+    selector: 'app-root', // Element, który będzie używany w HTML
+    templateUrl: './app.component.html', // Plik HTML komponentu
+    styleUrls: ['./app.component.css'] // Plik CSS komponentu
+    ,
+    standalone: false
 })
 export class AppComponent {
   title = 'shopping-dashboard';  

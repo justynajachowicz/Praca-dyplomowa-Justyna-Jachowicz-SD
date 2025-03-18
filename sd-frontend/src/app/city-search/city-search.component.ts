@@ -6,10 +6,9 @@ import { FormsModule } from '@angular/forms'; // Importuj FormsModule
 @Component({
     selector: 'app-city-search',
     templateUrl: './city-search.component.html',
-    standalone: true,
     imports: [
-        FormsModule,  // Jeśli używasz [(ngModel)], FormsModule musi być zaimportowane
-        CommonModule  // Zaimportuj CommonModule, żeby mieć wsparcie dla *ngIf, *ngFor
+        FormsModule, // Jeśli używasz [(ngModel)], FormsModule musi być zaimportowane
+        CommonModule // Zaimportuj CommonModule, żeby mieć wsparcie dla *ngIf, *ngFor
     ],
     styleUrls: ['./city-search.component.css']
 })

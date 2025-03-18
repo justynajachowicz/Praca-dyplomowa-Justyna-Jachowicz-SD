@@ -4,14 +4,13 @@ import {NgIf} from "@angular/common";
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-receipt-upload',
-  templateUrl: './receipt-upload.component.html',
-  standalone: true,
-  imports: [
-    NgIf
-  ],
-  providers: [ReceiptService],
-  styleUrls: ['./receipt-upload.component.css']
+    selector: 'app-receipt-upload',
+    templateUrl: './receipt-upload.component.html',
+    imports: [
+        NgIf
+    ],
+    providers: [ReceiptService],
+    styleUrls: ['./receipt-upload.component.css']
 })
 export class ReceiptUploadComponent {
   selectedFile: File | null = null;

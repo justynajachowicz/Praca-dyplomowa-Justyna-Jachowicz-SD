@@ -5,9 +5,10 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.css'],
+    standalone: false
 })
 export class RegisterComponent {
   message: string = '';  // Zmienna do przechowywania komunikatów
