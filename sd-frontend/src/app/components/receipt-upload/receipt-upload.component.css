@@ -11,7 +11,7 @@
     color: red;
 }
 button {
-    background-color: #4CAF50; /* Kolor tła przycisku */
+    background-color: sandybrown; /* Kolor tła przycisku */
     color: black;              /* Kolor tekstu */
     padding: 10px 20px;        /* Wewnętrzny margines */
     border: none;              /* Usunięcie domyślnego obramowania */
@@ -40,3 +40,10 @@ button:last-child {
 button:last-child:hover {
     background-color: blueviolet; /* Zmiana koloru tła przycisku powrotu po najechaniu */
 }
+.upload-heading {
+    color: lightsalmon;  /* Zmieniamy kolor na niebieski */
+    font-size: 24px; /* Zwiększamy rozmiar czcionki */
+    font-weight: bold; /* Ustawiamy pogrubienie tekstu */
+}
+
+

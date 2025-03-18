@@ -1,9 +1,79 @@
+/* Główna kontenerowa klasa */
+.dashboard-container {
+    padding: 40px;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Gradient tła */
+    border-radius: 10px; /* Zaokrąglone rogi */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Dodanie cienia */
+    max-width: 900px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+/* Styl linków */
 a {
-    color: #007bff;
+    color: deeppink; /* Kolor linku */
+    font-size: 18px;
+    font-weight: bold;
     text-decoration: none;
-    cursor: pointer;
+    transition: color 0.3s ease;
 }
 
 a:hover {
-    text-decoration: underline;
+    color: deeppink; /* Zmiana koloru po najechaniu */
+}
+
+/* Przycisk do logowania */
+button {
+    background-color: lightpink; /* Kolor tła */
+    color: purple;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background-color: orange; /* Zmiana koloru po najechaniu */
+    transform: translateY(-3px); /* Efekt unoszenia */
+}
+
+button:active {
+    transform: translateY(1px); /* Efekt kliknięcia */
+}
+
+/* Komunikaty o sukcesie */
+.success-message {
+    color: green;
+    font-size: 18px;
+    margin-top: 20px;
+    font-style: italic;
+}
+
+/* Komunikaty o błędach */
+.error-message {
+    color: red;
+    font-size: 18px;
+    margin-top: 20px;
+    font-style: italic;
+}
+
+/* Stylowanie tekstu głównego */
+h2 {
+    color: black; /* Kolor tekstu */
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Dodanie cienia tekstu */
+}
+
+/* Tło całej strony */
+body {
+    background-color: orangered;
+    font-family: 'Arial', sans-serif;
+}
+/* Zmiana koloru tła całej strony */
+body {
+    background-color:springgreen;  /* Zmieniamy kolor na jasnoszary */
+    color: #333;  /* Kolor tekstu, możesz zmienić na odpowiedni */
 }
