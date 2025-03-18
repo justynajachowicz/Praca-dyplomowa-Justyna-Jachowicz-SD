@@ -1,0 +1,14 @@
+<h2 mat-dialog-title class="dialog-title">Potwierdzenie</h2>
+
+<mat-dialog-content class="dialog-content">
+    <p>Czy na pewno chcesz usunąć użytkownika <strong>{{ data.email }}</strong>?</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()" color="primary">
+        <mat-icon>close</mat-icon> Anuluj
+    </button>
+    <button mat-button (click)="onConfirm()" color="warn">
+        <mat-icon>delete</mat-icon> Usuń
+    </button>
+</mat-dialog-actions>

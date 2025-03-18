@@ -15,7 +15,7 @@
         <td>{{ user.roles?.join(', ') }}</td>
 
         <td>
-            <button (click)="deleteUser(user.id)">Usuń</button>
+            <button (click)="openDeleteDialog(user.id, user.email)">Usuń</button>
             <button (click)="updateRole(user.id, 'ADMIN')">Ustaw Admina</button>
             <button (click)="updateRole(user.id, 'USER')">Ustaw Użytkownika</button>
         </td>

@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../services/user.service';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-admin-user-management',
@@ -8,34 +10,44 @@ import { UserService } from '../services/user.service';
     standalone: false
 })
 export class AdminUserManagementComponent implements OnInit {
-  users: any[] = [];
+    users: any[] = [];
 
-  constructor(private userService: UserService) {}
+    constructor(private userService: UserService, private dialog: MatDialog) {
+    }
 
-  ngOnInit(): void {
-    this.getUsers();
-  }
+    ngOnInit(): void {
+        this.getUsers();
+    }
 
-  getUsers(): void {
-    this.userService.getUsers().subscribe(
-        (data) => {
-          this.users = data;
-        },
-        (error) => {
-          console.error('Błąd podczas pobierania użytkowników', error);
-        }
-    );
-  }
+    getUsers(): void {
+        this.userService.getUsers().subscribe(
+            (data) => {
+                this.users = data;
+            },
+            (error) => {
+                console.error('Błąd podczas pobierania użytkowników', error);
+            }
+        );
+    }
 
-  deleteUser(userId: number): void {
-    this.userService.deleteUser(userId).subscribe(() => {
-      this.getUsers();
-    });
-  }
+    openDeleteDialog(userId: number, email: string): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '350px',
+            data: {userId, email}
+        });
 
-  updateRole(userId: number, newRole: string): void {
-    this.userService.updateUserRole(userId, newRole).subscribe(() => {
-      this.getUsers();
-    });
-  }
+        dialogRef.afterClosed().subscribe((result: any) => {
+            if (result) {
+                this.userService.deleteUser(userId).subscribe(() => {
+                    this.getUsers();
+                });
+            }
+        });
+    }
+
+    updateRole(userId: number, newRole: string): void {
+        this.userService.updateUserRole(userId, newRole).subscribe(() => {
+            this.getUsers();
+        });
+    }
 }
