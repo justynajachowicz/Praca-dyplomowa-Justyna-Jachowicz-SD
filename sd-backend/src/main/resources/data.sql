@@ -15,8 +15,8 @@ INSERT INTO "product" (product_id, brand, product_name, weight) VALUES(6, 'Nestl
 INSERT INTO "roles" (id, name) VALUES (1, 'ROLE_ADMIN') ON CONFLICT (id) DO NOTHING;
 INSERT INTO "roles" (id, name) VALUES (2, 'ROLE_USER') ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO "users" (email, name, password) VALUES('admin@gmail.com', 'ADMIN', '$2a$10$bYbrEoMdvkh/ToEXBbn6p.C0tiRBz/iqy4HZaG1/8gtif23VA4peK') ON CONFLICT (email) DO NOTHING;
-INSERT INTO "users" (email, name, password) VALUES('justyna@gmail.com', 'Justyna', '$2a$10$bYbrEoMdvkh/ToEXBbn6p.C0tiRBz/iqy4HZaG1/8gtif23VA4peK') ON CONFLICT (email) DO NOTHING;
+INSERT INTO "users" (id, email, name, password) VALUES(1,'admin@gmail.com', 'ADMIN', '$2a$10$bYbrEoMdvkh/ToEXBbn6p.C0tiRBz/iqy4HZaG1/8gtif23VA4peK') ON CONFLICT (email) DO NOTHING;
+INSERT INTO "users" (id, email, name, password) VALUES(2, 'justyna@gmail.com', 'Justyna', '$2a$10$bYbrEoMdvkh/ToEXBbn6p.C0tiRBz/iqy4HZaG1/8gtif23VA4peK') ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO "users_roles" (user_id, role_id) VALUES(1, 1) ON CONFLICT (user_id, role_id) DO NOTHING;
 INSERT INTO "users_roles" (user_id, role_id) VALUES(2, 2) ON CONFLICT (user_id, role_id) DO NOTHING;
