@@ -10,3 +10,33 @@
 .error-message {
     color: red;
 }
+button {
+    background-color: #4CAF50; /* Kolor tła przycisku */
+    color: black;              /* Kolor tekstu */
+    padding: 10px 20px;        /* Wewnętrzny margines */
+    border: none;              /* Usunięcie domyślnego obramowania */
+    border-radius: 5px;        /* Zaokrąglone rogi */
+    font-size: 16px;           /* Rozmiar czcionki */
+    cursor: pointer;           /* Kursor zmienia się na wskazujący */
+    transition: background-color 0.3s ease; /* Płynna zmiana koloru tła */
+    margin-top: 10px;           /* Odstęp od górnej krawędzi */
+}
+
+button:disabled {
+    background-color: deeppink;    /* Kolor tła, gdy przycisk jest wyłączony */
+    cursor: not-allowed;       /* Kursor zmienia się na "nie dozwolony" */
+}
+
+button:hover {
+    background-color: #45a049; /* Zmiana koloru tła po najechaniu */
+}
+
+/* Styl dla przycisku powrotu */
+button:last-child {
+    background-color: blueviolet; /* Kolor tła przycisku powrotu */
+    margin-top: 15px;           /* Większy odstęp od innych przycisków */
+}
+
+button:last-child:hover {
+    background-color: blueviolet; /* Zmiana koloru tła przycisku powrotu po najechaniu */
+}

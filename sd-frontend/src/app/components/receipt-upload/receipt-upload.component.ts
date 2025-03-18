@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ReceiptService } from '../../services/receipt.service';
 import {NgIf} from "@angular/common";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-receipt-upload',
@@ -19,13 +20,16 @@ export class ReceiptUploadComponent {
 
 
 
-  constructor(private receiptService: ReceiptService) {}
+  constructor(private receiptService: ReceiptService, private location: Location) {}
 
   onFileSelected(event: Event) {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.selectedFile = fileInput.files[0];
     }
+  }
+  goBack() {
+    this.location.back(); // Powrót do poprzedniej strony
   }
 
   uploadReceipt() {
