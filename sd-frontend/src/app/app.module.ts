@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // Import HttpClientModule
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { AppRoutingModule } from './app.routes'; // Gdzie skonfigurowano routing
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -9,6 +9,7 @@ import { RegisterComponent } from './register/register.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { AdminUserManagementComponent } from './admin-user-management/admin-user-management.component';
+import {CommonModule} from "@angular/common";
 
 
 
@@ -26,6 +27,7 @@ import { AdminUserManagementComponent } from './admin-user-management/admin-user
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    CommonModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

@@ -1,0 +1,12 @@
+.upload-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.success-message {
+    color: green;
+}
+
+.error-message {
+    color: red;
+}

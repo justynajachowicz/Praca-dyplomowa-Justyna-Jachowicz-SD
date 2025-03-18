@@ -1,6 +1,9 @@
 <p>dashboard works!</p>
 
+<a *ngIf="authService.isLoggedIn()" routerLink="/receipt-upload">Przejdź do przesyłania paragonów</a>
+
 <button (click)="onLogout()">Logout</button>
+
 <button (click)="goToUserManagement()">Zarządzaj użytkownikami</button>
 <app-city-search></app-city-search>
 <router-outlet></router-outlet>

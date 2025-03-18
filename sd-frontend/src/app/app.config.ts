@@ -4,7 +4,7 @@ import { routes } from './app.routes';  // Upewnij się, że masz poprawnie zdef
 import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
+  providers:   [
     provideZoneChangeDetection({ eventCoalescing: true }),  // Ustawienia detekcji zmian
     provideRouter(routes), provideHttpClient() // Inicjalizacja routera
   ]

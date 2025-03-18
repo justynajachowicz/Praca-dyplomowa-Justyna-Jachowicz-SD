@@ -1,0 +1,9 @@
+<p>receipt-upload works!</p>
+<div class="upload-container">
+    <h2>Prześlij zdjęcie paragonu</h2>
+    <input type="file" (change)="onFileSelected($event)" accept="image/*">
+    <button (click)="uploadReceipt()" [disabled]="!selectedFile">Prześlij</button>
+
+    <p *ngIf="uploadSuccess" class="success-message">Paragon został przesłany pomyślnie!</p>
+    <p *ngIf="uploadError" class="error-message">Błąd podczas przesyłania paragonu!</p>
+</div>
