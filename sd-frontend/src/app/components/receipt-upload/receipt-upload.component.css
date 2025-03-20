@@ -41,7 +41,6 @@ button:last-child:hover {
     background-color: blueviolet; /* Zmiana koloru tła przycisku powrotu po najechaniu */
 }
 .upload-heading {
-    color: lightsalmon;  /* Zmieniamy kolor na niebieski */
     font-size: 24px; /* Zwiększamy rozmiar czcionki */
     font-weight: bold; /* Ustawiamy pogrubienie tekstu */
 }
