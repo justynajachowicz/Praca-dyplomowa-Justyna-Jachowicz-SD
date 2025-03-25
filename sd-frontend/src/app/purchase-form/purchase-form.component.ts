@@ -22,13 +22,26 @@ export class PurchaseFormComponent {
   constructor(private router: Router) {}
 
   onSubmit() {
-    // Przykładowa logika do obsługi formularza
-    console.log('Form submitted', this.purchaseItem);
+    if (!this.purchaseItem.productName || this.purchaseItem.price <= 0 || !this.purchaseItem.store || !this.purchaseItem.purchaseDate) {
+      alert("Proszę wypełnić wszystkie pola poprawnie.");
+      return;
+    }
 
-    // Możesz tu wysłać dane do backendu za pomocą serwisu HTTP, np.:
-    // this.purchaseService.addPurchase(this.purchaseItem).subscribe(response => {
-    //   // Przekierowanie po pomyślnym dodaniu
-    //   this.router.navigate(['/']);
-    // });
+    console.log("Dodano zakup:", this.purchaseItem);
+    alert("Zakup został dodany!");
+
+    // Możesz tu dodać logikę wysyłania danych do backendu
+    // this.purchaseService.addPurchase(this.purchaseItem).subscribe(...);
+
+    // Po dodaniu zakupu można zresetować formularz:
+    this.purchaseItem = {
+      productName: '',
+      price: 0,
+      store: '',
+      purchaseDate: ''
+    };
+  }
+  goBack() {
+    this.router.navigate(['/']);
   }
 }
