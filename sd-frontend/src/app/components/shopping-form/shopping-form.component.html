@@ -1,0 +1,19 @@
+<div class="shopping-form">
+    <h2>Dodaj nowy zakup</h2>
+    <form (ngSubmit)="submitForm()" #purchaseForm="ngForm">
+
+        <label for="productName">Nazwa produktu:</label>
+        <input type="text" id="productName" [(ngModel)]="purchaseItem.productName" name="productName" required>
+
+        <label for="price">Cena (PLN):</label>
+        <input type="number" id="price" [(ngModel)]="purchaseItem.price" name="price" required>
+
+        <label for="store">Sklep:</label>
+        <input type="text" id="store" [(ngModel)]="purchaseItem.store" name="store" required>
+
+        <label for="purchaseDate">Data zakupu:</label>
+        <input type="date" id="purchaseDate" [(ngModel)]="purchaseItem.purchaseDate" name="purchaseDate" required>
+
+        <button type="submit" [disabled]="!purchaseForm.valid">Dodaj</button>
+    </form>
+</div

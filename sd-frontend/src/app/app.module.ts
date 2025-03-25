@@ -13,6 +13,7 @@ import {CommonModule} from "@angular/common";
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {PurchaseFormComponent} from "./purchase-form/purchase-form.component";
 
 
 @NgModule({
@@ -32,7 +33,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     CommonModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    FormsModule,
+    PurchaseFormComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { AdminUserManagementComponent } from './admin-user-management/admin-user-management.component';
 import {ReceiptUploadComponent} from "./components/receipt-upload/receipt-upload.component";
+import { PurchaseFormComponent } from './purchase-form/purchase-form.component';
 
 
 
@@ -19,6 +20,7 @@ export const routes: Routes = [
   { path: 'shopping-list', component: ShoppingListComponent },
   { path: 'admin/users', component: AdminUserManagementComponent },
   { path: 'receipt-upload', component: ReceiptUploadComponent },
+  { path: 'add-purchase', component: PurchaseFormComponent },  // Formularz dodania zakupu
   { path: '**', redirectTo: '' }
 ]
 
