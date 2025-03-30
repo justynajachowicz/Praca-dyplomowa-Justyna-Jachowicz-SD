@@ -2,12 +2,14 @@ package com.ans.shopping_dashboard.controller;
 
 import com.ans.shopping_dashboard.model.Product;
 import com.ans.shopping_dashboard.repository.ProductListRepository;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/admin")
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductListRepository productListRepository;
@@ -16,39 +18,38 @@ public class ProductController {
         this.productListRepository = productListRepository;
     }
 
-    @GetMapping("/products")
-    public String getAllProducts(Model model, @RequestParam(value= "name", required = false) String name) {
+    @GetMapping
+    public List<Product> getAllProducts(@RequestParam(value = "name", required = false) String name) {
         if (name != null && !name.isEmpty()) {
-            model.addAttribute("products", productListRepository.findByProductNameContainingIgnoreCase(name));
-        } else {
-            model.addAttribute("products", productListRepository.findAll());
-    }
-        return "products";
+            return productListRepository.findByProductNameContainingIgnoreCase(name);
+        }
+        return productListRepository.findAll();
     }
 
-    @GetMapping("/product/add")
-    public String addProduct(Model model) {
-        model.addAttribute("product", new Product());
-        return "addProduct";
+    @PostMapping
+    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
+        // Logowanie przed zapisaniem produktu
+        System.out.println("Received product: " + product);
+
+        // Zapisanie produktu
+        Product savedProduct = productListRepository.save(product);
+
+        // Zwrócenie odpowiedzi z zapisanym produktem
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        return productListRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/product/add")
-    public String postProduct(@ModelAttribute("product") Product product) {
-        productListRepository.save(product);
-        return "redirect:/admin/products";
-    }
-
-    @GetMapping("/product/edit/{id}")
-    public String editProduct(@PathVariable Long id, Model model) {
-        var product = productListRepository.findById(id);
-        model.addAttribute("product", product);
-
-        return "addProduct";
-    }
-
-    @RequestMapping(value = "/product/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
-    public String deleteProduct(@PathVariable Long id) {
-        productListRepository.deleteById(id);
-        return "redirect:/admin/products";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        if (productListRepository.existsById(id)) {
+            productListRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

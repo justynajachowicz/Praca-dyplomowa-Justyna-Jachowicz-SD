@@ -38,8 +38,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void save(Purchase purchase) {
+    public Purchase save(Purchase purchase) {
         purchaseRepository.save(purchase);
+        return purchase;
     }
 
     @Override
@@ -50,5 +51,10 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public Purchase findTheCheapest(Long productId) {
         return purchaseRepository.findPurchaseByPrice(productId);
+    }
+
+    @Override
+    public Purchase findById(Long id) {
+        return null;
     }
 }

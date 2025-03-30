@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { PurchaseItem } from '../models/purchase-item';
+import { ProductService } from "../product.service";
 import {FormsModule} from "@angular/forms";
 
 @Component({
@@ -19,28 +20,27 @@ export class PurchaseFormComponent {
     purchaseDate: ''
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private productService: ProductService) {}
 
   onSubmit() {
+    console.log("Wysyłane dane:", this.purchaseItem);
+
     if (!this.purchaseItem.productName || this.purchaseItem.price <= 0 || !this.purchaseItem.store || !this.purchaseItem.purchaseDate) {
       alert("Proszę wypełnić wszystkie pola poprawnie.");
       return;
     }
 
-    console.log("Dodano zakup:", this.purchaseItem);
-    alert("Zakup został dodany!");
+    // Wyślij żądanie do backendu
+    this.productService.addProduct(this.purchaseItem).subscribe(response => {
+      console.log("Odpowiedź z backendu:", response);
+      alert("Zakup został dodany!");
 
-    // Możesz tu dodać logikę wysyłania danych do backendu
-    // this.purchaseService.addPurchase(this.purchaseItem).subscribe(...);
-
-    // Po dodaniu zakupu można zresetować formularz:
-    this.purchaseItem = {
-      productName: '',
-      price: 0,
-      store: '',
-      purchaseDate: ''
-    };
+      this.purchaseItem = { productName: '', price: 0, store: '', purchaseDate: '' };
+    }, error => {
+      console.error("Błąd podczas dodawania produktu:", error);
+    });
   }
+
   goBack() {
     this.router.navigate(['/']);
   }
