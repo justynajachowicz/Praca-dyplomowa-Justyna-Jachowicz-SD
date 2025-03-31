@@ -1,8 +1,27 @@
 <div class="home-container">
     <h1>Witamy w aplikacji do zarządzania zakupami!</h1>
 
-    <p>Witaj w naszej aplikacji! Możesz dodać nowy zakup, klikając poniższy przycisk:</p>
+    <p>Witaj w naszej aplikacji! Możesz zaplanować z nami swoje zakupy, by mieć swoje wydaki pod kontrolą!</p>
 
-    <!-- Przycisk przekierowujący do formularza dodawania zakupu -->
-    <button (click)="goToAddPurchase()" class="btn btn-primary">Dodaj zakup</button>
+
+    <div class="carousel-container">
+        <ngx-slick-carousel class="carousel"
+                            #slickModal="slick-carousel"
+                            [config]="slideConfig">
+            @for (slide of slides; track slide.img) {
+                <div ngxSlickItem class="slide">
+                    <img src="{{ slide.img }}" alt="Slajd">
+                </div>
+            }
+        </ngx-slick-carousel>
+    </div>
+
+    <div class="plan-shopping">
+        <select [(ngModel)]="selectedCity" class="city-select">
+            <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+        </select>
+        <button (click)="goToAddPurchase()" class="btn btn-primary">Zaplanuj zakupy w wybranym mieście</button>
+
+    </div>
+
 </div>
