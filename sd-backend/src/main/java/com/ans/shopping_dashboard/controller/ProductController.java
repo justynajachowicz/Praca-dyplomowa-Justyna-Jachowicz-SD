@@ -1,6 +1,7 @@
 package com.ans.shopping_dashboard.controller;
 
 import com.ans.shopping_dashboard.model.Product;
+import com.ans.shopping_dashboard.model.Receipt;
 import com.ans.shopping_dashboard.repository.ProductListRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,4 +53,5 @@ public class ProductController {
         }
         return ResponseEntity.notFound().build();
     }
+
 }

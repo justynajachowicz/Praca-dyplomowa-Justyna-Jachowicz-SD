@@ -19,6 +19,14 @@ public class Product {
     @Column(name = "product_name", nullable = false)
     private String productName;
 
-    private Double weight;
-    private String brand;
+    @Column(name = "price", nullable = false)
+    private Double price;  // Typ danych, który będzie przechowywał cenę produktu
+
+    @Column(name = "store", nullable = false)  // Sprawdź, czy 'nullable' jest ustawione na 'false'
+    private String store;
+
+    @Column(name = "image_url", nullable = false)
+    private String imageUrl;
 }
+
+
