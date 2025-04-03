@@ -1,5 +1,6 @@
 package com.ans.shopping_dashboard.controller;
-
+import com.ans.shopping_dashboard.service.ProductService;
+import com.ans.shopping_dashboard.dto.ProductDTO;
 import com.ans.shopping_dashboard.model.Product;
 import com.ans.shopping_dashboard.model.Receipt;
 import com.ans.shopping_dashboard.repository.ProductListRepository;
@@ -14,9 +15,12 @@ import java.util.List;
 public class ProductController {
 
     private final ProductListRepository productListRepository;
+    private final ProductService productService;
 
-    public ProductController(ProductListRepository productListRepository) {
+
+    public ProductController(ProductListRepository productListRepository, ProductService productService) {
         this.productListRepository = productListRepository;
+        this.productService = productService;
     }
 
     @GetMapping
@@ -52,6 +56,11 @@ public class ProductController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTO>> searchProduct(@RequestParam String query) {
+        List<ProductDTO> products = productService.findCheapestProducts(query);
+        return ResponseEntity.ok(products);
     }
 
 }

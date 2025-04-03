@@ -11,10 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private Long productId;
+    private Long id;
+
+    private String name;
+
 
     @Column(name = "product_name", nullable = false)
     private String productName;
@@ -27,6 +30,18 @@ public class Product {
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
+
+    public Long getId() {
+        return id;
+    }
+    // Getter dla 'name'
+    public String getName() {
+        return name;
+    }
+
+    public Long getProductId() {
+        return id;
+    }
 }
 
 

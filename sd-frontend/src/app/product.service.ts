@@ -21,4 +21,8 @@ export class ProductService {
   addProduct(product: PurchaseItem): Observable<PurchaseItem> {
     return this.http.post<PurchaseItem>(`${this.apiUrl}/products`, product); // Dodajemy `/products` do apiUrl
   }
+  // Nowa metoda do wyszukiwania produktów
+  searchProduct(query: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/products/search?query=${query}`); // Wysyłamy zapytanie z parametrem query
+  }
 }

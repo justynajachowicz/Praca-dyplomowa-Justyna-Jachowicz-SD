@@ -8,12 +8,14 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { AdminUserManagementComponent } from './admin-user-management/admin-user-management.component';
 import {ReceiptUploadComponent} from "./components/receipt-upload/receipt-upload.component";
 import { PurchaseFormComponent } from './purchase-form/purchase-form.component';
+import {ProductSearchComponent} from "./product-search/product-search.component";
 
 
 
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Strona główna
+  { path: 'product-search', component: ProductSearchComponent },
   { path: 'login', component: LoginComponent }, // Ekran logowania
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent }, // Panel użytkownika];
@@ -21,7 +23,9 @@ export const routes: Routes = [
   { path: 'admin/users', component: AdminUserManagementComponent },
   { path: 'receipt-upload', component: ReceiptUploadComponent },
   { path: 'add-purchase', component: PurchaseFormComponent },  // Formularz dodania zakupu
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
+
+  // Inne ścieżki...
 ]
 
 @NgModule({

@@ -51,10 +51,20 @@ export class PurchaseFormComponent {
         console.error(`Błąd przy dodawaniu paragonu ${i + 1}:`, error);
       });
     }
+
+
+
+
+
+
   }
 
   goBack() {
     this.router.navigate(['/']);
+  }
+// Metoda do przekierowania do wyszukiwarki produktów
+  goToProductSearch() {
+    this.router.navigate(['/product-search']); // Przekierowanie na stronę wyszukiwania produktów
   }
 
   // Generowanie pojedynczego paragonu

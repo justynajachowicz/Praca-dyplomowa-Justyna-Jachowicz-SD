@@ -42,4 +42,6 @@ export class HomeComponent {
         console.log(`Planowanie zakupów dla miasta: ${this.selectedCity}`);
         this.router.navigate(['/add-purchase']);
     }
+
+
 }
