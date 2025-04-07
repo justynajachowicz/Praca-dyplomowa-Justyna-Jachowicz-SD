@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/login", "/api/auth/register", "/api/admin/**").permitAll()
                 .requestMatchers("/api/admin/**").permitAll()
                 .requestMatchers("/api/user/**").permitAll()
+                .requestMatchers("/api/products/search").permitAll()
                 .requestMatchers("/api/products").permitAll() // Upewnij się, że endpoint jest dozwolony
                 .anyRequest().permitAll();
 

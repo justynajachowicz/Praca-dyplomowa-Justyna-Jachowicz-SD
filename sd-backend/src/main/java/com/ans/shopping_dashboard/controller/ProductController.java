@@ -1,9 +1,8 @@
 package com.ans.shopping_dashboard.controller;
-import com.ans.shopping_dashboard.service.ProductService;
+
 import com.ans.shopping_dashboard.dto.ProductDTO;
+import com.ans.shopping_dashboard.service.ProductService;
 import com.ans.shopping_dashboard.model.Product;
-import com.ans.shopping_dashboard.model.Receipt;
-import com.ans.shopping_dashboard.repository.ProductListRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,53 +13,54 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final ProductListRepository productListRepository;
     private final ProductService productService;
 
-
-    public ProductController(ProductListRepository productListRepository, ProductService productService) {
-        this.productListRepository = productListRepository;
+    // Konstruktor z wstrzykiwaniem zależności
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
+    // Metoda do pobrania wszystkich produktów lub wyszukiwania po nazwie
     @GetMapping
-    public List<Product> getAllProducts(@RequestParam(value = "name", required = false) String name) {
+    public ResponseEntity<List<ProductDTO>> getAllProducts(@RequestParam(value = "name", required = false) String name) {
+        List<ProductDTO> products;
         if (name != null && !name.isEmpty()) {
-            return productListRepository.findByProductNameContainingIgnoreCase(name);
+            products = productService.findCheapestProducts(name);  // Logika wyszukiwania w serwisie
+        } else {
+            products = productService.getAllProducts();  // Metoda do pobrania wszystkich produktów
         }
-        return productListRepository.findAll();
+
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();  // Zwrócenie pustej odpowiedzi, jeśli brak produktów
+        }
+        return ResponseEntity.ok(products);
     }
 
+    // Dodanie produktu
     @PostMapping
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        // Logowanie przed zapisaniem produktu
-        System.out.println("Received product: " + product);
-
-        // Zapisanie produktu
-        Product savedProduct = productListRepository.save(product);
-
-        // Zwrócenie odpowiedzi z zapisanym produktem
+        Product savedProduct = productService.addProduct(product);  // Użycie serwisu do zapisu produktu
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
+
+    // Pobranie produktu po ID
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        return productListRepository.findById(id)
+        return productService.getProductById(id)  // Użycie serwisu do pobierania produktu
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    @GetMapping("/cheapest")
+    public List<ProductDTO> findCheapestProducts(@RequestParam String query) {
+        return productService.findCheapestProducts(query);
+    }
 
+    // Usunięcie produktu
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (productListRepository.existsById(id)) {
-            productListRepository.deleteById(id);
+        if (productService.deleteProduct(id)) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }
-    @GetMapping("/search")
-    public ResponseEntity<List<ProductDTO>> searchProduct(@RequestParam String query) {
-        List<ProductDTO> products = productService.findCheapestProducts(query);
-        return ResponseEntity.ok(products);
-    }
-
 }

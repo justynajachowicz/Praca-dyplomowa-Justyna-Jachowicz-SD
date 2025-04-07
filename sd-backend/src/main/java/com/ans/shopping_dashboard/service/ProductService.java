@@ -1,12 +1,13 @@
 package com.ans.shopping_dashboard.service;
+
 import com.ans.shopping_dashboard.repository.ProductRepository;
 import com.ans.shopping_dashboard.dto.ProductDTO;
 import com.ans.shopping_dashboard.model.Product;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,10 +16,52 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    // Metoda do wyszukiwania najtańszych produktów
     public List<ProductDTO> findCheapestProducts(String query) {
-        List<Product> products = productRepository.findByProductNameContainingIgnoreCase(query); // Poprawiona nazwa metody
+        List<Product> products = productRepository.findByProductNameContainingIgnoreCase(query);
         return products.stream()
-                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore())) // Mapa do DTO
+                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore()))
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductDTO> searchProductsByName(String name) {
+        // Logowanie zapytania
+        System.out.println("Szukam produktów o nazwie: " + name);
+
+        // Wykonanie zapytania do bazy
+        List<Product> products = productRepository.findByProductNameContainingIgnoreCase(name);
+
+        // Logowanie wyników
+        System.out.println("Znalezione produkty: " + products);
+
+        // Przekształcenie wyników na ProductDTO
+        return products.stream()
+                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore()))
+                .collect(Collectors.toList());
+    }
+
+    // Metoda do dodania produktu
+    public Product addProduct(Product product) {
+        return productRepository.save(product);  // Zapisanie produktu w bazie
+    }
+
+    // Metoda do pobrania produktu po ID
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);  // Pobranie produktu po ID
+    }
+
+    // Metoda do usunięcia produktu
+    public boolean deleteProduct(Long id) {
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);  // Usunięcie produktu po ID
+            return true;
+        }
+        return false;
+    }
+    public List<ProductDTO> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore()))
                 .collect(Collectors.toList());
     }
 }

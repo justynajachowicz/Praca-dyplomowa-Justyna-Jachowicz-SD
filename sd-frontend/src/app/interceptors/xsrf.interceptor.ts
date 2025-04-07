@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class XsrfInterceptor implements HttpInterceptor {
-
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const xsrfToken = this.getXsrfToken();
+        const xsrfToken = this.getCookie('XSRF-TOKEN'); // Pobierz token CSRF z ciasteczek
 
         if (xsrfToken) {
             req = req.clone({
@@ -14,23 +13,14 @@ export class XsrfInterceptor implements HttpInterceptor {
                     'X-XSRF-TOKEN': xsrfToken
                 }
             });
-        } else {
-            console.warn('CSRF token not found.');
         }
 
         return next.handle(req);
     }
 
-    private getXsrfToken(): string | null {
-        const tokenCookie = document.cookie.split(';')
-            .find(cookie => cookie.trim().startsWith('X-XSRF-TOKEN='));
-
-        if (tokenCookie) {
-            const tokenValue = tokenCookie.split('=')[1] || null;
-            // Zabezpieczamy się przed wywołaniem toLowerCase() na niezdefiniowanym
-            return tokenValue ? tokenValue.toLowerCase() : null;
-        }
-
-        return null;
+    // Pomocnicza funkcja do pobierania tokenu z ciasteczek
+    private getCookie(name: string): string | null {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? match[2] : null;
     }
 }

@@ -1,14 +1,16 @@
-import {Component} from "@angular/core";
-import {Product} from "../models/models";
-import {ProductService} from "../product.service";
-import {CurrencyPipe} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import { Component } from '@angular/core';
+import { Product } from '../models/models';
+import { ProductService } from '../product.service';
+import { CurrencyPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-product-search',
     templateUrl: './product-search.component.html',
     imports: [
-        CurrencyPipe,
+        CommonModule,
         FormsModule
     ],
     styleUrls: ['./product-search.component.css']
@@ -16,14 +18,25 @@ import {FormsModule} from "@angular/forms";
 export class ProductSearchComponent {
     searchQuery: string = '';
     products: Product[] = [];
+    errorMessage: string = '';  // Deklaracja zmiennej errorMessage
+
+    query: string = '';
 
     constructor(private productService: ProductService) {}
 
-    search() {
-        if (this.searchQuery.trim()) {
-            this.productService.searchProduct(this.searchQuery).subscribe((data) => {
-                this.products = data;
-            });
+    searchProducts(): void {
+        if (this.query.trim()) {
+            this.productService.findCheapestProducts(this.query).subscribe(
+                (products) => {
+                    this.products = products;
+                    console.log('Najtańsze produkty:', this.products);
+                },
+                (error) => {
+                    console.error('Błąd podczas pobierania produktów:', error);
+                }
+            );
         }
     }
+
+
 }

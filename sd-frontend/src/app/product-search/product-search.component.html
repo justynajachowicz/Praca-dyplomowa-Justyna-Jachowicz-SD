@@ -1,18 +1,24 @@
 <div class="search-container">
-    <input [(ngModel)]="searchQuery" type="text" placeholder="Wpisz nazwę produktu..." />
-    <button (click)="search()">Szukaj</button>
+    <input
+            [(ngModel)]="query"
+            (keyup.enter)="searchProducts()"
+            placeholder="Wpisz nazwę produktu"
+            class="search-input"
+    />
+    <button (click)="searchProducts()">Szukaj</button>
 </div>
 
-<div *ngIf="products.length > 0" class="results">
-    <h3>Najtańsze oferty:</h3>
+<!-- Wyniki pojawiają się poniżej wyszukiwarki -->
+<div *ngIf="products.length > 0" class="results-container">
+    <h3>Najtańsze oferty dla: "{{ query }}"</h3>
     <ul>
         <li *ngFor="let product of products">
-            <img [src]="product.imageUrl" alt="{{ product.name }}" />
-            <div>
-                <h4>{{ product.name }}</h4>
-                <p>Sklep: {{ product.store }}</p>
-                <p>Cena: {{ product.price | currency:'PLN' }}</p>
-            </div>
+            {{ product.name }} – {{ product.price }} zł ({{ product.store }})
         </li>
     </ul>
+</div>
+
+<!-- Wiadomość gdy brak wyników -->
+<div *ngIf="products.length === 0 && query">
+    <p>Brak wyników dla zapytania: "{{ query }}"</p>
 </div>
