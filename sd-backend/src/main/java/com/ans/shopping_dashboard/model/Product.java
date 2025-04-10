@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "product")
 @Data
@@ -18,7 +20,6 @@ public class Product {
 
     private String name;
 
-
     @Column(name = "product_name", nullable = false)
     private String productName;
 
@@ -31,10 +32,15 @@ public class Product {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    // Dodane pole purchaseDate typu LocalDate
+    @Column(name = "purchase_date")
+    private LocalDate purchaseDate;
+
+    // Gettery i settery
     public Long getId() {
         return id;
     }
-    // Getter dla 'name'
+
     public String getName() {
         return name;
     }
@@ -42,6 +48,12 @@ public class Product {
     public Long getProductId() {
         return id;
     }
-}
 
+    // Getter i setter dla purchaseDate
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
+    }
 
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }}

@@ -3,10 +3,12 @@ package com.ans.shopping_dashboard.controller;
 import com.ans.shopping_dashboard.dto.ProductDTO;
 import com.ans.shopping_dashboard.service.ProductService;
 import com.ans.shopping_dashboard.model.Product;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,7 +22,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-    // Metoda do pobrania wszystkich produktów lub wyszukiwania po nazwie
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts(@RequestParam(value = "name", required = false) String name) {
         List<ProductDTO> products;
@@ -32,6 +33,23 @@ public class ProductController {
 
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();  // Zwrócenie pustej odpowiedzi, jeśli brak produktów
+        }
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/cheapest")
+    public ResponseEntity<List<ProductDTO>> findCheapestProducts(
+            @RequestParam String query,
+            @RequestParam(value = "startDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(value = "endDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        // Wywołanie metody serwisowej z parametrami dat
+        List<ProductDTO> products = productService.findCheapestProducts(query, startDate, endDate);
+
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(products);
     }
@@ -50,10 +68,7 @@ public class ProductController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @GetMapping("/cheapest")
-    public List<ProductDTO> findCheapestProducts(@RequestParam String query) {
-        return productService.findCheapestProducts(query);
-    }
+
 
     // Usunięcie produktu
     @DeleteMapping("/{id}")
@@ -63,4 +78,12 @@ public class ProductController {
         }
         return ResponseEntity.notFound().build();
     }
-}
+    @GetMapping("/products/cheapest")
+    public ResponseEntity<List<Product>> findCheapestProducts(
+            @RequestParam String query,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        // Twoja logika wyszukiwania produktów
+
+        return null;
+    }}

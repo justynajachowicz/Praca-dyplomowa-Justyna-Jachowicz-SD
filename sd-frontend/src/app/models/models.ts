@@ -12,7 +12,9 @@ export interface Shop {
     price: number; // Dodaj właściwość price
     imageUrl: string;  // Dodaj właściwość imageUrl
     name: string;      // Dodaj właściwość name
-    store: string;     // Dodaj właściwość store
+    store: string;
+    products: Product[];
+    image?: string;
   }
   
   export interface ShoppingList {

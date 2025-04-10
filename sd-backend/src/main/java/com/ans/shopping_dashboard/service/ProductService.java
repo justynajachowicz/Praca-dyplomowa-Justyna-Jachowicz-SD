@@ -6,6 +6,8 @@ import com.ans.shopping_dashboard.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,6 +63,27 @@ public class ProductService {
     public List<ProductDTO> getAllProducts() {
         List<Product> products = productRepository.findAll();
         return products.stream()
+                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore()))
+                .collect(Collectors.toList());
+    }
+    public List<ProductDTO> findCheapestProducts(String query, LocalDate startDate, LocalDate endDate) {
+        // Walidacja dat
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Data początkowa nie może być późniejsza niż data końcowa.");
+        }
+
+        List<Product> products;
+
+        if (startDate == null || endDate == null) {
+            // Jeśli daty nie są podane, szukaj tylko po nazwie
+            products = productRepository.findByProductNameContainingIgnoreCase(query);
+        } else {
+            // Jeśli daty są podane, szukaj również po zakresie dat
+            products = productRepository.findByNameAndDateRange(query, startDate, endDate);
+        }
+
+        return products.stream()
+                .sorted(Comparator.comparing(Product::getPrice)) // Sortowanie po cenie
                 .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore()))
                 .collect(Collectors.toList());
     }

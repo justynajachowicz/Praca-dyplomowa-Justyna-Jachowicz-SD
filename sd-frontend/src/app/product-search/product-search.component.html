@@ -6,19 +6,31 @@
             class="search-input"
     />
     <button (click)="searchProducts()">Szukaj</button>
+
+    <div class="date-filter">
+        <label for="startDate">Data początkowa:</label>
+        <input id="startDate" [(ngModel)]="startDate" type="date" />
+        <label for="endDate">Data końcowa:</label>
+        <input id="endDate" [(ngModel)]="endDate" type="date" />
+    </div>
 </div>
 
-<!-- Wyniki pojawiają się poniżej wyszukiwarki -->
+<!-- Wyniki z obrazkami -->
 <div *ngIf="products.length > 0" class="results-container">
     <h3>Najtańsze oferty dla: "{{ query }}"</h3>
     <ul>
         <li *ngFor="let product of products">
-            {{ product.name }} – {{ product.price }} zł ({{ product.store }})
+            <div class="product-item">
+                <img [src]="product.imageUrl || 'https://via.placeholder.com/150'" alt="{{ product.name }}" class="product-image" />
+                <div>
+                    <p>{{ product.name }} – {{ product.price }} zł ({{ product.store }})</p>
+                </div>
+            </div>
         </li>
     </ul>
 </div>
 
-<!-- Wiadomość gdy brak wyników -->
+<!-- Wiadomość, gdy brak wyników -->
 <div *ngIf="products.length === 0 && query">
     <p>Brak wyników dla zapytania: "{{ query }}"</p>
 </div>
