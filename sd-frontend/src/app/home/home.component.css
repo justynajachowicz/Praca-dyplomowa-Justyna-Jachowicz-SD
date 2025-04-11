@@ -73,4 +73,13 @@ p {
 .btn-primary:hover {
     background: linear-gradient(45deg, #0056b3, #004099);
     transform: scale(1.05);
+
+    /* Ogólna klasa dla logo */
+    .store-logo {
+        width: 100px;  /* Rozmiar logo */
+        height: auto;  /* Zachowanie proporcji */
+        object-fit: contain;  /* Wypełnienie obrazu w kontenerze */
+        margin-right: 15px;  /* Odstęp po prawej stronie */
+        border-radius: 10px;  /* Zaokrąglone rogi */
+    }
 }
