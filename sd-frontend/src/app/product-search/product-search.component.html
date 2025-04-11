@@ -5,6 +5,7 @@
             placeholder="Wpisz nazwę produktu"
             class="search-input"
     />
+
     <button (click)="searchProducts()">Szukaj</button>
 
     <div class="date-filter">
@@ -21,7 +22,9 @@
     <ul>
         <li *ngFor="let product of products">
             <div class="product-item">
-                <img [src]="product.imageUrl || 'https://via.placeholder.com/150'" alt="{{ product.name }}" class="product-image" />
+                <!-- Logo Biedronki wyświetli się tylko jeśli produkt pochodzi z tego sklepu -->
+                <img *ngIf="product.store === 'Biedronka'" src="assets/images/biedronka-logo.jpg" alt="Biedronka" />
+
                 <div>
                     <p>{{ product.name }} – {{ product.price }} zł ({{ product.store }})</p>
                 </div>

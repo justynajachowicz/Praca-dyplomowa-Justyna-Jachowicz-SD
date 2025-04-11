@@ -20,6 +20,7 @@ export class ProductSearchComponent {
     startDate: string = '';      // Data początkowa (opcjonalnie)
     endDate: string = '';        // Data końcowa (opcjonalnie)
 
+
     constructor(private productService: ProductService) {}
 
     // Wyszukiwanie najtańszych produktów z opcjonalną filtracją po dacie
