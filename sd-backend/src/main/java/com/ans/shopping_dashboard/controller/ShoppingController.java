@@ -1,5 +1,6 @@
 package com.ans.shopping_dashboard.controller;
 
+import com.ans.shopping_dashboard.dto.AddToShoppingListRequest;
 import com.ans.shopping_dashboard.model.Purchase;
 import com.ans.shopping_dashboard.model.ShoppingList;
 import com.ans.shopping_dashboard.repository.ProductListRepository;
@@ -27,15 +28,17 @@ public class ShoppingController {
     private final ShopService shopService;
     private final UserService userService;
     private final PdfGeneratorService pdfGeneratorService;
+    private final ShoppingService shoppingService;
 
 
-    public ShoppingController(ShoppingListService shoppingListService, PurchaseService purchaseService, ProductListRepository productListRepository, ShopService shopService, UserService userService, PdfGeneratorService pdfGeneratorService) {
+    public ShoppingController(ShoppingListService shoppingListService, PurchaseService purchaseService, ProductListRepository productListRepository, ShopService shopService, UserService userService, PdfGeneratorService pdfGeneratorService, ShoppingService shoppingService ) {
         this.shoppingListService = shoppingListService;
         this.purchaseService = purchaseService;
         this.productListRepository = productListRepository;
         this.shopService = shopService;
         this.userService = userService;
         this.pdfGeneratorService = pdfGeneratorService;
+        this.shoppingService = shoppingService;
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
@@ -161,5 +164,10 @@ public class ShoppingController {
     private Long getUserIdFromSession() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userService.findUserByEmail(user.getUsername()).getId();
+    }
+    @PostMapping("/add")
+    public ResponseEntity<String> addToShoppingList(@RequestBody AddToShoppingListRequest request) {
+        shoppingService.addToShoppingList(request);
+        return ResponseEntity.ok("Produkt dodany do listy zakupów.");
     }
 }

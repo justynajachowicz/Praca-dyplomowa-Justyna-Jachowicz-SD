@@ -43,7 +43,7 @@
 
         <button class="close-button" (click)="closePurchaseForm()">✕</button>
 
-    <h3>Zakup: {{ selectedProduct.name }} - {{ selectedProduct.price }} zł</h3>
+        <h3 *ngIf="selectedProduct">Zakup: {{ selectedProduct.name }} - {{ selectedProduct.price }} zł</h3>
     <form (ngSubmit)="submitPurchase()">
         <label for="userEmail">Podaj swój e-mail:</label>
         <input
