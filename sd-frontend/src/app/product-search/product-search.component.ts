@@ -76,4 +76,13 @@ export class ProductSearchComponent {
             alert('Proszę podać e-mail!');
         }
 
-}}
+}
+
+    closePurchaseForm() {
+        this.purchaseFormVisible = false;
+        this.selectedProduct = null;
+        this.userEmail = '';
+    }
+
+
+}
