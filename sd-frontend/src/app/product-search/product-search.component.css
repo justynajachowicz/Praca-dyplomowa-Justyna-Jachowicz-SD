@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #F8BBD0, #FFDEE9); /* Bardziej różowe tło */
+    background: linear-gradient(135deg, #F8BBD0, #FFDEE9);
     min-height: 100vh;
     color: #333;
 }
@@ -14,7 +14,7 @@ body {
     align-items: center;
     padding: 30px;
     margin: 40px auto;
-    background: #F8BBD0; /* Różowe tło */
+    background: #F8BBD0;
     border-radius: 20px;
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
     max-width: 700px;
@@ -154,7 +154,7 @@ body {
 /* Zmniejszone logo Auchan i Biedronka */
 .auchan-logo,
 .biedronka-logo {
-    width: 80px; /* Zmniejszenie rozmiaru */
+    width: 80px;
     height: auto;
     object-fit: contain;
     margin-right: 15px;
@@ -175,6 +175,60 @@ header {
     color: #512DA8;
     font-size: 32px;
     font-weight: 700;
+}
+
+/* Formularz zakupu - działa zawsze, nie tylko na telefonach */
+.purchase-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 2px solid pink;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+}
+
+.purchase-form h3 {
+    color: hotpink;
+    margin-bottom: 20px;
+}
+
+.purchase-form label {
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.purchase-form input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid pink;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.purchase-form button {
+    background-color: hotpink;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.purchase-form button:hover {
+    background-color: deeppink;
 }
 
 /* Responsywność */

@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PurchaseFormComponent } from "./purchase-form/purchase-form.component";
 import { XsrfInterceptor } from './interceptors/xsrf.interceptor';
+import {ProductSearchComponent} from "./product-search/product-search.component";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { XsrfInterceptor } from './interceptors/xsrf.interceptor';
     CommonModule,
     MatDialogModule,
     MatIconModule,
-    PurchaseFormComponent
+    PurchaseFormComponent,
+    ProductSearchComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

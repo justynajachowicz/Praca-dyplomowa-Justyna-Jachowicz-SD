@@ -32,10 +32,26 @@
 
                 <div>
                     <p>{{ product.name }} – {{ product.price }} zł ({{ product.store }})</p>
+                    <button (click)="openPurchaseForm(product)">Kup w tym sklepie</button>
                 </div>
             </div>
         </li>
     </ul>
+</div>
+<div *ngIf="purchaseFormVisible" class="purchase-form">
+    <h3>Zakup: {{ selectedProduct.name }} - {{ selectedProduct.price }} zł</h3>
+    <form (ngSubmit)="submitPurchase()">
+        <label for="userEmail">Podaj swój e-mail:</label>
+        <input
+                id="userEmail"
+                type="email"
+                [(ngModel)]="userEmail"
+                name="email"
+                required
+                placeholder="Twój e-mail"
+        />
+        <button type="submit">Dodaj do listy zakupów</button>
+    </form>
 </div>
 
 <!-- Wiadomość, gdy brak wyników -->
