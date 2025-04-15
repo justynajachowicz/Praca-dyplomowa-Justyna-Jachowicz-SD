@@ -1,60 +1,15 @@
-<div class="container">
-  <h4>Dodawanie listy zakupów</h4>
-  <form [formGroup]="shoppingListForm" (ngSubmit)="addShoppingList()">
-    <div>
-      <label for="listName">Nazwa listy:</label>
-      <input type="text" id="listName" formControlName="listName" required>
-    </div>
-    <div>
-      <label for="shop">Sklep:</label>
-      <select id="shop" formControlName="shop" required>
-        <option *ngFor="let shop of shops" [value]="shop.id">{{ shop.name }} {{ shop.city }}</option>
-      </select>
-    </div>
-    <button type="submit" [disabled]="!shoppingListForm.valid">Dodaj listę zakupową</button>
-  </form>
-
-  <h4>Przypisanie zakupu do listy zakupowej</h4>
-  <form [formGroup]="purchaseForm" (ngSubmit)="addPurchase()">
-    <div>
-      <label for="product">Produkt:</label>
-      <select id="product" formControlName="product" required>
-        <option *ngFor="let product of products" [value]="product.productId">
-          {{ product.productName }} {{ product.brand }}, waga: {{ product.weight }}
-        </option>
-      </select>
-    </div>
-    <div>
-      <label for="price">Cena:</label>
-      <input id="price" type="number" step="0.01" formControlName="price" required>
-    </div>
-    <div>
-      <label for="shopping">Lista:</label>
-      <select id="shopping" formControlName="shopping" required>
-        <option *ngFor="let list of shoppingLists" [value]="list.id">{{ list.listName }}</option>
-      </select>
-    </div>
-    <button type="submit" [disabled]="!purchaseForm.valid">Dodaj zakup</button>
-  </form>
-
-  <h4>Edytowanie listy zakupowej</h4>
-  <select id="categorySelect" (change)="loadPurchases($event)">
-    <option *ngFor="let list of shoppingLists" [value]="list.id">{{ list.listName }}</option>
-  </select>
-  <table>
-    <tr>
-      <th>Nazwa listy</th>
-      <th>Sklep</th>
-      <th>Nazwa produktu</th>
-      <th>Cena</th>
-      <th>Usuń</th>
-    </tr>
-    <tr *ngFor="let purchase of purchases">
-      <td>{{ purchase.shopping.listName }}</td>
-      <td>{{ purchase.shopping.shop.name }} {{ purchase.shopping.shop.city }}</td>
-      <td>{{ purchase.product.productName }}</td>
-      <td>{{ purchase.price }}</td>
-      <td><button (click)="deletePurchase(purchase.id)">Usuń</button></td>
-    </tr>
-  </table>
+<div class="shopping-list-container" *ngIf="shoppingList.length > 0; else emptyList">
+    <h2>Twoja lista zakupów</h2>
+    <ul>
+        <li *ngFor="let item of shoppingList">
+            <strong>{{ item.productName }}</strong> — {{ item.storeName }} —
+            <span class="price">{{ item.price | currency:'PLN' }}</span>
+            <br />
+            <small>{{ item.city }} | {{ item.date | date:'shortDate' }}</small>
+        </li>
+    </ul>
 </div>
+
+<ng-template #emptyList>
+    <p>Brak produktów na liście zakupów.</p>
+</ng-template>

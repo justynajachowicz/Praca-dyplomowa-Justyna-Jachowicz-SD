@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
 import { of } from 'rxjs';
 import { Shop, Product, ShoppingList, Purchase } from '../models/models';
+import {ShoppingListItem} from "../models/shopping-list-item";
 
 @Injectable({
   providedIn: 'root'
@@ -65,4 +66,7 @@ export class ShoppingService {
       })
     );
   }
+    getShoppingList(userEmail: string): Observable<ShoppingListItem[]> {
+        return this.http.get<ShoppingListItem[]>(`${this.apiUrl}?email=${userEmail}`);
+    }
 }

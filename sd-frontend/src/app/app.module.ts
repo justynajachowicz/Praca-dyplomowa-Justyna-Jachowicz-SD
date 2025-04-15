@@ -17,12 +17,12 @@ import { PurchaseFormComponent } from "./purchase-form/purchase-form.component";
 import { XsrfInterceptor } from './interceptors/xsrf.interceptor';
 import {ProductSearchComponent} from "./product-search/product-search.component";
 
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ShoppingListComponent,
     AdminUserManagementComponent
   ],
   imports: [
@@ -36,11 +36,13 @@ import {ProductSearchComponent} from "./product-search/product-search.component"
     MatDialogModule,
     MatIconModule,
     PurchaseFormComponent,
+    ShoppingListComponent,
     ProductSearchComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: XsrfInterceptor, multi: true }
+
   ],
   bootstrap: [AppComponent]
 })
