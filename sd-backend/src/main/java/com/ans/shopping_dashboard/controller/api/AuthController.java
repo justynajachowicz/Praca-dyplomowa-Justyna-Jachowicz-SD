@@ -70,5 +70,10 @@ public class AuthController {
             return ResponseEntity.status(500).body(response);
         }
     }
+    @GetMapping("/is-registered")
+    public ResponseEntity<Boolean> isUserRegistered(@RequestParam String email) {
+        boolean isRegistered = userService.isUserRegistered(email);
+        return ResponseEntity.ok(isRegistered); // Zwracamy odpowiedź z wartością true/false
+    }
 
 }

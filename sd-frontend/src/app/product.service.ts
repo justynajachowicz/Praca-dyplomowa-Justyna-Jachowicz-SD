@@ -30,20 +30,20 @@ export class ProductService {
   }
 
     addToShoppingList(product: Product, email: string): Observable<any> {
-        const body = {
-            productName: product.name,
-            productPrice: product.price,
-            store: product.store,
-            email: email
-        };
+        const params = new HttpParams().set('email', email);
 
-        return this.http.post(`${this.apiUrl}/shopping-list`, body).pipe(
+        return this.http.post(`${this.apiUrl}/api/shopping-list`, product, {
+            params,
+            responseType: 'text' // <- DODAJ TO
+        }).pipe(
             catchError(error => {
                 console.error('Błąd dodawania produktu do listy zakupów:', error);
-                throw error;  // Przekazuje błąd dalej
+                throw error;
             })
         );
     }
+
+
 
   findCheapestProducts(query: string, startDate: string, endDate: string) {
     let params = new HttpParams()

@@ -22,5 +22,8 @@ public interface UserService {
     boolean existsById(Long userId);
 
     User findUserById(Long userId);
+
+
+    boolean isUserRegistered(String email);
 }
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Product } from '../models/models';
 import { ProductService } from '../product.service';
+import { AuthService } from '../services/auth.service';  // Dodaj AuthService
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -23,22 +24,18 @@ export class ProductSearchComponent {
     userEmail: string = '';
     purchaseFormVisible: boolean = false;
 
-
-    constructor(private productService: ProductService) {
+    constructor(
+        private productService: ProductService,
+        private authService: AuthService  // Dodaj AuthService do konstruktora
+    ) {
         this.purchaseFormVisible = false;
     }
-
 
     // Wyszukiwanie najtańszych produktów z opcjonalną filtracją po dacie
     searchProducts(): void {
         if (this.query.trim()) {
-            // Przekazujemy trzy argumenty do metody findCheapestProducts
             this.productService.findCheapestProducts(this.query, this.startDate, this.endDate).subscribe(
                 (products) => {
-                    // Logowanie odpowiedzi serwera
-                    console.log('Odpowiedź z serwera:', products);
-
-                    // Jeżeli odpowiedź jest prawidłowa, przypisujemy ją do 'products'
                     if (Array.isArray(products)) {
                         this.products = products;
                         console.log('Najtańsze produkty:', this.products);
@@ -60,30 +57,28 @@ export class ProductSearchComponent {
         this.purchaseFormVisible = true;
     }
 
-
-
-
+    // Jedna metoda submitPurchase() do obsługi formularza
     submitPurchase() {
         if (this.userEmail) {
-            // Wysyłanie danych do backendu lub zapisywanie do listy zakupów użytkownika
-            console.log('Produkt: ', this.selectedProduct);
-            console.log('E-mail użytkownika: ', this.userEmail);
-
-            // Resetowanie formularza po zapisaniu
-            this.selectedProduct = null;
-            this.userEmail = '';
+            this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
+                if (isRegistered) {
+                    // Jeśli użytkownik jest zarejestrowany, dodaj produkt do listy zakupów
+                    this.productService.addToShoppingList(this.selectedProduct, this.userEmail).subscribe(response => {
+                        console.log('Produkt dodany do listy zakupów:', response);
+                        this.purchaseFormVisible = false; // Zamknij formularz
+                    });
+                } else {
+                    alert('Musisz być zarejestrowany, aby dodać produkt do listy zakupów.');
+                }
+            });
         } else {
             alert('Proszę podać e-mail!');
         }
-
-}
+    }
 
     closePurchaseForm() {
         this.purchaseFormVisible = false;
         this.selectedProduct = null;
         this.userEmail = '';
     }
-
-
-
 }

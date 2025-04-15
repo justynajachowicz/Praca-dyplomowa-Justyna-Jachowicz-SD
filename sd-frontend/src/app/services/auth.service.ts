@@ -8,7 +8,8 @@ import {Observable, tap} from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth'; // Ścieżka do autoryzacji
 
-  constructor(private http: HttpClient) {}
+
+    constructor(private http: HttpClient) {}
   login(credentials: { email: string, password: string }): Observable<any> {
     return this.http.post<{ token: string, role: string }>(`${this.apiUrl}/login`, credentials).pipe(
         tap(response => {
@@ -39,4 +40,7 @@ export class AuthService {
     console.log('User role:', role); // Dodaj logowanie
     return role;
   }
+    isUserRegistered(email: string): Observable<boolean> {
+        return this.http.get<boolean>(`${this.apiUrl}/is-registered?email=${email}`);
+    }
 }

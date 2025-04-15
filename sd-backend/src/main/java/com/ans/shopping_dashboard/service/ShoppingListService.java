@@ -1,5 +1,7 @@
 package com.ans.shopping_dashboard.service;
 
+import com.ans.shopping_dashboard.dto.ShoppingListItemDto;
+import com.ans.shopping_dashboard.model.Product;
 import com.ans.shopping_dashboard.model.ShoppingList;
 
 import java.util.List;
@@ -14,4 +16,9 @@ public interface ShoppingListService {
     void deleteById(Long id);
 
     ShoppingList save(ShoppingList shoppingListService);
+
+    void addProductToList(Product product, String email);
+
+    List<ShoppingListItemDto> getShoppingListByEmail(String email);
 }
+

@@ -27,5 +27,15 @@ public class PurchaseItem {
     private String store;
     private LocalDate purchaseDate;
 
+    public void setProductPrice(double price) {
+        this.price = price;
+    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 
 }
