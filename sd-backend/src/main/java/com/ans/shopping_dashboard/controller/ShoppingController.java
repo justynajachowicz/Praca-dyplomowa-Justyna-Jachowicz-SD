@@ -147,7 +147,7 @@ public class ShoppingController {
 
     private List<Purchase> findCheapestPurchase(List<Purchase> existingPurchases) {
         List<Purchase> theCheapest = new ArrayList<>();
-        existingPurchases.forEach(x -> theCheapest.add(purchaseService.findTheCheapest(x.getProduct().getProductId())));
+        existingPurchases.forEach(x -> theCheapest.add(purchaseService.findTheCheapest(x.getProduct().getId())));
         return theCheapest;
     }
 

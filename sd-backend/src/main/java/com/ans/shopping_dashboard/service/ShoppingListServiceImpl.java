@@ -65,10 +65,30 @@ public class ShoppingListServiceImpl implements ShoppingListService {
     }
     @Override
     public List<ShoppingListItemDto> getShoppingListByEmail(String email) {
-        // przykładowe dane — symulacja
-        List<ShoppingListItemDto> list = new ArrayList<>();
-        list.add(new ShoppingListItemDto("Mleko", "Biedronka", 3.49));
-        list.add(new ShoppingListItemDto("Chleb", "Lidl", 2.99));
-        return list;
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return new ArrayList<>();
+        }
+
+        List<PurchaseItem> purchaseItems = purchaseItemRepository.findByUser(user);
+        List<ShoppingListItemDto> shoppingListItems = new ArrayList<>();
+
+        for (PurchaseItem item : purchaseItems) {
+            ShoppingListItemDto dto = new ShoppingListItemDto(
+                item.getProductName(),
+                item.getStore(),
+                item.getPrice()
+            );
+            // Set the ID in the DTO so we can use it for deletion
+            dto.setId(item.getId());
+            shoppingListItems.add(dto);
+        }
+
+        return shoppingListItems;
+    }
+
+    @Override
+    public void deletePurchaseItemById(Long id) {
+        purchaseItemRepository.deleteById(id);
     }
 }

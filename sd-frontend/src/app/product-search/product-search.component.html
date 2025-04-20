@@ -1,64 +1,139 @@
-<div class="search-container">
-    <input
-            [(ngModel)]="query"
-            (keyup.enter)="searchProducts()"
-            placeholder="Wpisz nazwę produktu"
-            class="search-input"
-    />
-
-    <button (click)="searchProducts()">Szukaj</button>
-
-    <div class="date-filter">
-        <label for="startDate">Data początkowa:</label>
-        <input id="startDate" [(ngModel)]="startDate" type="date" />
-        <label for="endDate">Data końcowa:</label>
-        <input id="endDate" [(ngModel)]="endDate" type="date" />
+<div class="app-container">
+    <!-- Nagłówek i nawigacja -->
+    <div class="header-nav">
+        <h2>Wyszukiwanie produktów</h2>
+        <button class="nav-button" (click)="goToShoppingList()">Przejdź do listy zakupów</button>
     </div>
-</div>
 
-<!-- Wyniki z obrazkami -->
-<div *ngIf="products.length > 0" class="results-container">
-    <h3>Najtańsze oferty dla: "{{ query }}"</h3>
-    <ul>
-        <li *ngFor="let product of products">
-            <div class="product-item">
+    <!-- Formularz wyszukiwania -->
+    <div class="search-container">
+        <div class="search-box">
+            <input
+                [(ngModel)]="query"
+                (keyup.enter)="searchProducts()"
+                placeholder="Wpisz nazwę produktu"
+                class="search-input"
+            />
+            <button class="search-button" (click)="searchProducts()">Szukaj</button>
+        </div>
 
-                <img *ngIf="product.store === 'Biedronka'" src="assets/images/biedronka-logo.jpg" alt="Biedronka" />
-                <img *ngIf="product.store === 'Auchan'" src="assets/images/auchan-logo.jpg" alt="Auchan" />
-                <img *ngIf="product.store === 'Lidl'" src="assets/images/lidl-logo.jpg" alt="Lidl" class="store-logo" />
-                <img *ngIf="product.store === 'Zabka'" src="assets/images/zabka-logo.jpg" alt="Zabka" class="store-logo">
-                <img *ngIf="product.store === 'Tesco'" src="assets/images/tesco-logo.jpg" alt="Tesco" class="store-logo">
+        <div class="date-filter">
+            <label for="startDate">Data początkowa:</label>
+            <input id="startDate" [(ngModel)]="startDate" type="date" />
+            <label for="endDate">Data końcowa:</label>
+            <input id="endDate" [(ngModel)]="endDate" type="date" />
+        </div>
 
+        <div class="city-filter">
+            <label for="city">Miasto:</label>
+            <select id="city" [(ngModel)]="selectedCity" (change)="onCitySelected()">
+                <option value="">Wszystkie miasta</option>
+                <option value="Warszawa">Warszawa</option>
+                <option value="Kraków">Kraków</option>
+                <option value="Łódź">Łódź</option>
+                <option value="Wrocław">Wrocław</option>
+                <option value="Poznań">Poznań</option>
+                <option value="Gdańsk">Gdańsk</option>
+                <option value="Szczecin">Szczecin</option>
+                <option value="Bydgoszcz">Bydgoszcz</option>
+                <option value="Lublin">Lublin</option>
+                <option value="Katowice">Katowice</option>
+            </select>
+        </div>
 
-                <div>
-                    <p>{{ product.name }} – {{ product.price }} zł ({{ product.store }})</p>
-                    <button (click)="openPurchaseForm(product)">Kup w tym sklepie</button>
-                </div>
-            </div>
-        </li>
-    </ul>
-</div>
-<div *ngIf="purchaseFormVisible" class="purchase-form">
-    <div *ngIf="purchaseFormVisible" class="purchase-form">
-
-        <button class="close-button" (click)="closePurchaseForm()">✕</button>
-
-        <h3 *ngIf="selectedProduct">Zakup: {{ selectedProduct.name }} - {{ selectedProduct.price }} zł</h3>
-    <form (ngSubmit)="submitPurchase()">
-        <label for="userEmail">Podaj swój e-mail:</label>
-        <input
-                id="userEmail"
+        <!-- Pole email -->
+        <div class="email-input">
+            <label for="userEmailSearch">Twój e-mail (potrzebny do dodania produktów):</label>
+            <input
+                id="userEmailSearch"
                 type="email"
                 [(ngModel)]="userEmail"
                 name="email"
-                required
                 placeholder="Twój e-mail"
-        />
-        <button type="submit">Dodaj do listy zakupów</button>
-    </form>
-</div>
+            />
+        </div>
+    </div>
 
-<!-- Wiadomość, gdy brak wyników -->
-<div *ngIf="products.length === 0 && query">
-    <p>Brak wyników dla zapytania: "{{ query }}"</p>
+    <!-- Komunikat o sukcesie -->
+    <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+    </div>
+
+    <!-- Wyniki z obrazkami -->
+    <div *ngIf="products.length > 0" class="results-container">
+        <h3>Najtańsze oferty dla: "{{ query }}"</h3>
+
+        <!-- Porównanie cen w różnych miastach -->
+        <div *ngIf="!selectedCity && products.length > 0" class="price-comparison">
+            <h4>Porównanie cen w różnych miastach</h4>
+            <div class="city-comparison">
+                <div *ngFor="let city of getUniqueCities()" class="city-card">
+                    <h5>{{ city }}</h5>
+                    <div *ngFor="let product of getProductsByCity(city)" class="city-product">
+                        <div class="product-info">
+                            <span class="product-name">{{ product.name }}</span>
+                            <span class="product-price">{{ product.price }} zł</span>
+                            <span class="product-store">{{ product.store }}</span>
+                        </div>
+                        <button class="add-to-list-btn small" (click)="addToShoppingList(product)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="products-list">
+            <li *ngFor="let product of products" class="product-card">
+                <div class="product-header">
+                    <span class="product-name">{{ product.name }}</span>
+                    <span class="product-price">{{ product.price }} zł</span>
+                </div>
+
+                <div class="product-store">
+                    <img *ngIf="product.store === 'Biedronka'" src="assets/images/biedronka-logo.jpg" alt="Biedronka" class="store-logo" />
+                    <img *ngIf="product.store === 'Auchan'" src="assets/images/auchan-logo.jpg" alt="Auchan" class="store-logo" />
+                    <img *ngIf="product.store === 'Lidl'" src="assets/images/lidl-logo.jpg" alt="Lidl" class="store-logo" />
+                    <img *ngIf="product.store === 'Zabka'" src="assets/images/zabka-logo.jpg" alt="Zabka" class="store-logo" />
+                    <img *ngIf="product.store === 'Tesco'" src="assets/images/tesco-logo.jpg" alt="Tesco" class="store-logo" />
+                    <span>{{ product.store }}</span>
+                </div>
+
+                <div class="product-city" *ngIf="product.city">
+                    <span>Miasto: {{ product.city }}</span>
+                </div>
+
+                <div class="product-actions">
+                    <button class="add-to-list-btn" (click)="addToShoppingList(product)" [disabled]="addingToList">
+                        <span *ngIf="!addingToList">Dodaj do listy zakupów</span>
+                        <span *ngIf="addingToList">Dodawanie...</span>
+                    </button>
+                    <button class="buy-btn" (click)="openPurchaseForm(product)">Kup w tym sklepie</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Formularz zakupu -->
+    <div *ngIf="purchaseFormVisible" class="purchase-form-overlay">
+        <div class="purchase-form">
+            <button class="close-button" (click)="closePurchaseForm()">✕</button>
+            <h3 *ngIf="selectedProduct">Zakup: {{ selectedProduct.name }} - {{ selectedProduct.price }} zł</h3>
+            <form (ngSubmit)="submitPurchase()">
+                <label for="userEmail">Podaj swój e-mail:</label>
+                <input
+                    id="userEmail"
+                    type="email"
+                    [(ngModel)]="userEmail"
+                    name="email"
+                    required
+                    placeholder="Twój e-mail"
+                />
+                <button type="submit" class="submit-btn">Dodaj do listy zakupów</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Wiadomość, gdy brak wyników -->
+    <div *ngIf="products.length === 0 && query" class="no-results">
+        <p>Brak wyników dla zapytania: "{{ query }}"</p>
+    </div>
 </div>

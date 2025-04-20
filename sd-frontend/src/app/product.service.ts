@@ -45,7 +45,7 @@ export class ProductService {
 
 
 
-  findCheapestProducts(query: string, startDate: string, endDate: string) {
+  findCheapestProducts(query: string, startDate: string, endDate: string, city?: string) {
     let params = new HttpParams()
         .set('query', query);
 
@@ -55,8 +55,11 @@ export class ProductService {
     if (endDate) {
       params = params.set('endDate', endDate);
     }
+    if (city) {
+      params = params.set('city', city);
+    }
 
-    return this.http.get<Product[]>('/api/products/cheapest', { params }).pipe(
+    return this.http.get<Product[]>(`${this.apiUrl}/api/products/cheapest`, { params }).pipe(
         map(response => response || []),
         catchError(error => {
           console.error('Błąd pobierania najtańszych produktów:', error);

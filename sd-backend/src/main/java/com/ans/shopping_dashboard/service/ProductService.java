@@ -22,7 +22,15 @@ public class ProductService {
     public List<ProductDTO> findCheapestProducts(String query) {
         List<Product> products = productRepository.findByProductNameContainingIgnoreCase(query);
         return products.stream()
-                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore()))
+                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore(), p.getCity()))
+                .collect(Collectors.toList());
+    }
+
+    // Metoda do wyszukiwania najtańszych produktów w danym mieście
+    public List<ProductDTO> findCheapestProductsByCity(String query, String city) {
+        List<Product> products = productRepository.findByProductNameContainingIgnoreCaseAndCityIgnoreCase(query, city);
+        return products.stream()
+                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore(), p.getCity()))
                 .collect(Collectors.toList());
     }
 
@@ -84,7 +92,30 @@ public class ProductService {
 
         return products.stream()
                 .sorted(Comparator.comparing(Product::getPrice)) // Sortowanie po cenie
-                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore()))
+                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore(), p.getCity()))
+                .collect(Collectors.toList());
+    }
+
+    // Metoda do wyszukiwania najtańszych produktów w danym mieście i zakresie dat
+    public List<ProductDTO> findCheapestProductsByCity(String query, String city, LocalDate startDate, LocalDate endDate) {
+        // Walidacja dat
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Data początkowa nie może być późniejsza niż data końcowa.");
+        }
+
+        List<Product> products;
+
+        if (startDate == null || endDate == null) {
+            // Jeśli daty nie są podane, szukaj tylko po nazwie i mieście
+            products = productRepository.findByProductNameContainingIgnoreCaseAndCityIgnoreCase(query, city);
+        } else {
+            // Jeśli daty są podane, szukaj również po zakresie dat
+            products = productRepository.findByNameCityAndDateRange(query, city, startDate, endDate);
+        }
+
+        return products.stream()
+                .sorted(Comparator.comparing(Product::getPrice)) // Sortowanie po cenie
+                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore(), p.getCity()))
                 .collect(Collectors.toList());
     }
 }

@@ -20,5 +20,6 @@ public interface ShoppingListService {
     void addProductToList(Product product, String email);
 
     List<ShoppingListItemDto> getShoppingListByEmail(String email);
-}
 
+    void deletePurchaseItemById(Long id);
+}

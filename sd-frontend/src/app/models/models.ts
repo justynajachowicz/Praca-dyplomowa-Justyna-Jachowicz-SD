@@ -3,7 +3,7 @@ export interface Shop {
     name: string;
     city: string;
   }
-  
+
   export interface Product {
     productId: number;
     productName: string;
@@ -13,20 +13,20 @@ export interface Shop {
     imageUrl: string;  // Dodaj właściwość imageUrl
     name: string;      // Dodaj właściwość name
     store: string;
+    city?: string;     // Dodaj właściwość city
     products: Product[];
     image?: string;
   }
-  
+
   export interface ShoppingList {
     id: number;
     listName: string;
     shop: Shop;
   }
-  
+
   export interface Purchase {
     id: number;
     product: Product;
     shopping: ShoppingList;
     price: number;
   }
-  

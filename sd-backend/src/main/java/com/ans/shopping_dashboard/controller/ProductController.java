@@ -40,13 +40,21 @@ public class ProductController {
     @GetMapping("/cheapest")
     public ResponseEntity<List<ProductDTO>> findCheapestProducts(
             @RequestParam String query,
+            @RequestParam(value = "city", required = false) String city,
             @RequestParam(value = "startDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(value = "endDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
-        // Wywołanie metody serwisowej z parametrami dat
-        List<ProductDTO> products = productService.findCheapestProducts(query, startDate, endDate);
+        List<ProductDTO> products;
+
+        // Jeśli podano miasto, wywołaj metodę z filtrowaniem po mieście
+        if (city != null && !city.isEmpty()) {
+            products = productService.findCheapestProductsByCity(query, city, startDate, endDate);
+        } else {
+            // W przeciwnym razie wywołaj standardową metodę
+            products = productService.findCheapestProducts(query, startDate, endDate);
+        }
 
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();

@@ -1,6 +1,7 @@
 package com.ans.shopping_dashboard.dto;
 
 public class ShoppingListItemDto {
+    private Long id;
     private String productName;
     private String storeName;
     private double price;
@@ -12,6 +13,14 @@ public class ShoppingListItemDto {
         this.productName = productName;
         this.storeName = storeName;
         this.price = price;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getProductName() {

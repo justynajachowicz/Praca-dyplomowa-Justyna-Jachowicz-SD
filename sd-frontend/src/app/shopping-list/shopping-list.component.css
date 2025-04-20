@@ -15,50 +15,189 @@
   font-size: 24px;
   color: #f06292; /* Jasny różowy */
   margin-bottom: 20px;
+  text-align: center;
 }
 
-/* Styl dla listy */
-.shopping-list-container ul {
-  list-style-type: none;
-  padding: 0;
+/* Styl dla listy zakupów */
+.shopping-list {
+  width: 100%;
+}
+
+/* Nagłówek tabeli */
+.shopping-list-header {
+  display: grid;
+  grid-template-columns: 3fr 2fr 1fr 1fr;
+  background-color: #f06292;
+  color: white;
+  padding: 12px 15px;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 /* Elementy na liście */
-.shopping-list-container li {
+.shopping-list-item {
+  display: grid;
+  grid-template-columns: 3fr 2fr 1fr 1fr;
   background-color: #f9f9f9;
   border: 1px solid #eee;
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 10px;
   transition: background-color 0.3s ease;
+  align-items: center;
 }
 
 /* Efekt hover na elemencie listy */
-.shopping-list-container li:hover {
+.shopping-list-item:hover {
   background-color: #fce4ec; /* Jasny różowy na hover */
 }
 
 /* Stylowanie nazw produktów */
-.shopping-list-container strong {
+.product-info strong {
   font-weight: bold;
   color: #f06292; /* Różowy */
-}
-
-/* Stylowanie dla cen */
-.shopping-list-container .price {
-  color: #f06292;
-  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
 }
 
 /* Stylowanie daty i miasta */
-.shopping-list-container small {
+.product-info small {
   color: #999;
   font-size: 12px;
+  display: block;
+}
+
+/* Stylowanie dla cen */
+.price-info {
+  color: #f06292;
+  font-weight: bold;
+}
+
+/* Stylowanie dla sklepu */
+.store-info {
+  font-weight: 500;
+}
+
+/* Przyciski akcji */
+.remove-btn {
+  background-color: #f06292;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.remove-btn:hover {
+  background-color: #e91e63;
+}
+
+/* Styl dla wybranego miasta */
+.selected-city {
+  background-color: #fce4ec;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.selected-city h3 {
+  color: #f06292;
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Styl dla wyszukiwarki */
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #f8bbd0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #f06292;
+  box-shadow: 0 0 8px rgba(240, 98, 146, 0.3);
+}
+
+/* Styl dla kontenera produktów */
+.products-container {
+  margin-bottom: 30px;
+}
+
+.products-container h3 {
+  color: #f06292;
+  font-size: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Siatka produktów */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Karta produktu */
+.product-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-header {
+  background-color: #fce4ec;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-name {
+  font-weight: 600;
+  color: #e91e63;
+}
+
+.product-price {
+  font-weight: 700;
+  color: #e91e63;
+}
+
+.product-details {
+  padding: 10px;
+}
+
+.product-details p {
+  margin: 5px 0;
+  color: #666;
 }
 
 /* Styl dla pustej listy */
-.shopping-list-container p {
+.empty-list {
   text-align: center;
+  padding: 30px 0;
+}
+
+.empty-list p {
   font-size: 18px;
   color: #f06292;
+  margin: 10px 0;
 }

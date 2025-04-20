@@ -1,15 +1,73 @@
-<div class="shopping-list-container" *ngIf="shoppingList.length > 0; else emptyList">
+<div class="shopping-list-container">
     <h2>Twoja lista zakupów</h2>
-    <ul>
-        <li *ngFor="let item of shoppingList">
-            <strong>{{ item.productName }}</strong> — {{ item.storeName }} —
-            <span class="price">{{ item.price | currency:'PLN' }}</span>
-            <br />
-            <small>{{ item.city }} | {{ item.date | date:'shortDate' }}</small>
-        </li>
-    </ul>
-</div>
 
-<ng-template #emptyList>
-    <p>Brak produktów na liście zakupów.</p>
-</ng-template>
+    <!-- Wyświetl wybrane miasto -->
+    <div *ngIf="selectedCity" class="selected-city">
+        <h3>Miasto: {{ selectedCity }}</h3>
+    </div>
+
+    <!-- Wyszukiwarka produktów -->
+    <div class="search-container">
+        <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            (input)="onSearchChange()" 
+            placeholder="Wyszukaj produkt..." 
+            class="search-input"
+        />
+    </div>
+
+    <!-- Produkty dla wybranego miasta -->
+    <div *ngIf="products.length > 0" class="products-container">
+        <h3>Dostępne produkty w {{ selectedCity }}</h3>
+        <div class="products-grid">
+            <div *ngFor="let product of products" class="product-card">
+                <div class="product-header">
+                    <span class="product-name">{{ product.name }}</span>
+                    <span class="product-price">{{ product.price }} zł</span>
+                </div>
+                <div class="product-details">
+                    <p *ngIf="product.weight">Waga: {{ product.weight }}</p>
+                    <p>Sklep: {{ product.store }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista zakupów -->
+    <div *ngIf="filteredList.length > 0; else emptyList" class="shopping-list">
+        <h3>Twoje produkty</h3>
+        <div class="shopping-list-header">
+            <span>Produkt</span>
+            <span>Sklep</span>
+            <span>Cena</span>
+            <span>Akcje</span>
+        </div>
+
+        <div class="shopping-list-item" *ngFor="let item of filteredList">
+            <div class="product-info">
+                <strong>{{ item.productName }}</strong>
+                <small *ngIf="item.city || item.date">
+                    {{ item.city || 'Brak miasta' }}
+                    <span *ngIf="item.date"> | {{ item.date | date:'shortDate' }}</span>
+                </small>
+            </div>
+            <div class="store-info">
+                {{ item.storeName }}
+            </div>
+            <div class="price-info">
+                {{ item.price | currency:'PLN' }}
+            </div>
+            <div class="actions">
+                <button class="remove-btn" (click)="removeItem(item)">Usuń</button>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #emptyList>
+        <div class="empty-list">
+            <p>Brak produktów na liście zakupów.</p>
+            <p>Wyszukaj produkty i dodaj je do swojej listy zakupów.</p>
+        </div>
+    </ng-template>
+</div>

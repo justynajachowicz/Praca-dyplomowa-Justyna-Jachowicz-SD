@@ -36,24 +36,6 @@ public class Product {
     @Column(name = "purchase_date")
     private LocalDate purchaseDate;
 
-    // Gettery i settery
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Long getProductId() {
-        return id;
-    }
-
-    // Getter i setter dla purchaseDate
-    public LocalDate getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(LocalDate purchaseDate) {
-        this.purchaseDate = purchaseDate;
-    }}
+    @Column(name = "city")
+    private String city;
+}

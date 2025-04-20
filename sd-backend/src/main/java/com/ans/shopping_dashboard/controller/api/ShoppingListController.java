@@ -24,10 +24,16 @@ public class ShoppingListController {
         return ResponseEntity.ok("Produkt dodany do listy zakupów");
 
     }
+
     @GetMapping
     public ResponseEntity<List<ShoppingListItemDto>> getShoppingList(@RequestParam String email) {
         List<ShoppingListItemDto> shoppingList = shoppingListService.getShoppingListByEmail(email);
         return ResponseEntity.ok(shoppingList);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> removeItemFromShoppingList(@PathVariable Long id) {
+        shoppingListService.deletePurchaseItemById(id);
+        return ResponseEntity.ok("Produkt usunięty z listy zakupów");
+    }
 }
