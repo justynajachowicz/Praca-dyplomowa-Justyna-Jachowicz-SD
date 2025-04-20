@@ -23,6 +23,11 @@ export class ShoppingListComponent implements OnInit {
   searchTerm: string = '';
   products: Product[] = [];
 
+  // Variables for planned shopping
+  shoppingPlanned: boolean = false;
+  plannedShoppingStores: string[] = [];
+  plannedShoppingItems: { [store: string]: ShoppingListItem[] } = {};
+
   constructor(
     private shoppingListService: ShoppingListService,
     private productService: ProductService,
@@ -123,5 +128,57 @@ export class ShoppingListComponent implements OnInit {
         console.error('Błąd podczas usuwania przedmiotu:', err);
       }
     });
+  }
+
+  // Metoda do planowania zakupów
+  planShopping(): void {
+    // Resetuj poprzednie planowanie
+    this.plannedShoppingItems = {};
+    this.plannedShoppingStores = [];
+
+    // Grupuj produkty według sklepów
+    const storeGroups: { [store: string]: ShoppingListItem[] } = {};
+
+    this.filteredList.forEach(item => {
+      const store = item.storeName;
+      if (!storeGroups[store]) {
+        storeGroups[store] = [];
+      }
+      storeGroups[store].push(item);
+    });
+
+    // Zapisz pogrupowane produkty
+    this.plannedShoppingItems = storeGroups;
+    this.plannedShoppingStores = Object.keys(storeGroups);
+
+    // Oznacz, że zakupy zostały zaplanowane
+    this.shoppingPlanned = true;
+
+    console.log('Zakupy zaplanowane:', this.plannedShoppingItems);
+  }
+
+  // Metoda do resetowania planu zakupów
+  resetPlan(): void {
+    this.shoppingPlanned = false;
+  }
+
+  // Metoda do pobierania produktów dla danego sklepu
+  getItemsByStore(store: string): ShoppingListItem[] {
+    return this.plannedShoppingItems[store] || [];
+  }
+
+  // Metoda do obliczania sumy dla danego sklepu
+  calculateStoreTotal(store: string): number {
+    const items = this.getItemsByStore(store);
+    return items.reduce((total, item) => total + item.price, 0);
+  }
+
+  // Metoda do obliczania całkowitego kosztu
+  calculateTotalCost(): number {
+    let total = 0;
+    this.plannedShoppingStores.forEach(store => {
+      total += this.calculateStoreTotal(store);
+    });
+    return total;
   }
 }

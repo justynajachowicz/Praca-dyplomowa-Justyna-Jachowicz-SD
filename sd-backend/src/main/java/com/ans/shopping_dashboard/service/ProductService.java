@@ -22,7 +22,7 @@ public class ProductService {
     public List<ProductDTO> findCheapestProducts(String query) {
         List<Product> products = productRepository.findByProductNameContainingIgnoreCase(query);
         return products.stream()
-                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore(), p.getCity()))
+                .map(p -> new ProductDTO(p.getId(), p.getProductName(), p.getPrice(), p.getStore(), p.getCity()))
                 .collect(Collectors.toList());
     }
 
@@ -30,7 +30,7 @@ public class ProductService {
     public List<ProductDTO> findCheapestProductsByCity(String query, String city) {
         List<Product> products = productRepository.findByProductNameContainingIgnoreCaseAndCityIgnoreCase(query, city);
         return products.stream()
-                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore(), p.getCity()))
+                .map(p -> new ProductDTO(p.getId(), p.getProductName(), p.getPrice(), p.getStore(), p.getCity()))
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +46,7 @@ public class ProductService {
 
         // Przekształcenie wyników na ProductDTO
         return products.stream()
-                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore()))
+                .map(p -> new ProductDTO(p.getId(), p.getProductName(), p.getPrice(), p.getStore()))
                 .collect(Collectors.toList());
     }
 
@@ -71,7 +71,7 @@ public class ProductService {
     public List<ProductDTO> getAllProducts() {
         List<Product> products = productRepository.findAll();
         return products.stream()
-                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore()))
+                .map(p -> new ProductDTO(p.getId(), p.getProductName(), p.getPrice(), p.getStore()))
                 .collect(Collectors.toList());
     }
     public List<ProductDTO> findCheapestProducts(String query, LocalDate startDate, LocalDate endDate) {
@@ -92,7 +92,7 @@ public class ProductService {
 
         return products.stream()
                 .sorted(Comparator.comparing(Product::getPrice)) // Sortowanie po cenie
-                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore(), p.getCity()))
+                .map(p -> new ProductDTO(p.getId(), p.getProductName(), p.getPrice(), p.getStore(), p.getCity()))
                 .collect(Collectors.toList());
     }
 
@@ -115,7 +115,7 @@ public class ProductService {
 
         return products.stream()
                 .sorted(Comparator.comparing(Product::getPrice)) // Sortowanie po cenie
-                .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice(), p.getStore(), p.getCity()))
+                .map(p -> new ProductDTO(p.getId(), p.getProductName(), p.getPrice(), p.getStore(), p.getCity()))
                 .collect(Collectors.toList());
     }
 }

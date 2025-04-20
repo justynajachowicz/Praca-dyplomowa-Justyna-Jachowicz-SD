@@ -24,23 +24,6 @@
             <input id="endDate" [(ngModel)]="endDate" type="date" />
         </div>
 
-        <div class="city-filter">
-            <label for="city">Miasto:</label>
-            <select id="city" [(ngModel)]="selectedCity" (change)="onCitySelected()">
-                <option value="">Wszystkie miasta</option>
-                <option value="Warszawa">Warszawa</option>
-                <option value="Kraków">Kraków</option>
-                <option value="Łódź">Łódź</option>
-                <option value="Wrocław">Wrocław</option>
-                <option value="Poznań">Poznań</option>
-                <option value="Gdańsk">Gdańsk</option>
-                <option value="Szczecin">Szczecin</option>
-                <option value="Bydgoszcz">Bydgoszcz</option>
-                <option value="Lublin">Lublin</option>
-                <option value="Katowice">Katowice</option>
-            </select>
-        </div>
-
         <!-- Pole email -->
         <div class="email-input">
             <label for="userEmailSearch">Twój e-mail (potrzebny do dodania produktów):</label>
@@ -61,10 +44,11 @@
 
     <!-- Wyniki z obrazkami -->
     <div *ngIf="products.length > 0" class="results-container">
-        <h3>Najtańsze oferty dla: "{{ query }}"</h3>
+        <h3 *ngIf="query">Najtańsze oferty dla: "{{ query }}"</h3>
+        <h3 *ngIf="!query">Wszystkie dostępne produkty</h3>
 
         <!-- Porównanie cen w różnych miastach -->
-        <div *ngIf="!selectedCity && products.length > 0" class="price-comparison">
+        <div class="price-comparison">
             <h4>Porównanie cen w różnych miastach</h4>
             <div class="city-comparison">
                 <div *ngFor="let city of getUniqueCities()" class="city-card">
@@ -73,7 +57,7 @@
                         <div class="product-info">
                             <span class="product-name">{{ product.name }}</span>
                             <span class="product-price">{{ product.price }} zł</span>
-                            <span class="product-store">{{ product.store }}</span>
+                            <!-- Store information hidden during product selection phase -->
                         </div>
                         <button class="add-to-list-btn small" (click)="addToShoppingList(product)">+</button>
                     </div>
@@ -88,14 +72,7 @@
                     <span class="product-price">{{ product.price }} zł</span>
                 </div>
 
-                <div class="product-store">
-                    <img *ngIf="product.store === 'Biedronka'" src="assets/images/biedronka-logo.jpg" alt="Biedronka" class="store-logo" />
-                    <img *ngIf="product.store === 'Auchan'" src="assets/images/auchan-logo.jpg" alt="Auchan" class="store-logo" />
-                    <img *ngIf="product.store === 'Lidl'" src="assets/images/lidl-logo.jpg" alt="Lidl" class="store-logo" />
-                    <img *ngIf="product.store === 'Zabka'" src="assets/images/zabka-logo.jpg" alt="Zabka" class="store-logo" />
-                    <img *ngIf="product.store === 'Tesco'" src="assets/images/tesco-logo.jpg" alt="Tesco" class="store-logo" />
-                    <span>{{ product.store }}</span>
-                </div>
+                <!-- Store information hidden during product selection phase -->
 
                 <div class="product-city" *ngIf="product.city">
                     <span>Miasto: {{ product.city }}</span>
@@ -106,7 +83,7 @@
                         <span *ngIf="!addingToList">Dodaj do listy zakupów</span>
                         <span *ngIf="addingToList">Dodawanie...</span>
                     </button>
-                    <button class="buy-btn" (click)="openPurchaseForm(product)">Kup w tym sklepie</button>
+                    <button class="buy-btn" (click)="openPurchaseForm(product)">Kup teraz</button>
                 </div>
             </li>
         </ul>
@@ -117,6 +94,7 @@
         <div class="purchase-form">
             <button class="close-button" (click)="closePurchaseForm()">✕</button>
             <h3 *ngIf="selectedProduct">Zakup: {{ selectedProduct.name }} - {{ selectedProduct.price }} zł</h3>
+            <p class="purchase-info">Produkt zostanie dodany do Twojej listy zakupów. Najtańszy sklep zostanie wybrany automatycznie po kliknięciu "Zaplanuj zakupy".</p>
             <form (ngSubmit)="submitPurchase()">
                 <label for="userEmail">Podaj swój e-mail:</label>
                 <input

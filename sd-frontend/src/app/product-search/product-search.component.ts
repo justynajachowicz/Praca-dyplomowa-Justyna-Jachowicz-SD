@@ -42,6 +42,34 @@ export class ProductSearchComponent implements OnInit {
         if (email) {
             this.userEmail = email;
         }
+
+        // Pobierz miasto z localStorage, jeśli istnieje
+        const storedCity = localStorage.getItem('selectedCity');
+        if (storedCity) {
+            this.selectedCity = storedCity;
+        }
+
+        // Załaduj wszystkie produkty przy inicjalizacji komponentu
+        this.loadAllProducts();
+    }
+
+    // Metoda do ładowania wszystkich produktów
+    loadAllProducts(): void {
+        this.productService.getProducts().subscribe(
+            (products) => {
+                if (Array.isArray(products)) {
+                    this.products = products;
+                    console.log('Wszystkie produkty:', this.products);
+                } else {
+                    console.error('Odpowiedź z serwera nie jest tablicą.');
+                    this.errorMessage = 'Brak produktów w odpowiedzi.';
+                }
+            },
+            (error) => {
+                this.errorMessage = 'Błąd podczas pobierania produktów';
+                console.error('Błąd podczas pobierania produktów:', error);
+            }
+        );
     }
 
     // Wyszukiwanie najtańszych produktów z opcjonalną filtracją po dacie i mieście
@@ -189,24 +217,15 @@ export class ProductSearchComponent implements OnInit {
 
     // Przejdź do listy zakupów
     goToShoppingList() {
-        // Jeśli wybrano miasto, przekaż je jako parametr
-        if (this.selectedCity) {
+        // Pobierz miasto z localStorage, jeśli istnieje
+        const storedCity = localStorage.getItem('selectedCity');
+
+        if (storedCity) {
             this.router.navigate(['/shopping-list'], { 
-                queryParams: { city: this.selectedCity }
+                queryParams: { city: storedCity }
             });
         } else {
             this.router.navigate(['/shopping-list']);
-        }
-    }
-
-    // Metoda wywoływana po wyborze miasta
-    onCitySelected() {
-        if (this.selectedCity && this.userEmail) {
-            localStorage.setItem('userEmail', this.userEmail);
-            localStorage.setItem('selectedCity', this.selectedCity);
-
-            // Automatycznie przejdź do listy zakupów po wyborze miasta
-            this.goToShoppingList();
         }
     }
 }

@@ -56,7 +56,7 @@ public class ShoppingListServiceImpl implements ShoppingListService {
         }
 
         PurchaseItem item = new PurchaseItem();
-        item.setProductName(product.getName());
+        item.setProductName(product.getProductName());
         item.setProductPrice(product.getPrice());
         item.setStore(product.getStore());
         item.setUser(user);

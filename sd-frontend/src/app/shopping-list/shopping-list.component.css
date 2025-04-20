@@ -190,6 +190,144 @@
   color: #666;
 }
 
+/* Styl dla przycisku planowania zakupów */
+.plan-shopping-container {
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  border: 2px dashed #f06292;
+}
+
+.plan-shopping-btn {
+  background-color: #f06292;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.plan-shopping-btn:hover {
+  background-color: #e91e63;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.plan-info {
+  color: #757575;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Styl dla widoku przed zaplanowaniem */
+.shopping-list-view .shopping-list-header {
+  grid-template-columns: 3fr 1fr 1fr;
+}
+
+.shopping-list-view .shopping-list-item {
+  grid-template-columns: 3fr 1fr 1fr;
+}
+
+/* Styl dla widoku po zaplanowaniu */
+.planned-shopping-view {
+  margin-top: 30px;
+}
+
+.planned-shopping-view h4 {
+  color: #4caf50;
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.plan-success {
+  text-align: center;
+  color: #757575;
+  margin-bottom: 20px;
+}
+
+.store-group {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.store-header {
+  background-color: #f06292;
+  color: white;
+  padding: 12px 15px;
+}
+
+.store-header h5 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.store-items {
+  padding: 0 15px;
+}
+
+.store-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.store-item:last-child {
+  border-bottom: none;
+}
+
+.item-name {
+  font-weight: 500;
+}
+
+.item-price {
+  font-weight: 700;
+  color: #f06292;
+}
+
+.store-total {
+  background-color: #f9f9f9;
+  padding: 12px 15px;
+  text-align: right;
+  font-weight: 700;
+  border-top: 1px solid #eee;
+}
+
+.total-savings {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #4caf50;
+}
+
+.reset-plan-btn {
+  display: block;
+  margin: 20px auto;
+  background-color: #757575;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reset-plan-btn:hover {
+  background-color: #616161;
+}
+
 /* Styl dla pustej listy */
 .empty-list {
   text-align: center;

@@ -440,8 +440,19 @@
 
 .purchase-form h3 {
     color: #f06292;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     text-align: center;
+}
+
+.purchase-info {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.4;
+    border-left: 3px solid #2e7d32;
 }
 
 .purchase-form label {
