@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from "@angular/common";
 import { ShoppingListService } from '../services/shopping.service';
 import { ShoppingListItem } from '../models/shopping-list-item';
@@ -7,6 +7,8 @@ import { ProductService } from '../product.service';
 import { Product } from '../models/models';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-shopping-list',
@@ -16,6 +18,8 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit {
+  @ViewChild('plannedShoppingContent') plannedShoppingContent!: ElementRef;
+
   shoppingList: ShoppingListItem[] = [];
   filteredList: ShoppingListItem[] = [];
   userEmail: string = '';
@@ -180,5 +184,55 @@ export class ShoppingListComponent implements OnInit {
       total += this.calculateStoreTotal(store);
     });
     return total;
+  }
+
+  // Metoda do eksportu listy zakupów do PDF
+  exportToPdf(): void {
+    if (!this.shoppingPlanned) {
+      // Jeśli zakupy nie są zaplanowane, najpierw je planujemy
+      this.planShopping();
+      // Dajemy chwilę na renderowanie widoku
+      setTimeout(() => this.generatePdf(), 500);
+    } else {
+      this.generatePdf();
+    }
+  }
+
+  // Generowanie PDF z zaplanowanych zakupów
+  private generatePdf(): void {
+    const content = this.plannedShoppingContent.nativeElement;
+
+    html2canvas(content).then(canvas => {
+      // Wymiary dokumentu A4
+      const imgWidth = 210; 
+      const pageHeight = 297;  
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      // Dodajemy tytuł
+      pdf.setFontSize(18);
+      pdf.text('Lista zakupów', 105, 15, { align: 'center' });
+
+      // Dodajemy datę
+      pdf.setFontSize(12);
+      const today = new Date();
+      const dateStr = today.toLocaleDateString('pl-PL');
+      pdf.text(`Data: ${dateStr}`, 105, 25, { align: 'center' });
+
+      // Dodajemy miasto
+      if (this.selectedCity) {
+        pdf.text(`Miasto: ${this.selectedCity}`, 105, 32, { align: 'center' });
+      }
+
+      // Dodajemy obraz z canvas
+      const imgData = canvas.toDataURL('image/png');
+      pdf.addImage(imgData, 'PNG', 0, 40, imgWidth, imgHeight);
+
+      // Zapisujemy PDF
+      pdf.save(`lista_zakupow_${dateStr.replace(/\//g, '-')}.pdf`);
+    });
   }
 }

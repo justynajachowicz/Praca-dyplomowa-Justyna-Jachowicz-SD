@@ -74,26 +74,31 @@
             <h4>Twoje zakupy zostały zaplanowane</h4>
             <p class="plan-success">Oto najtańszy sposób zrobienia zakupów:</p>
 
-            <div *ngFor="let store of plannedShoppingStores" class="store-group">
-                <div class="store-header">
-                    <h5>{{ store }}</h5>
-                </div>
-                <div class="store-items">
-                    <div class="store-item" *ngFor="let item of getItemsByStore(store)">
-                        <span class="item-name">{{ item.productName }}</span>
-                        <span class="item-price">{{ item.price | currency:'PLN' }}</span>
+            <div #plannedShoppingContent class="planned-shopping-content">
+                <div *ngFor="let store of plannedShoppingStores" class="store-group">
+                    <div class="store-header">
+                        <h5>{{ store }}</h5>
+                    </div>
+                    <div class="store-items">
+                        <div class="store-item" *ngFor="let item of getItemsByStore(store)">
+                            <span class="item-name">{{ item.productName }}</span>
+                            <span class="item-price">{{ item.price | currency:'PLN' }}</span>
+                        </div>
+                    </div>
+                    <div class="store-total">
+                        <span>Suma: {{ calculateStoreTotal(store) | currency:'PLN' }}</span>
                     </div>
                 </div>
-                <div class="store-total">
-                    <span>Suma: {{ calculateStoreTotal(store) | currency:'PLN' }}</span>
+
+                <div class="total-savings">
+                    <p>Całkowity koszt: {{ calculateTotalCost() | currency:'PLN' }}</p>
                 </div>
             </div>
 
-            <div class="total-savings">
-                <p>Całkowity koszt: {{ calculateTotalCost() | currency:'PLN' }}</p>
+            <div class="action-buttons">
+                <button class="reset-plan-btn" (click)="resetPlan()">Zaplanuj ponownie</button>
+                <button class="export-pdf-btn" (click)="exportToPdf()">Eksportuj do PDF</button>
             </div>
-
-            <button class="reset-plan-btn" (click)="resetPlan()">Zaplanuj ponownie</button>
         </div>
     </div>
 
