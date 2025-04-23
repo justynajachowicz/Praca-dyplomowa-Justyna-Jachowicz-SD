@@ -266,11 +266,11 @@
 
 /* Styl dla widoku przed zaplanowaniem */
 .shopping-list-view .shopping-list-header {
-  grid-template-columns: 80px 3fr 2fr 1fr;
+  grid-template-columns: 80px 3fr 2fr 2fr 1fr;
 }
 
 .shopping-list-view .shopping-list-item {
-  grid-template-columns: 80px 3fr 2fr 1fr;
+  grid-template-columns: 80px 3fr 2fr 2fr 1fr;
 }
 
 /* Styl dla widoku po zaplanowaniu */
