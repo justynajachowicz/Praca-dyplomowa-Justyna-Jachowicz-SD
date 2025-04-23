@@ -112,6 +112,16 @@
                 && (product.name.toLowerCase().includes('jajko') || product.name.toLowerCase().includes('jajka'))">
                     <img src="assets/images/jajka.png" alt="Jajka" width="100" height="100" class="product-image" />
                 </div>
+                <div *ngIf="product.name
+  && !product.name.toLowerCase().includes('makaron')
+  && !product.name.toLowerCase().includes('chleb')
+  && !product.name.toLowerCase().includes('jajko')
+  && !product.name.toLowerCase().includes('jajka')
+  && !product.name.toLowerCase().includes('masło')
+  && !product.name.toLowerCase().includes('mleko')
+  && product.name.toLowerCase().includes('ser')">
+                    <img src="assets/images/Ser.png" alt="Ser" width="100" height="100" class="product-image" />
+                </div>
 
 
 
