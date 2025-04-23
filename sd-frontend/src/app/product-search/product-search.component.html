@@ -118,7 +118,6 @@
 
                 <div class="product-header">
                     <span class="product-name">{{ product.name }}</span>
-                    <span class="product-price">{{ product.price }} zł</span>
                 </div>
 
                 <div class="product-details">
@@ -130,9 +129,6 @@
                     </div>
                     <div *ngIf="product.city" class="product-city">
                         <span>Miasto: {{ product.city }}</span>
-                    </div>
-                    <div *ngIf="product.store" class="product-store">
-                        <span>Sklep: {{ product.store }}</span>
                     </div>
                 </div>
 

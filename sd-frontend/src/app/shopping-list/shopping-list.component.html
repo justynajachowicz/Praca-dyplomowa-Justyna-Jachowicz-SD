@@ -24,11 +24,9 @@
             <div *ngFor="let product of products" class="product-card">
                 <div class="product-header">
                     <span class="product-name">{{ product.name }}</span>
-                    <span class="product-price">{{ product.price }} zł</span>
                 </div>
                 <div class="product-details">
                     <p *ngIf="product.weight">Waga: {{ product.weight }}</p>
-                    <p *ngIf="product.store">Sklep: {{ product.store }}</p>
                 </div>
                 <div class="product-actions">
                     <button class="add-to-list-btn" (click)="addToShoppingList(product)">Dodaj do listy</button>
@@ -53,8 +51,6 @@
             <div class="shopping-list-header">
                 <span>Zdjęcie</span>
                 <span>Produkt</span>
-                <span>Sklep</span>
-                <span>Cena</span>
                 <span>Akcje</span>
             </div>
 
@@ -103,12 +99,6 @@
                         {{ item.city || 'Brak miasta' }}
                         <span *ngIf="item.date"> | {{ item.date | date:'shortDate' }}</span>
                     </small>
-                </div>
-                <div class="store-info">
-                    {{ item.storeName || 'Brak sklepu' }}
-                </div>
-                <div class="price-info">
-                    {{ item.price | currency:'PLN' }}
                 </div>
                 <div class="actions">
                     <button class="remove-btn" (click)="removeItem(item)">Usuń</button>

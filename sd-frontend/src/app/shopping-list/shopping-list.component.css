@@ -26,7 +26,7 @@
 /* Nagłówek tabeli */
 .shopping-list-header {
   display: grid;
-  grid-template-columns: 80px 3fr 2fr 2fr 1fr;
+  grid-template-columns: 80px 3fr 1fr;
   background-color: #f06292;
   color: white;
   padding: 12px 15px;
@@ -38,7 +38,7 @@
 /* Elementy na liście */
 .shopping-list-item {
   display: grid;
-  grid-template-columns: 80px 3fr 2fr 2fr 1fr;
+  grid-template-columns: 80px 3fr 1fr;
   background-color: #f9f9f9;
   border: 1px solid #eee;
   border-radius: 8px;
@@ -266,11 +266,11 @@
 
 /* Styl dla widoku przed zaplanowaniem */
 .shopping-list-view .shopping-list-header {
-  grid-template-columns: 80px 3fr 2fr 2fr 1fr;
+  grid-template-columns: 80px 3fr 1fr;
 }
 
 .shopping-list-view .shopping-list-item {
-  grid-template-columns: 80px 3fr 2fr 2fr 1fr;
+  grid-template-columns: 80px 3fr 1fr;
 }
 
 /* Styl dla widoku po zaplanowaniu */
