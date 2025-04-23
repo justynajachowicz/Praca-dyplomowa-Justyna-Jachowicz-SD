@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { catchError, map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from '../environments/environment';
 import { PurchaseItem } from "./models/purchase-item";
 import { Product } from "./models/models";
@@ -32,13 +32,19 @@ export class ProductService {
     addToShoppingList(product: Product, email: string): Observable<any> {
         const params = new HttpParams().set('email', email);
 
-        return this.http.post(`${this.apiUrl}/api/shopping-list`, product, {
+        // Ensure productName is set correctly
+        const productToSend = { ...product };
+        if (!productToSend.productName && productToSend.name) {
+            productToSend.productName = productToSend.name;
+        }
+
+        return this.http.post(`${this.apiUrl}/api/shopping-list`, productToSend, {
             params,
             responseType: 'text' // <- DODAJ TO
         }).pipe(
             catchError(error => {
                 console.error('Błąd dodawania produktu do listy zakupów:', error);
-                throw error;
+                return throwError(() => error);
             })
         );
     }

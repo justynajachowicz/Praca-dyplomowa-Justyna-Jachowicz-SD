@@ -26,7 +26,7 @@
 /* Nagłówek tabeli */
 .shopping-list-header {
   display: grid;
-  grid-template-columns: 3fr 2fr 1fr 1fr;
+  grid-template-columns: 80px 3fr 2fr 2fr 1fr;
   background-color: #f06292;
   color: white;
   padding: 12px 15px;
@@ -38,7 +38,7 @@
 /* Elementy na liście */
 .shopping-list-item {
   display: grid;
-  grid-template-columns: 3fr 2fr 1fr 1fr;
+  grid-template-columns: 80px 3fr 2fr 2fr 1fr;
   background-color: #f9f9f9;
   border: 1px solid #eee;
   border-radius: 8px;
@@ -46,6 +46,22 @@
   margin-bottom: 10px;
   transition: background-color 0.3s ease;
   align-items: center;
+}
+
+/* Kontener obrazu produktu */
+.product-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+}
+
+.product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 /* Efekt hover na elemencie listy */
@@ -77,6 +93,8 @@
 /* Stylowanie dla sklepu */
 .store-info {
   font-weight: 500;
+  color: #4caf50; /* Zielony kolor dla sklepu */
+  font-size: 14px;
 }
 
 /* Przyciski akcji */
@@ -248,11 +266,11 @@
 
 /* Styl dla widoku przed zaplanowaniem */
 .shopping-list-view .shopping-list-header {
-  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-columns: 80px 3fr 2fr 1fr;
 }
 
 .shopping-list-view .shopping-list-item {
-  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-columns: 80px 3fr 2fr 1fr;
 }
 
 /* Styl dla widoku po zaplanowaniu */
@@ -299,6 +317,7 @@
 .store-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 12px 0;
   border-bottom: 1px solid #f0f0f0;
 }
@@ -307,13 +326,25 @@
   border-bottom: none;
 }
 
+.item-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
 .item-name {
   font-weight: 500;
+  flex: 1;
+  margin-left: 10px;
 }
 
 .item-price {
   font-weight: 700;
   color: #f06292;
+  margin-left: 10px;
 }
 
 .store-total {
@@ -375,6 +406,26 @@
 .export-pdf-btn:hover {
   background-color: #1976D2;
   transform: translateY(-2px);
+}
+
+/* Styl dla przycisku dodawania do listy */
+.add-to-list-btn {
+  background-color: #4CAF50; /* Zielony kolor dla przycisku dodawania */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.add-to-list-btn:hover {
+  background-color: #388E3C;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Styl dla zawartości PDF */

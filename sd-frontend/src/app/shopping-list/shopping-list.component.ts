@@ -206,6 +206,25 @@ export class ShoppingListComponent implements OnInit {
     return total;
   }
 
+  // Metoda do dodawania produktu do listy zakupów
+  addToShoppingList(product: Product): void {
+    if (!this.userEmail) {
+      alert('Proszę zalogować się, aby dodać produkt do listy zakupów.');
+      return;
+    }
+
+    this.productService.addToShoppingList(product, this.userEmail).subscribe({
+      next: () => {
+        console.log('Produkt dodany do listy zakupów:', product);
+        this.refreshList(); // Odśwież listę po dodaniu produktu
+      },
+      error: (err) => {
+        console.error('Błąd podczas dodawania produktu do listy zakupów:', err);
+        alert('Nie udało się dodać produktu do listy zakupów.');
+      }
+    });
+  }
+
   // Metoda do eksportu listy zakupów do PDF
   exportToPdf(): void {
     if (!this.shoppingPlanned) {
