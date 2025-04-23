@@ -106,8 +106,14 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                             // Pobierz nazwę produktu lub użyj pustego stringa jeśli brak nazwy
                             const productName = product.name ? product.name.toLowerCase() : '';
 
-                            // Zwróć produkty, których nazwa zawiera wyszukiwany termin
-                            return productName.includes(searchTerm);
+                            // Sprawdź, czy wyszukiwany termin występuje jako całe słowo
+                            const wordBoundaryRegex = new RegExp(`\\b${searchTerm}\\b`, 'i');
+
+                            // Sprawdź, czy nazwa produktu zaczyna się od wyszukiwanego terminu
+                            const startsWithTerm = productName.startsWith(searchTerm);
+
+                            // Sprawdź, czy wyszukiwany termin występuje jako całe słowo lub na początku nazwy
+                            return wordBoundaryRegex.test(productName) || startsWithTerm;
                         });
 
                         console.log('Najtańsze produkty po filtrowaniu:', this.products);
