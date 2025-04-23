@@ -28,10 +28,11 @@ export class LoginComponent {
     if (this.userForm.invalid) return;
 
     const loginData = this.userForm.value;
-    
+
     this.authService.login(loginData).subscribe({
       next: (response) => {
         localStorage.setItem('jwt', response.token); // Zapisujemy token
+        localStorage.setItem('userEmail', loginData.email); // Zapisujemy email użytkownika
         this.router.navigate(['/dashboard']); // Przekierowanie do panelu
       },
       error: () => {

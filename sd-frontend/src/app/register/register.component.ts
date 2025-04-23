@@ -35,7 +35,8 @@ export class RegisterComponent {
     const registerRequest = {
       email: this.email,  // użycie 'email' zamiast 'username'
       password: this.password,
-      confirmPassword: this.confirmPassword  // Dodanie 'confirmPassword' tutaj
+      confirmPassword: this.confirmPassword,  // Dodanie 'confirmPassword' tutaj
+      role: 'USER'  // Dodanie domyślnej roli 'USER'
     };
 
     // Wywołanie metody rejestracji z serwisu
@@ -63,7 +64,7 @@ export class RegisterComponent {
     });
 
   }
-  
+
 
   onLogin() {
     this.router.navigate(['/login']);

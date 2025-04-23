@@ -9,6 +9,8 @@ import { AdminUserManagementComponent } from './admin-user-management/admin-user
 import {ReceiptUploadComponent} from "./components/receipt-upload/receipt-upload.component";
 import { PurchaseFormComponent } from './purchase-form/purchase-form.component';
 import {ProductSearchComponent} from "./product-search/product-search.component";
+import { ProductSimulationComponent } from './product-simulation/product-simulation.component';
+import { AdminGuard } from './guards/admin.guard';
 
 
 
@@ -20,9 +22,10 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent }, // Panel użytkownika];
   { path: 'shopping-list', component: ShoppingListComponent },
-  { path: 'admin/users', component: AdminUserManagementComponent },
+  { path: 'admin/users', component: AdminUserManagementComponent, canActivate: [AdminGuard] },
   { path: 'receipt-upload', component: ReceiptUploadComponent },
   { path: 'add-purchase', component: PurchaseFormComponent },  // Formularz dodania zakupu
+  { path: 'product-simulation', component: ProductSimulationComponent, canActivate: [AdminGuard] }, // Symulacja produktów (tylko dla admina)
   { path: '**', redirectTo: '' },
 
   // Inne ścieżki...

@@ -4,6 +4,7 @@ import com.ans.shopping_dashboard.repository.ProductRepository;
 import com.ans.shopping_dashboard.dto.ProductDTO;
 import com.ans.shopping_dashboard.model.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,12 +19,17 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+
+
     // Metoda do wyszukiwania najtańszych produktów
     public List<ProductDTO> findCheapestProducts(String query) {
         List<Product> products = productRepository.findByProductNameContainingIgnoreCase(query);
         return products.stream()
                 .map(p -> new ProductDTO(p.getId(), p.getProductName(), p.getPrice(), p.getStore(), p.getCity()))
                 .collect(Collectors.toList());
+    }
+    public List<Product> searchByName(String keyword) {
+        return productRepository.findByProductNameContainingIgnoreCase(keyword);
     }
 
     // Metoda do wyszukiwania najtańszych produktów w danym mieście
@@ -39,7 +45,7 @@ public class ProductService {
         System.out.println("Szukam produktów o nazwie: " + name);
 
         // Wykonanie zapytania do bazy
-        List<Product> products = productRepository.findByProductNameContainingIgnoreCase(name);
+        List<Product> products = productRepository.searchByName(name);
 
         // Logowanie wyników
         System.out.println("Znalezione produkty: " + products);
@@ -118,4 +124,6 @@ public class ProductService {
                 .map(p -> new ProductDTO(p.getId(), p.getProductName(), p.getPrice(), p.getStore(), p.getCity()))
                 .collect(Collectors.toList());
     }
+
+
 }

@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../models/models';
 import { ProductService } from '../product.service';
 import { AuthService } from '../services/auth.service';
+import { FavoriteService } from '../services/favorite.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
     selector: 'app-product-search',
@@ -15,12 +18,10 @@ import { Router } from '@angular/router';
     ],
     styleUrls: ['./product-search.component.css']
 })
-export class ProductSearchComponent implements OnInit {
+export class ProductSearchComponent implements OnInit, OnDestroy {
     query: string = '';          // Nazwa produktu
     products: Product[] = [];    // Lista wyników
     errorMessage: string = '';   // Komunikaty o błędach
-    startDate: string = '';      // Data początkowa (opcjonalnie)
-    endDate: string = '';        // Data końcowa (opcjonalnie)
     selectedCity: string = '';   // Wybrane miasto (opcjonalnie)
     selectedProduct: any = null;
     userEmail: string = '';
@@ -28,9 +29,15 @@ export class ProductSearchComponent implements OnInit {
     addingToList: boolean = false;
     successMessage: string = '';
 
+    // For debouncing search input
+    private searchTerms = new Subject<string>();
+    private searchSubscription: Subscription | null = null;
+    isLoading: boolean = false;
+
     constructor(
         private productService: ProductService,
-        private authService: AuthService,
+        public authService: AuthService,
+        private favoriteService: FavoriteService,
         private router: Router
     ) {
         this.purchaseFormVisible = false;
@@ -51,6 +58,16 @@ export class ProductSearchComponent implements OnInit {
 
         // Załaduj wszystkie produkty przy inicjalizacji komponentu
         this.loadAllProducts();
+
+        // Ustaw subskrypcję dla wyszukiwania podczas wpisywania
+        this.searchSubscription = this.searchTerms.pipe(
+            // Poczekaj 300ms po każdym naciśnięciu klawisza
+            debounceTime(300),
+            // Ignoruj, jeśli termin wyszukiwania się nie zmienił
+            distinctUntilChanged()
+        ).subscribe(() => {
+            this.searchProducts();
+        });
     }
 
     // Metoda do ładowania wszystkich produktów
@@ -72,16 +89,28 @@ export class ProductSearchComponent implements OnInit {
         );
     }
 
-    // Wyszukiwanie najtańszych produktów z opcjonalną filtracją po dacie i mieście
+    // Wyszukiwanie najtańszych produktów z opcjonalną filtracją po mieście
     searchProducts(): void {
         if (this.query.trim()) {
             this.addingToList = false;
             this.successMessage = '';
-            this.productService.findCheapestProducts(this.query, this.startDate, this.endDate, this.selectedCity).subscribe(
+            this.isLoading = true;
+            this.productService.findCheapestProducts(this.query, '', '', this.selectedCity).subscribe(
                 (products) => {
+                    this.isLoading = false;
                     if (Array.isArray(products)) {
-                        this.products = products;
-                        console.log('Najtańsze produkty:', this.products);
+                        // Filtruj produkty, aby pokazać tylko dokładne dopasowanie do zapytania
+                        const searchTerm = this.query.trim().toLowerCase();
+
+                        this.products = products.filter(product => {
+                            // Pobierz nazwę produktu lub użyj pustego stringa jeśli brak nazwy
+                            const productName = product.name ? product.name.toLowerCase() : '';
+
+                            // Zwróć produkty, których nazwa zawiera wyszukiwany termin
+                            return productName.includes(searchTerm);
+                        });
+
+                        console.log('Najtańsze produkty po filtrowaniu:', this.products);
 
                         // Grupowanie produktów według miasta dla porównania cen
                         if (this.products.length > 0) {
@@ -95,10 +124,25 @@ export class ProductSearchComponent implements OnInit {
                     }
                 },
                 (error) => {
+                    this.isLoading = false;
                     this.errorMessage = 'Błąd podczas pobierania produktów';
                     console.error('Błąd podczas pobierania produktów:', error);
                 }
             );
+        } else {
+            this.products = [];
+        }
+    }
+
+    // Metoda do wyszukiwania produktów podczas wpisywania
+    searchProductsAsYouType(): void {
+        this.searchTerms.next(this.query);
+    }
+
+    ngOnDestroy(): void {
+        // Unsubscribe to prevent memory leaks
+        if (this.searchSubscription) {
+            this.searchSubscription.unsubscribe();
         }
     }
 
@@ -227,5 +271,43 @@ export class ProductSearchComponent implements OnInit {
         } else {
             this.router.navigate(['/shopping-list']);
         }
+    }
+
+    // Dodaj produkt do ulubionych
+    addToFavorites(product: any): void {
+        if (!this.userEmail) {
+            alert('Proszę podać e-mail!');
+            return;
+        }
+
+        // Zapisz email użytkownika w localStorage
+        localStorage.setItem('userEmail', this.userEmail);
+
+        this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
+            if (isRegistered) {
+                // Jeśli użytkownik jest zarejestrowany i nie jest adminem
+                if (!this.authService.isAdmin()) {
+                    this.favoriteService.addToFavorites(product, this.userEmail).subscribe(
+                        response => {
+                            console.log('Produkt dodany do ulubionych:', response);
+                            this.successMessage = 'Produkt został dodany do Twoich ulubionych!';
+
+                            // Wyczyść komunikat po 3 sekundach
+                            setTimeout(() => {
+                                this.successMessage = '';
+                            }, 3000);
+                        },
+                        error => {
+                            console.error('Błąd podczas dodawania do ulubionych:', error);
+                            alert('Nie udało się dodać produktu do ulubionych.');
+                        }
+                    );
+                } else {
+                    alert('Administratorzy nie mogą dodawać produktów do ulubionych.');
+                }
+            } else {
+                alert('Musisz być zarejestrowany, aby dodać produkt do ulubionych.');
+            }
+        });
     }
 }

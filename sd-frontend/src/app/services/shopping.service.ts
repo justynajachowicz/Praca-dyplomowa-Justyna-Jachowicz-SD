@@ -19,4 +19,8 @@ export class ShoppingListService {
     removeItem(itemId: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/${itemId}`, { responseType: 'text' });
     }
+
+    removeAllItems(userEmail: string): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/all?email=${userEmail}`, { responseType: 'text' });
+    }
 }

@@ -134,6 +134,26 @@ export class ShoppingListComponent implements OnInit {
     });
   }
 
+  removeAllItems(): void {
+    if (!this.userEmail) {
+      console.error('Nie można usunąć przedmiotów bez adresu email użytkownika');
+      return;
+    }
+
+    if (confirm('Czy na pewno chcesz usunąć wszystkie produkty z listy zakupów?')) {
+      console.log('Usuwanie wszystkich przedmiotów dla użytkownika:', this.userEmail);
+      this.shoppingListService.removeAllItems(this.userEmail).subscribe({
+        next: () => {
+          console.log('Wszystkie przedmioty usunięte pomyślnie');
+          this.refreshList();
+        },
+        error: (err) => {
+          console.error('Błąd podczas usuwania wszystkich przedmiotów:', err);
+        }
+      });
+    }
+  }
+
   // Metoda do planowania zakupów
   planShopping(): void {
     // Resetuj poprzednie planowanie

@@ -1,9 +1,30 @@
-<p>dashboard works!</p>
+<div class="dashboard-header">
+  <h2>Panel użytkownika</h2>
+  <div class="dashboard-actions">
+    <app-promotion-notification></app-promotion-notification>
+    <button class="logout-btn" (click)="onLogout()">Wyloguj</button>
+  </div>
+</div>
 
-<a routerLink="/shopping-list">Moja lista zakupów</a>
-
-<button (click)="onLogout()">Logout</button>
-
-<button (click)="goToUserManagement()">Zarządzaj użytkownikami</button>
+<div class="dashboard-content">
+  <div class="dashboard-menu">
+    <a class="menu-item" routerLink="/shopping-list">
+      <span class="menu-icon">🛒</span>
+      Moja lista zakupów
+    </a>
+    <a class="menu-item" routerLink="/product-search">
+      <span class="menu-icon">🔍</span>
+      Wyszukaj produkty
+    </a>
+    <a class="menu-item" *ngIf="authService.isAdmin()" (click)="goToUserManagement()">
+      <span class="menu-icon">👥</span>
+      Zarządzaj użytkownikami
+    </a>
+    <a class="menu-item" *ngIf="authService.isAdmin()" routerLink="/product-simulation">
+      <span class="menu-icon">🍎</span>
+      Symulacja produktów
+    </a>
+  </div>
+</div>
 
 <router-outlet></router-outlet>

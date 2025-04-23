@@ -38,9 +38,10 @@
     <div *ngIf="filteredList.length > 0; else emptyList" class="shopping-list">
         <h3>Twoje produkty</h3>
 
-        <!-- Przycisk do planowania zakupów -->
+        <!-- Przyciski akcji -->
         <div class="plan-shopping-container" *ngIf="!shoppingPlanned">
             <button class="plan-shopping-btn" (click)="planShopping()">Zaplanuj zakupy</button>
+            <button class="remove-all-btn" (click)="removeAllItems()">Usuń wszystkie produkty</button>
             <p class="plan-info">Kliknij, aby wyliczyć gdzie będzie najtaniej zrobić zakupy</p>
         </div>
 

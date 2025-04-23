@@ -10,11 +10,17 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    @Query("SELECT p FROM Product p WHERE LOWER(p.productName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<Product> searchByName(@Param("keyword") String keyword);
+
     // Wyszukiwanie po nazwie produktu (ignorując wielkość liter)
     List<Product> findByProductNameContainingIgnoreCase(String name);
 
     // Wyszukiwanie po nazwie produktu i mieście (ignorując wielkość liter)
     List<Product> findByProductNameContainingIgnoreCaseAndCityIgnoreCase(String name, String city);
+
+    @Query(value = "SELECT * FROM product p WHERE LOWER(p.product_name) ~* ('\\m' || :word || '\\M')", nativeQuery = true)
+    List<Product> searchByWholeWord(@Param("word") String word);
 
     // Wyszukiwanie po nazwie produktu i zakresie dat
     @Query("SELECT p FROM Product p WHERE LOWER(p.productName) LIKE LOWER(CONCAT('%', :name, '%'))" +

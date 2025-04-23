@@ -1,0 +1,125 @@
+.notification-container {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-icon {
+  cursor: pointer;
+  position: relative;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: #f06292;
+  color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.notification-icon:hover {
+  background-color: #e91e63;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ff5252;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.notification-panel {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 300px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background-color: #f06292;
+  color: white;
+}
+
+.notification-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.notification-content {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.loading, .error, .empty-message {
+  padding: 15px;
+  text-align: center;
+  color: #757575;
+}
+
+.error {
+  color: #f44336;
+}
+
+.promotions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.promotion-item {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  border-left: 4px solid #f06292;
+}
+
+.promotion-details h4 {
+  margin: 0 0 8px 0;
+  color: #f06292;
+  font-size: 16px;
+}
+
+.promotion-details p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #616161;
+}
+
+.price {
+  font-weight: bold;
+  color: #4caf50 !important;
+}
+
+.store, .city {
+  font-style: italic;
+}

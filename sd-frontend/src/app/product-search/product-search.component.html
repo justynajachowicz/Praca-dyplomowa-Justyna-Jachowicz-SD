@@ -10,18 +10,10 @@
         <div class="search-box">
             <input
                 [(ngModel)]="query"
-                (keyup.enter)="searchProducts()"
-                placeholder="Wpisz nazwę produktu"
+                (input)="searchProductsAsYouType()"
+                placeholder="Wpisz nazwę produktu, aby wyszukać..."
                 class="search-input"
             />
-            <button class="search-button" (click)="searchProducts()">Szukaj</button>
-        </div>
-
-        <div class="date-filter">
-            <label for="startDate">Data początkowa:</label>
-            <input id="startDate" [(ngModel)]="startDate" type="date" />
-            <label for="endDate">Data końcowa:</label>
-            <input id="endDate" [(ngModel)]="endDate" type="date" />
         </div>
 
         <!-- Pole email -->
@@ -42,40 +34,49 @@
         {{ successMessage }}
     </div>
 
-    <!-- Wyniki z obrazkami -->
-    <div *ngIf="products.length > 0" class="results-container">
-        <h3 *ngIf="query">Najtańsze oferty dla: "{{ query }}"</h3>
+    <!-- Wskaźnik ładowania -->
+    <div *ngIf="isLoading" class="loading-indicator">
+        <div class="spinner"></div>
+        <p>Wyszukiwanie produktów...</p>
+    </div>
+
+    <!-- Wyniki wyszukiwania -->
+    <div *ngIf="products.length > 0 && !isLoading" class="results-container">
+        <h3 *ngIf="query">Znalezione produkty dla: "{{ query }}"</h3>
         <h3 *ngIf="!query">Wszystkie dostępne produkty</h3>
 
-        <!-- Porównanie cen w różnych miastach -->
-        <div class="price-comparison">
-            <h4>Porównanie cen w różnych miastach</h4>
-            <div class="city-comparison">
-                <div *ngFor="let city of getUniqueCities()" class="city-card">
-                    <h5>{{ city }}</h5>
-                    <div *ngFor="let product of getProductsByCity(city)" class="city-product">
-                        <div class="product-info">
-                            <span class="product-name">{{ product.name }}</span>
-                            <span class="product-price">{{ product.price }} zł</span>
-                            <!-- Store information hidden during product selection phase -->
-                        </div>
-                        <button class="add-to-list-btn small" (click)="addToShoppingList(product)">+</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+
 
         <ul class="products-list">
             <li *ngFor="let product of products" class="product-card">
+                <div *ngIf="product.name && product.name.toLowerCase().includes('mleko')">
+                    <img
+                            src="assets/images/mleko.png"
+                            alt="Mleko"
+                            width="100"
+                            height="100"
+                            class="product-image"
+                    />
+                </div>
                 <div class="product-header">
                     <span class="product-name">{{ product.name }}</span>
                     <span class="product-price">{{ product.price }} zł</span>
                 </div>
 
-                <!-- Store information hidden during product selection phase -->
-
-                <div class="product-city" *ngIf="product.city">
-                    <span>Miasto: {{ product.city }}</span>
+                <div class="product-details">
+                    <div *ngIf="product.brand" class="product-brand">
+                        <span>Marka: {{ product.brand }}</span>
+                    </div>
+                    <div *ngIf="product.weight" class="product-weight">
+                        <span>Waga: {{ product.weight }}</span>
+                    </div>
+                    <div *ngIf="product.city" class="product-city">
+                        <span>Miasto: {{ product.city }}</span>
+                    </div>
+                    <div *ngIf="product.store" class="product-store">
+                        <span>Sklep: {{ product.store }}</span>
+                    </div>
                 </div>
 
                 <div class="product-actions">
@@ -83,32 +84,11 @@
                         <span *ngIf="!addingToList">Dodaj do listy zakupów</span>
                         <span *ngIf="addingToList">Dodawanie...</span>
                     </button>
-                    <button class="buy-btn" (click)="openPurchaseForm(product)">Kup teraz</button>
                 </div>
             </li>
         </ul>
     </div>
 
-    <!-- Formularz zakupu -->
-    <div *ngIf="purchaseFormVisible" class="purchase-form-overlay">
-        <div class="purchase-form">
-            <button class="close-button" (click)="closePurchaseForm()">✕</button>
-            <h3 *ngIf="selectedProduct">Zakup: {{ selectedProduct.name }} - {{ selectedProduct.price }} zł</h3>
-            <p class="purchase-info">Produkt zostanie dodany do Twojej listy zakupów. Najtańszy sklep zostanie wybrany automatycznie po kliknięciu "Zaplanuj zakupy".</p>
-            <form (ngSubmit)="submitPurchase()">
-                <label for="userEmail">Podaj swój e-mail:</label>
-                <input
-                    id="userEmail"
-                    type="email"
-                    [(ngModel)]="userEmail"
-                    name="email"
-                    required
-                    placeholder="Twój e-mail"
-                />
-                <button type="submit" class="submit-btn">Dodaj do listy zakupów</button>
-            </form>
-        </div>
-    </div>
 
     <!-- Wiadomość, gdy brak wyników -->
     <div *ngIf="products.length === 0 && query" class="no-results">

@@ -314,6 +314,7 @@
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .product-card:hover {
@@ -342,46 +343,56 @@
     font-size: 18px;
 }
 
-/* Informacje o sklepie */
-.product-store {
+/* Szczegóły produktu */
+.product-details {
     padding: 15px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 8px;
     border-bottom: 1px solid #f8bbd0;
 }
 
-.store-logo {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    margin-right: 15px;
-    border-radius: 6px;
+.product-brand, .product-weight, .product-city, .product-store {
+    font-size: 14px;
+    color: #616161;
+}
+
+.product-brand span, .product-weight span, .product-city span, .product-store span {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    border-left: 3px solid #f06292;
 }
 
 /* Przyciski akcji */
 .product-actions {
     padding: 15px;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.add-to-list-btn, .buy-btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    justify-content: center;
 }
 
 .add-to-list-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
     background-color: #f06292;
     color: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
 .add-to-list-btn:hover:not([disabled]) {
     background-color: #e91e63;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .add-to-list-btn[disabled] {
@@ -389,109 +400,34 @@
     cursor: not-allowed;
 }
 
-.buy-btn {
-    background-color: #f8bbd0;
-    color: #880e4f;
-}
-
-.buy-btn:hover {
-    background-color: #f48fb1;
-}
-
-/* Formularz zakupu */
-.purchase-form-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+/* Wskaźnik ładowania */
+.loading-indicator {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    z-index: 1000;
+    justify-content: center;
+    padding: 40px 0;
 }
 
-.purchase-form {
-    background-color: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 400px;
-    position: relative;
-}
-
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    color: #f06292;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.close-button:hover {
-    color: #e91e63;
-}
-
-.purchase-form h3 {
-    color: #f06292;
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(240, 98, 146, 0.3);
+    border-radius: 50%;
+    border-top-color: #f06292;
+    animation: spin 1s ease-in-out infinite;
     margin-bottom: 15px;
-    text-align: center;
 }
 
-.purchase-info {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    padding: 10px 15px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    line-height: 1.4;
-    border-left: 3px solid #2e7d32;
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
-.purchase-form label {
-    font-weight: 500;
-    color: #616161;
-    display: block;
-    margin-bottom: 8px;
-}
-
-.purchase-form input[type="email"] {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #f8bbd0;
-    border-radius: 8px;
+.loading-indicator p {
+    color: #757575;
     font-size: 16px;
-    margin-bottom: 20px;
 }
 
-.purchase-form input[type="email"]:focus {
-    outline: none;
-    border-color: #f06292;
-}
-
-.submit-btn {
-    background-color: #f06292;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    width: 100%;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.submit-btn:hover {
-    background-color: #e91e63;
-}
 
 /* Wiadomość gdy brak wyników */
 .no-results {

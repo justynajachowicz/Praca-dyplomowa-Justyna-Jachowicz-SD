@@ -3,6 +3,7 @@ package com.ans.shopping_dashboard.controller;
 import com.ans.shopping_dashboard.dto.ProductDTO;
 import com.ans.shopping_dashboard.service.ProductService;
 import com.ans.shopping_dashboard.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+
 
     // Konstruktor z wstrzykiwaniem zależności
     public ProductController(ProductService productService) {
@@ -94,4 +96,17 @@ public class ProductController {
         // Twoja logika wyszukiwania produktów
 
         return null;
-    }}
+
+
+
+    }
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTO>> searchProducts(@RequestParam(value = "name") String name) {
+        List<ProductDTO> products = productService.searchProductsByName(name);  // Wywołanie metody wyszukiwania w serwisie
+
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();  // Zwrócenie pustej odpowiedzi, jeśli brak produktów
+        }
+        return ResponseEntity.ok(products);  // Zwrócenie wyników wyszukiwania
+    }
+}

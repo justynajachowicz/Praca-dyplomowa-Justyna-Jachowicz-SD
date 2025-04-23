@@ -3,6 +3,7 @@ import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import {CitySearchComponent} from "../city-search/city-search.component";
 import {CommonModule, NgIf} from "@angular/common";
+import { PromotionNotificationComponent } from '../components/promotion-notification/promotion-notification.component';
 
 
 @Component({
@@ -12,7 +13,8 @@ import {CommonModule, NgIf} from "@angular/common";
         RouterOutlet,
         CitySearchComponent,
         RouterLink,
-        NgIf
+        NgIf,
+        PromotionNotificationComponent
     ],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.css'

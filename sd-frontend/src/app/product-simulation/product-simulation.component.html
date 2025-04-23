@@ -1,0 +1,58 @@
+<div class="simulation-container">
+  <h2>Symulacja produktów spożywczych</h2>
+  
+  <div class="simulation-description">
+    <p>
+      Ta funkcja wygeneruje 200 różnych produktów spożywczych i przypisze je do istniejących sklepów.
+      Produkty zostaną równomiernie rozdzielone pomiędzy wszystkie dostępne sklepy.
+    </p>
+  </div>
+
+  <div class="simulation-actions">
+    <button 
+      class="generate-btn" 
+      (click)="generateProducts()" 
+      [disabled]="isGenerating">
+      {{ isGenerating ? 'Generowanie...' : 'Wygeneruj 200 produktów' }}
+    </button>
+  </div>
+
+  <div *ngIf="isGenerating" class="loading-indicator">
+    <div class="spinner"></div>
+    <p>Trwa generowanie produktów, proszę czekać...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="generationComplete" class="success-message">
+    <p>Pomyślnie wygenerowano {{ generatedProducts.length }} produktów!</p>
+    
+    <div class="products-summary">
+      <h3>Podsumowanie wygenerowanych produktów:</h3>
+      <ul>
+        <li>Liczba produktów: {{ generatedProducts.length }}</li>
+        <li>Liczba sklepów: {{ countUniqueStores() }}</li>
+      </ul>
+    </div>
+    
+    <div class="products-preview" *ngIf="generatedProducts.length > 0">
+      <h3>Przykładowe produkty:</h3>
+      <div class="products-grid">
+        <div class="product-card" *ngFor="let product of getSampleProducts()">
+          <div class="product-header">
+            <span class="product-name">{{ product.name }}</span>
+            <span class="product-price">{{ product.price }} zł</span>
+          </div>
+          <div class="product-details">
+            <p>Marka: {{ product.brand }}</p>
+            <p>Waga: {{ product.weight }}</p>
+            <p>Sklep: {{ product.store }}</p>
+            <p>Miasto: {{ product.city }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

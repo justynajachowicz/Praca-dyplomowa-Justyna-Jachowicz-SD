@@ -219,6 +219,27 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Styl dla przycisku usuwania wszystkich produktów */
+.remove-all-btn {
+  background-color: #f44336; /* Czerwony kolor dla przycisku usuwania */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.remove-all-btn:hover {
+  background-color: #d32f2f; /* Ciemniejszy czerwony na hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .plan-info {
   color: #757575;
   font-size: 14px;
