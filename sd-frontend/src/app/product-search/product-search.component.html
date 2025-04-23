@@ -9,10 +9,10 @@
     <div class="search-container">
         <div class="search-box">
             <input
-                [(ngModel)]="query"
-                (input)="searchProductsAsYouType()"
-                placeholder="Wpisz nazwę produktu, aby wyszukać..."
-                class="search-input"
+                    [(ngModel)]="query"
+                    (input)="searchProductsAsYouType()"
+                    placeholder="Wpisz nazwę produktu, aby wyszukać..."
+                    class="search-input"
             />
         </div>
 
@@ -20,11 +20,11 @@
         <div class="email-input">
             <label for="userEmailSearch">Twój e-mail (potrzebny do dodania produktów):</label>
             <input
-                id="userEmailSearch"
-                type="email"
-                [(ngModel)]="userEmail"
-                name="email"
-                placeholder="Twój e-mail"
+                    id="userEmailSearch"
+                    type="email"
+                    [(ngModel)]="userEmail"
+                    name="email"
+                    placeholder="Twój e-mail"
             />
         </div>
     </div>
@@ -45,12 +45,10 @@
         <h3 *ngIf="query">Znalezione produkty dla: "{{ query }}"</h3>
         <h3 *ngIf="!query">Wszystkie dostępne produkty</h3>
 
-
-
-
         <ul class="products-list">
             <li *ngFor="let product of products" class="product-card">
-                <div *ngIf="product.name && product.name.toLowerCase().includes('mleko')">
+                <!-- Warunek dla mleka -->
+                <div *ngIf="product.name && product.name.toLowerCase().includes('mleko') && !product.name.toLowerCase().includes('masło')">
                     <img
                             src="assets/images/mleko.png"
                             alt="Mleko"
@@ -59,6 +57,7 @@
                             class="product-image"
                     />
                 </div>
+
                 <div class="product-header">
                     <span class="product-name">{{ product.name }}</span>
                     <span class="product-price">{{ product.price }} zł</span>
@@ -88,7 +87,6 @@
             </li>
         </ul>
     </div>
-
 
     <!-- Wiadomość, gdy brak wyników -->
     <div *ngIf="products.length === 0 && query" class="no-results">
