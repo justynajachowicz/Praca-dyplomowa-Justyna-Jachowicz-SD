@@ -75,8 +75,8 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
         this.productService.getProducts().subscribe(
             (products) => {
                 if (Array.isArray(products)) {
-                    this.products = products;
-                    console.log('Wszystkie produkty:', this.products);
+                    this.products = this.removeDuplicateProductNames(products);
+                    console.log('Wszystkie produkty (bez duplikatów):', this.products);
                 } else {
                     console.error('Odpowiedź z serwera nie jest tablicą.');
                     this.errorMessage = 'Brak produktów w odpowiedzi.';
@@ -87,6 +87,19 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                 console.error('Błąd podczas pobierania produktów:', error);
             }
         );
+    }
+
+    // Metoda do usuwania duplikatów nazw produktów
+    private removeDuplicateProductNames(products: Product[]): Product[] {
+        const uniqueProductNames = new Set<string>();
+        return products.filter(product => {
+            const productName = product.name ? product.name.toLowerCase() : '';
+            if (productName && !uniqueProductNames.has(productName)) {
+                uniqueProductNames.add(productName);
+                return true;
+            }
+            return false;
+        });
     }
 
     // Wyszukiwanie najtańszych produktów z opcjonalną filtracją po mieście
@@ -102,7 +115,8 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                         // Filtruj produkty, aby pokazać tylko dokładne dopasowanie do zapytania
                         const searchTerm = this.query.trim().toLowerCase();
 
-                        this.products = products.filter(product => {
+                        // Najpierw filtruj produkty według kryteriów wyszukiwania
+                        const filteredProducts = products.filter(product => {
                             // Pobierz nazwę produktu lub użyj pustego stringa jeśli brak nazwy
                             const productName = product.name ? product.name.toLowerCase() : '';
 
@@ -115,6 +129,9 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                             // Sprawdź, czy wyszukiwany termin występuje jako całe słowo lub na początku nazwy
                             return wordBoundaryRegex.test(productName) || startsWithTerm;
                         });
+
+                        // Następnie usuń duplikaty nazw produktów
+                        this.products = this.removeDuplicateProductNames(filteredProducts);
 
                         console.log('Najtańsze produkty po filtrowaniu:', this.products);
 

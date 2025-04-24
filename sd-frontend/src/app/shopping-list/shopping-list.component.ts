@@ -79,8 +79,8 @@ export class ShoppingListComponent implements OnInit {
       this.productService.findCheapestProducts('', '', '', this.selectedCity).subscribe(
         (products) => {
           if (Array.isArray(products)) {
-            this.products = products;
-            console.log('Produkty dla miasta ' + this.selectedCity + ':', this.products);
+            this.products = this.removeDuplicateProductNames(products);
+            console.log('Produkty dla miasta ' + this.selectedCity + ' (bez duplikatów):', this.products);
           }
         },
         (error) => {
@@ -88,6 +88,19 @@ export class ShoppingListComponent implements OnInit {
         }
       );
     }
+  }
+
+  // Metoda do usuwania duplikatów nazw produktów
+  private removeDuplicateProductNames(products: Product[]): Product[] {
+    const uniqueProductNames = new Set<string>();
+    return products.filter(product => {
+      const productName = product.name ? product.name.toLowerCase() : '';
+      if (productName && !uniqueProductNames.has(productName)) {
+        uniqueProductNames.add(productName);
+        return true;
+      }
+      return false;
+    });
   }
 
   // Filtruj elementy listy zakupów według miasta i wyszukiwanego terminu
