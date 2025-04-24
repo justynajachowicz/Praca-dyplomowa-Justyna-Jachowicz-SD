@@ -9,70 +9,68 @@ import { Product } from "./models/models";
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = environment.apiUrl;
+    private baseUrl = 'http://localhost:8080/api/products';
+    private apiRoot = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-  // Pobieranie wszystkich produktów
-  getProducts(): Observable<Product[]> {
-    return this.http.get<{ _embedded: { products: Product[] } }>(`${this.apiUrl}/products`).pipe(
-        map(response => response._embedded.products),
-        catchError(error => {
-          console.error('Błąd pobierania produktów:', error);
-          return [];
-        })
-    );
-  }
+    getProducts(): Observable<Product[]> {
+        return this.http.get<Product[]>(`${this.baseUrl}`).pipe(
+            map(response => response),
+            catchError(error => {
+                console.error('Błąd pobierania produktów:', error);
+                return throwError(() => error);  // Zwracamy błąd, a nie pustą tablicę
+            })
+        );
+    }
 
   // Dodawanie produktu
   addProduct(product: PurchaseItem): Observable<PurchaseItem> {
-    return this.http.post<PurchaseItem>(`${this.apiUrl}/products`, product);
+    return this.http.post<PurchaseItem>(`${this.baseUrl}`, product);
   }
 
-    addToShoppingList(product: Product, email: string): Observable<any> {
+    addToShoppingList(product: Product, email: string): Observable<string> {
+        const url = `${this.apiRoot}/api/shopping-list`;
         const params = new HttpParams().set('email', email);
 
-        // Ensure productName is set correctly
+        // Create a copy of the product to avoid modifying the original
         const productToSend = { ...product };
-        if (!productToSend.productName && productToSend.name) {
+
+        // If product has a name field but no productName field, set productName to name
+        if (productToSend.name && (!productToSend.productName || productToSend.productName === '')) {
             productToSend.productName = productToSend.name;
         }
 
-        return this.http.post(`${this.apiUrl}/api/shopping-list`, productToSend, {
+        console.log('Sending product to backend:', productToSend);
+
+        return this.http.post<string>(url, productToSend, {
             params,
-            responseType: 'text' // <- DODAJ TO
+            responseType: 'text' as 'json'
         }).pipe(
-            catchError(error => {
-                console.error('Błąd dodawania produktu do listy zakupów:', error);
-                return throwError(() => error);
+            catchError(err => {
+                console.error('Błąd dodawania do listy zakupów:', err);
+                return throwError(() => err);
             })
         );
     }
 
 
+    findCheapestProducts(query: string, startDate?: string, endDate?: string, city?: string): Observable<Product[]> {
+        let params = new HttpParams().set('query', query);
 
-  findCheapestProducts(query: string, startDate: string, endDate: string, city?: string) {
-    let params = new HttpParams()
-        .set('query', query);
+        // Dodanie innych parametrów, jeśli są dostępne
+        if (startDate) params = params.set('startDate', startDate);
+        if (endDate) params = params.set('endDate', endDate);
+        if (city) params = params.set('city', city);
 
-    if (startDate) {
-      params = params.set('startDate', startDate);
+        return this.http.get<Product[]>(`${this.baseUrl}/cheapest`, { params }).pipe(
+            map(response => response || []),
+            catchError(error => {
+                console.error('Błąd pobierania najtańszych produktów:', error);
+                return throwError(() => error);  // Zwrócenie błędu do komponentu
+            })
+        );
     }
-    if (endDate) {
-      params = params.set('endDate', endDate);
-    }
-    if (city) {
-      params = params.set('city', city);
-    }
-
-    return this.http.get<Product[]>(`${this.apiUrl}/api/products/cheapest`, { params }).pipe(
-        map(response => response || []),
-        catchError(error => {
-          console.error('Błąd pobierania najtańszych produktów:', error);
-          return [];
-        })
-    );
-  }
 
 
   // Wyszukiwanie produktów z możliwością dodania parametrów daty
@@ -81,7 +79,7 @@ export class ProductService {
 
     // Dodanie parametru zapytania (query)
     if (query) {
-      params = params.set('query', query);
+      params = params.set('name', query); // Changed to 'name' to match backend parameter
     }
 
     // Dodanie parametrów daty, jeśli są dostępne
@@ -93,14 +91,14 @@ export class ProductService {
     }
 
     // Wysyłanie zapytania do backendu z parametrami
-    return this.http.get<{ _embedded?: { products: Product[] } }>(`${this.apiUrl}/products/search`, { params }).pipe(
+    return this.http.get<Product[]>(`${this.baseUrl}/search`, { params }).pipe(
         map(response => {
           console.log('Odpowiedź z backendu:', response); // Logowanie odpowiedzi
-          return response._embedded?.products || []; // Obsługuje przypadek, gdy _embedded lub products jest undefined
+          return response || []; // Obsługuje przypadek, gdy response jest undefined
         }),
         catchError(error => {
           console.error('Błąd podczas wyszukiwania produktów:', error);
-          return [];
+          return throwError(() => error); // Zwracamy błąd, a nie pustą tablicę
         })
     );
   }

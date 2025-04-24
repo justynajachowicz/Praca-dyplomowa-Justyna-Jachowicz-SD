@@ -12,5 +12,4 @@ public class ShoppingDashboardApplication {
     public static void main(String[] args) {
         run(ShoppingDashboardApplication.class, args);
     }
-
 }

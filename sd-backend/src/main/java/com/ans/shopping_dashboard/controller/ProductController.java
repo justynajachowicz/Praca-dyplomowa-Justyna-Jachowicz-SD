@@ -109,4 +109,5 @@ public class ProductController {
         }
         return ResponseEntity.ok(products);  // Zwrócenie wyników wyszukiwania
     }
+
 }

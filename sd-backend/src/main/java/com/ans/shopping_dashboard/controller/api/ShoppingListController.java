@@ -19,7 +19,7 @@ public class ShoppingListController {
 
 
     @PostMapping
-    public ResponseEntity<String> addProductToShoppingList(@RequestBody Product product, @RequestParam String email) {
+    public ResponseEntity<String> addToShoppingList(@RequestBody Product product, @RequestParam String email) {
         shoppingListService.addProductToList(product, email);
         return ResponseEntity.ok("Produkt dodany do listy zakupów");
 
@@ -36,4 +36,6 @@ public class ShoppingListController {
         shoppingListService.deletePurchaseItemById(id);
         return ResponseEntity.ok("Produkt usunięty z listy zakupów");
     }
+
 }
+

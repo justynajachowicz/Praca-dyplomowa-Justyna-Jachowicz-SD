@@ -241,16 +241,23 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
             this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
                 if (isRegistered) {
                     // Jeśli użytkownik jest zarejestrowany, dodaj produkt do listy zakupów
-                    this.productService.addToShoppingList(this.selectedProduct, this.userEmail).subscribe(response => {
-                        console.log('Produkt dodany do listy zakupów:', response);
-                        this.purchaseFormVisible = false; // Zamknij formularz
-                        this.successMessage = 'Produkt został dodany do Twojej listy zakupów!';
+                    this.productService.addToShoppingList(this.selectedProduct, this.userEmail).subscribe(
+                        response => {
+                            console.log('Produkt dodany do listy zakupów:', response);
+                            this.purchaseFormVisible = false; // Zamknij formularz
+                            this.successMessage = 'Produkt został dodany do Twojej listy zakupów!';
 
-                        // Opcjonalnie: przekieruj do listy zakupów po krótkim opóźnieniu
-                        setTimeout(() => {
-                            this.router.navigate(['/shopping-list']);
-                        }, 2000);
-                    });
+                            // Opcjonalnie: przekieruj do listy zakupów po krótkim opóźnieniu
+                            setTimeout(() => {
+                                this.router.navigate(['/shopping-list']);
+                            }, 2000);
+                        },
+                        error => {
+                            console.error('Błąd podczas dodawania produktu:', error);
+                            this.errorMessage = 'Nie udało się dodać produktu do listy zakupów.';
+                            this.purchaseFormVisible = false;
+                        }
+                    );
                 } else {
                     alert('Musisz być zarejestrowany, aby dodać produkt do listy zakupów.');
                 }

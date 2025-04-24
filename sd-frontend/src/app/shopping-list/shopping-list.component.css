@@ -1,20 +1,21 @@
 /* Główna kontener dla listy zakupowej */
 .shopping-list-container {
-  background-color: white;
-  color: #333;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  margin: 0 auto;
-  transition: background-color 0.3s ease-in-out;
+  background: linear-gradient(135deg, #f8bbd0, #e1bee7);
+  color: #4a148c;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  max-width: 900px;
+  margin: 40px auto;
+  transition: background 0.3s ease-in-out;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 /* Nagłówek sekcji */
 .shopping-list-container h2 {
-  font-size: 24px;
-  color: #f06292; /* Jasny różowy */
-  margin-bottom: 20px;
+  font-size: 28px;
+  color: #ad1457;
+  margin-bottom: 25px;
   text-align: center;
 }
 
@@ -27,25 +28,36 @@
 .shopping-list-header {
   display: grid;
   grid-template-columns: 80px 3fr 1fr;
-  background-color: #f06292;
+  background: linear-gradient(135deg, #f48fb1, #ce93d8);
   color: white;
-  padding: 12px 15px;
-  border-radius: 8px 8px 0 0;
+  padding: 14px 18px;
+  border-radius: 12px 12px 0 0;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 /* Elementy na liście */
 .shopping-list-item {
   display: grid;
   grid-template-columns: 80px 3fr 1fr;
-  background-color: #f9f9f9;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 10px;
-  transition: background-color 0.3s ease;
+  background-color: #fefefe;
+  border: 1px solid #f3e5f5;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
   align-items: center;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.shopping-list-item:hover {
+  background: #fce4ec;
+  transform: scale(1.01);
 }
 
 /* Kontener obrazu produktu */
@@ -64,126 +76,120 @@
   object-fit: contain;
 }
 
-/* Efekt hover na elemencie listy */
-.shopping-list-item:hover {
-  background-color: #fce4ec; /* Jasny różowy na hover */
-}
-
 /* Stylowanie nazw produktów */
 .product-info strong {
   font-weight: bold;
-  color: #f06292; /* Różowy */
+  color: #e91e63;
   display: block;
   margin-bottom: 5px;
 }
 
-/* Stylowanie daty i miasta */
 .product-info small {
-  color: #999;
-  font-size: 12px;
+  color: #888;
+  font-size: 13px;
   display: block;
 }
 
 /* Stylowanie dla cen */
 .price-info {
-  color: #f06292;
+  color: #ba68c8;
   font-weight: bold;
 }
 
 /* Stylowanie dla sklepu */
 .store-info {
   font-weight: 500;
-  color: #4caf50; /* Zielony kolor dla sklepu */
+  color: #7cb342;
   font-size: 14px;
 }
 
 /* Przyciski akcji */
 .remove-btn {
-  background-color: #f06292;
+  background: linear-gradient(135deg, #f06292, #ce93d8);
   color: white;
   border: none;
-  border-radius: 4px;
-  padding: 6px 12px;
+  border-radius: 6px;
+  padding: 8px 14px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background 0.3s ease, transform 0.2s;
 }
 
 .remove-btn:hover {
-  background-color: #e91e63;
+  background: linear-gradient(135deg, #ec407a, #ab47bc);
+  transform: scale(1.05);
 }
 
 /* Styl dla wybranego miasta */
 .selected-city {
   background-color: #fce4ec;
-  padding: 10px 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  margin-bottom: 25px;
   text-align: center;
 }
 
 .selected-city h3 {
-  color: #f06292;
+  color: #ba68c8;
   margin: 0;
   font-size: 18px;
 }
 
 /* Styl dla wyszukiwarki */
 .search-container {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .search-input {
   width: 100%;
-  padding: 12px 15px;
+  padding: 14px 18px;
   border: 2px solid #f8bbd0;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .search-input:focus {
   outline: none;
   border-color: #f06292;
-  box-shadow: 0 0 8px rgba(240, 98, 146, 0.3);
+  box-shadow: 0 0 10px rgba(240, 98, 146, 0.3);
 }
 
-/* Styl dla kontenera produktów */
+/* Kontener produktów */
 .products-container {
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 
 .products-container h3 {
-  color: #f06292;
-  font-size: 20px;
-  margin-bottom: 15px;
+  color: #d81b60;
+  font-size: 22px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
 /* Siatka produktów */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 15px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
 }
 
 /* Karta produktu */
 .product-card {
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .product-header {
-  background-color: #fce4ec;
-  padding: 10px;
+  background: linear-gradient(135deg, #fce4ec, #e1bee7);
+  padding: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -191,39 +197,39 @@
 
 .product-name {
   font-weight: 600;
-  color: #e91e63;
+  color: #ec407a;
 }
 
 .product-price {
   font-weight: 700;
-  color: #e91e63;
+  color: #8e24aa;
 }
 
 .product-details {
-  padding: 10px;
+  padding: 12px;
 }
 
 .product-details p {
   margin: 5px 0;
-  color: #666;
+  color: #555;
 }
 
-/* Styl dla przycisku planowania zakupów */
+/* Planowanie zakupów */
 .plan-shopping-container {
   text-align: center;
-  margin: 20px 0;
-  padding: 15px;
+  margin: 25px 0;
+  padding: 18px;
   background-color: #f8f8f8;
-  border-radius: 8px;
-  border: 2px dashed #f06292;
+  border-radius: 12px;
+  border: 2px dashed #ce93d8;
 }
 
 .plan-shopping-btn {
-  background-color: #f06292;
+  background: linear-gradient(135deg, #f06292, #ce93d8);
   color: white;
   border: none;
-  border-radius: 8px;
-  padding: 12px 25px;
+  border-radius: 12px;
+  padding: 14px 28px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -232,18 +238,18 @@
 }
 
 .plan-shopping-btn:hover {
-  background-color: #e91e63;
+  background: linear-gradient(135deg, #ec407a, #ab47bc);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Styl dla przycisku usuwania wszystkich produktów */
+/* Przycisk usuwania wszystkich */
 .remove-all-btn {
-  background-color: #f44336; /* Czerwony kolor dla przycisku usuwania */
+  background-color: #ef5350;
   color: white;
   border: none;
-  border-radius: 8px;
-  padding: 12px 25px;
+  border-radius: 10px;
+  padding: 14px 28px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -253,9 +259,9 @@
 }
 
 .remove-all-btn:hover {
-  background-color: #d32f2f; /* Ciemniejszy czerwony na hover */
+  background-color: #d32f2f;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .plan-info {
@@ -264,184 +270,19 @@
   margin: 0;
 }
 
-/* Styl dla widoku przed zaplanowaniem */
-.shopping-list-view .shopping-list-header {
-  grid-template-columns: 80px 3fr 1fr;
-}
-
+/* Widok zaplanowany i nie */
+.shopping-list-view .shopping-list-header,
 .shopping-list-view .shopping-list-item {
   grid-template-columns: 80px 3fr 1fr;
 }
 
-/* Styl dla widoku po zaplanowaniu */
 .planned-shopping-view {
-  margin-top: 30px;
+  margin-top: 35px;
 }
 
 .planned-shopping-view h4 {
-  color: #4caf50;
+  color: #7cb342;
   text-align: center;
   font-size: 20px;
   margin-bottom: 5px;
-}
-
-.plan-success {
-  text-align: center;
-  color: #757575;
-  margin-bottom: 20px;
-}
-
-.store-group {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  overflow: hidden;
-}
-
-.store-header {
-  background-color: #f06292;
-  color: white;
-  padding: 12px 15px;
-}
-
-.store-header h5 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.store-items {
-  padding: 0 15px;
-}
-
-.store-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.store-item:last-child {
-  border-bottom: none;
-}
-
-.item-image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
-}
-
-.item-name {
-  font-weight: 500;
-  flex: 1;
-  margin-left: 10px;
-}
-
-.item-price {
-  font-weight: 700;
-  color: #f06292;
-  margin-left: 10px;
-}
-
-.store-total {
-  background-color: #f9f9f9;
-  padding: 12px 15px;
-  text-align: right;
-  font-weight: 700;
-  border-top: 1px solid #eee;
-}
-
-.total-savings {
-  text-align: center;
-  margin: 20px 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: #4caf50;
-}
-
-.reset-plan-btn {
-  display: block;
-  margin: 20px auto;
-  background-color: #757575;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.reset-plan-btn:hover {
-  background-color: #616161;
-}
-
-/* Styl dla przycisków akcji */
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin: 20px 0;
-}
-
-.action-buttons .reset-plan-btn {
-  margin: 0;
-}
-
-.export-pdf-btn {
-  background-color: #2196F3; /* Niebieski kolor dla przycisku eksportu */
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.export-pdf-btn:hover {
-  background-color: #1976D2;
-  transform: translateY(-2px);
-}
-
-/* Styl dla przycisku dodawania do listy */
-.add-to-list-btn {
-  background-color: #4CAF50; /* Zielony kolor dla przycisku dodawania */
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 15px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.add-to-list-btn:hover {
-  background-color: #388E3C;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Styl dla zawartości PDF */
-.planned-shopping-content {
-  padding: 10px;
-  background-color: white;
-}
-
-/* Styl dla pustej listy */
-.empty-list {
-  text-align: center;
-  padding: 30px 0;
-}
-
-.empty-list p {
-  font-size: 18px;
-  color: #f06292;
-  margin: 10px 0;
 }

@@ -91,6 +91,16 @@
                     <div *ngIf="item.productName && !item.productName.toLowerCase().includes('makaron') && !item.productName.toLowerCase().includes('chleb') && (item.productName.toLowerCase().includes('jajko') || item.productName.toLowerCase().includes('jajka'))">
                         <img src="assets/images/jajka.png" alt="Jajka" width="50" height="50" class="product-image" />
                     </div>
+
+                    <!-- Warunek dla czekolady -->
+                    <div *ngIf="item.productName && item.productName.toLowerCase().includes('czekolad')">
+                        <img src="assets/images/czekolada.png" alt="Czekolada" width="50" height="50" class="product-image" />
+                    </div>
+
+                    <!-- Warunek dla Coca Coli -->
+                    <div *ngIf="item.productName && item.productName.toLowerCase().includes('coca cola')">
+                        <img src="assets/images/coca cola.png" alt="Coca Cola" width="50" height="50" class="product-image" />
+                    </div>
                 </div>
 
                 <div class="product-info">
@@ -152,6 +162,16 @@
                                 <!-- Warunek dla jajek -->
                                 <div *ngIf="item.productName && !item.productName.toLowerCase().includes('makaron') && !item.productName.toLowerCase().includes('chleb') && (item.productName.toLowerCase().includes('jajko') || item.productName.toLowerCase().includes('jajka'))">
                                     <img src="assets/images/jajka.png" alt="Jajka" width="30" height="30" class="product-image" />
+                                </div>
+
+                                <!-- Warunek dla czekolady -->
+                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('czekolad')">
+                                    <img src="assets/images/czekolada.png" alt="Czekolada" width="30" height="30" class="product-image" />
+                                </div>
+
+                                <!-- Warunek dla Coca Coli -->
+                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('coca cola')">
+                                    <img src="assets/images/coca cola.png" alt="Coca Cola" width="30" height="30" class="product-image" />
                                 </div>
                             </div>
                             <span class="item-name">{{ item.productName }}</span>
