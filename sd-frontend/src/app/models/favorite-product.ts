@@ -6,4 +6,5 @@ export interface FavoriteProduct {
   price?: number;
   notifyOnPromotion: boolean;
   dateAdded?: string;
+  imageUrl?: string;
 }

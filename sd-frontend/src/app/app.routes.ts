@@ -10,6 +10,7 @@ import {ReceiptUploadComponent} from "./components/receipt-upload/receipt-upload
 import { PurchaseFormComponent } from './purchase-form/purchase-form.component';
 import {ProductSearchComponent} from "./product-search/product-search.component";
 import { ProductSimulationComponent } from './product-simulation/product-simulation.component';
+import { FavoritesComponent } from './favorites/favorites.component';
 import { AdminGuard } from './guards/admin.guard';
 
 
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent }, // Panel użytkownika];
   { path: 'shopping-list', component: ShoppingListComponent },
+  { path: 'favorites', component: FavoritesComponent },
   { path: 'admin/users', component: AdminUserManagementComponent, canActivate: [AdminGuard] },
   { path: 'receipt-upload', component: ReceiptUploadComponent },
   { path: 'add-purchase', component: PurchaseFormComponent },  // Formularz dodania zakupu

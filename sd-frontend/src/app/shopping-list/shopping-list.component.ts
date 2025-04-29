@@ -5,15 +5,16 @@ import { ShoppingListItem } from '../models/shopping-list-item';
 import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 import { ProductService } from '../product.service';
 import { Product } from '../models/models';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { FavoriteService } from '../services/favorite.service';
 
 @Component({
   selector: 'app-shopping-list',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Dodaj FormsModule
+  imports: [CommonModule, FormsModule, RouterModule], // Dodaj FormsModule i RouterModule
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.css']
 })
@@ -35,7 +36,8 @@ export class ShoppingListComponent implements OnInit {
   constructor(
     private shoppingListService: ShoppingListService,
     private productService: ProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private favoriteService: FavoriteService
   ) {}
 
   ngOnInit(): void {
@@ -248,6 +250,38 @@ export class ShoppingListComponent implements OnInit {
     } else {
       this.generatePdf();
     }
+  }
+
+  // Dodawanie produktu do ulubionych
+  addToFavorites(item: ShoppingListItem): void {
+    if (!this.userEmail) {
+      alert('Proszę zalogować się, aby dodać produkt do ulubionych.');
+      return;
+    }
+
+    // Tworzymy obiekt produktu na podstawie ShoppingListItem
+    const product = {
+      productId: item.id,
+      productName: item.productName,
+      name: item.productName,
+      price: item.price,
+      brand: '',
+      weight: '',
+      imageUrl: '',
+      store: item.storeName,
+      products: []
+    } as Product;
+
+    this.favoriteService.addToFavorites(product, this.userEmail).subscribe({
+      next: (response) => {
+        console.log('Produkt dodany do ulubionych:', response);
+        alert('Produkt został dodany do ulubionych.');
+      },
+      error: (err) => {
+        console.error('Błąd podczas dodawania produktu do ulubionych:', err);
+        alert('Nie udało się dodać produktu do ulubionych.');
+      }
+    });
   }
 
   // Generowanie PDF z zaplanowanych zakupów

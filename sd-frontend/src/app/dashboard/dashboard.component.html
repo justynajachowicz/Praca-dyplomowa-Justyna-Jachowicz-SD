@@ -16,6 +16,10 @@
       <span class="menu-icon">🔍</span>
       Wyszukaj produkty
     </a>
+    <a class="menu-item" routerLink="/favorites">
+      <span class="menu-icon">❤️</span>
+      Ulubione produkty
+    </a>
     <a class="menu-item" *ngIf="authService.isAdmin()" (click)="goToUserManagement()">
       <span class="menu-icon">👥</span>
       Zarządzaj użytkownikami

@@ -11,12 +11,41 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Nagłówek sekcji */
-.shopping-list-container h2 {
+/* Nagłówek i nawigacja */
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.header-nav h2 {
   font-size: 28px;
   color: #ad1457;
-  margin-bottom: 25px;
-  text-align: center;
+  margin: 0;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-button {
+  background: linear-gradient(135deg, #f06292, #ce93d8);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  background: linear-gradient(135deg, #ec407a, #ab47bc);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Styl dla listy zakupów */
@@ -104,6 +133,12 @@
 }
 
 /* Przyciski akcji */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .remove-btn {
   background: linear-gradient(135deg, #f06292, #ce93d8);
   color: white;
@@ -116,6 +151,21 @@
 
 .remove-btn:hover {
   background: linear-gradient(135deg, #ec407a, #ab47bc);
+  transform: scale(1.05);
+}
+
+.favorite-btn {
+  background: linear-gradient(135deg, #ffb74d, #ffa726);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.favorite-btn:hover {
+  background: linear-gradient(135deg, #ff9800, #fb8c00);
   transform: scale(1.05);
 }
 

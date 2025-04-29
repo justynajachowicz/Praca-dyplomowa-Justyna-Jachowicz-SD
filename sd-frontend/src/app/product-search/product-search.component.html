@@ -2,7 +2,10 @@
     <!-- Nagłówek i nawigacja -->
     <div class="header-nav">
         <h2>Wyszukiwanie produktów</h2>
-        <button class="nav-button" (click)="goToShoppingList()">Przejdź do listy zakupów</button>
+        <div class="nav-buttons">
+            <button class="nav-button" (click)="goToShoppingList()">Przejdź do listy zakupów</button>
+            <button class="nav-button" routerLink="/favorites">Ulubione produkty</button>
+        </div>
     </div>
 
     <!-- Formularz wyszukiwania -->

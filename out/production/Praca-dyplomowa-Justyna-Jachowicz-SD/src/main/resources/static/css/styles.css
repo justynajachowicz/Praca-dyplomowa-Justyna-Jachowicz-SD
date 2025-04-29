@@ -1,0 +1,67 @@
+.validateError {
+    font-style: oblique;
+    font-size: 12px;
+    color: #ff4d4d
+}
+
+.title {
+    background-color: #64690a;
+    color: white;
+    text-align: center;
+}
+
+.subtitle {
+    background-color: #91da0d;
+    color: white;
+    padding: 10px;
+}
+
+.subtitle2 {
+    background-color: #ecc157;
+    color: white;
+    text-align: center;
+}
+
+.main {
+    text-align: center;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+.title {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.jumbotron {
+    background-color: #fff;
+    padding: 40px;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.jumbotron p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.jumbotron a {
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.jumbotron a:hover {
+    background-color: #0069d9;
+}
+
+.app-name {
+    font-weight: bold;
+}

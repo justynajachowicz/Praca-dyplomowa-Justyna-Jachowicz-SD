@@ -1,3 +1,33 @@
+.header-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-button {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #f06292, #ab47bc);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(240, 98, 146, 0.3);
+}
+
 .search-container {
     background: linear-gradient(145deg, #f8bbd0, #f48fb1, #ce93d8);
     padding: 40px 30px;

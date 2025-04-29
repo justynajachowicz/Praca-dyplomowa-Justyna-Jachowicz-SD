@@ -1,5 +1,11 @@
 <div class="shopping-list-container">
-    <h2>Twoja lista zakupów</h2>
+    <div class="header-nav">
+        <h2>Twoja lista zakupów</h2>
+        <div class="nav-buttons">
+            <button class="nav-button" routerLink="/product-search">Wyszukaj produkty</button>
+            <button class="nav-button" routerLink="/favorites">Ulubione produkty</button>
+        </div>
+    </div>
 
     <!-- Wyświetl wybrane miasto -->
     <div *ngIf="selectedCity" class="selected-city">
@@ -112,6 +118,7 @@
                 </div>
                 <div class="actions">
                     <button class="remove-btn" (click)="removeItem(item)">Usuń</button>
+                    <button class="favorite-btn" (click)="addToFavorites(item)">Dodaj do ulubionych</button>
                 </div>
             </div>
         </div>

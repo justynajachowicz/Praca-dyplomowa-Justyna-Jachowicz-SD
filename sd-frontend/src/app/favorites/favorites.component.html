@@ -1,0 +1,125 @@
+<div class="favorites-container">
+  <h2>Twoje Ulubione Produkty</h2>
+
+  <!-- Email input for users who haven't set their email -->
+  <div *ngIf="!userEmail" class="email-input-container">
+    <p>Wprowadź swój email, aby zobaczyć ulubione produkty:</p>
+    <div class="email-input">
+      <input 
+        type="email" 
+        [(ngModel)]="userEmail" 
+        placeholder="Twój email" 
+        class="email-field"
+      />
+      <button (click)="loadFavorites()" class="load-btn">Wczytaj Ulubione</button>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="loading-indicator">
+    <div class="spinner"></div>
+    <p>Ładowanie ulubionych produktów...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Success message -->
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
+  <!-- Favorites list -->
+  <div *ngIf="favorites.length > 0 && !isLoading" class="favorites-list">
+    <div class="favorites-grid">
+      <div *ngFor="let favorite of favorites" class="favorite-card">
+        <div class="favorite-header">
+          <span class="favorite-name">{{ favorite.productName }}</span>
+        </div>
+        <div class="product-image-container">
+          <!-- Warunek dla mleka -->
+          <div *ngIf="favorite.productName && favorite.productName.toLowerCase().includes('mleko') && !favorite.productName.toLowerCase().includes('masło') && !favorite.productName.toLowerCase().includes('szynka') && !favorite.productName.toLowerCase().includes('woda')">
+            <img src="assets/images/mleko.png" alt="Mleko" width="50" height="50" class="product-image" />
+          </div>
+
+          <!-- Warunek dla masła -->
+          <div *ngIf="favorite.productName && favorite.productName.toLowerCase().includes('masło') && !favorite.productName.toLowerCase().includes('mleko') && !favorite.productName.toLowerCase().includes('szynka') && !favorite.productName.toLowerCase().includes('woda')">
+            <img src="assets/images/maslo.png" alt="Masło" width="50" height="50" class="product-image" />
+          </div>
+
+          <!-- Warunek dla szynki -->
+          <div *ngIf="favorite.productName && favorite.productName.toLowerCase().includes('szynka')">
+            <img src="assets/images/szynka.png" alt="Szynka" width="50" height="50" class="product-image" />
+          </div>
+
+          <!-- Warunek dla wody -->
+          <div *ngIf="favorite.productName && favorite.productName.toLowerCase().includes('woda') && !favorite.productName.toLowerCase().includes('szynka') && !favorite.productName.toLowerCase().includes('masło') && !favorite.productName.toLowerCase().includes('mleko')">
+            <img src="assets/images/woda.png" alt="Woda" width="50" height="50" class="product-image" />
+          </div>
+
+          <!-- Warunek dla makaronu -->
+          <div *ngIf="favorite.productName && favorite.productName.toLowerCase().includes('makaron')">
+            <img src="assets/images/makaron.png" alt="Makaron" width="50" height="50" class="product-image" />
+          </div>
+
+          <!-- Warunek dla chleba -->
+          <div *ngIf="favorite.productName && !favorite.productName.toLowerCase().includes('makaron') && (favorite.productName.toLowerCase().includes('chleb') || favorite.productName.toLowerCase().includes('chleba'))">
+            <img src="assets/images/chleb.png" alt="Chleb" width="50" height="50" class="product-image" />
+          </div>
+
+          <!-- Warunek dla jajek -->
+          <div *ngIf="favorite.productName && !favorite.productName.toLowerCase().includes('makaron') && !favorite.productName.toLowerCase().includes('chleb') && (favorite.productName.toLowerCase().includes('jajko') || favorite.productName.toLowerCase().includes('jajka'))">
+            <img src="assets/images/jajka.png" alt="Jajka" width="50" height="50" class="product-image" />
+          </div>
+
+          <!-- Warunek dla czekolady -->
+          <div *ngIf="favorite.productName && favorite.productName.toLowerCase().includes('czekolad')">
+            <img src="assets/images/czekolada.png" alt="Czekolada" width="50" height="50" class="product-image" />
+          </div>
+
+          <!-- Warunek dla Coca Coli -->
+          <div *ngIf="favorite.productName && favorite.productName.toLowerCase().includes('coca cola')">
+            <img src="assets/images/coca cola.png" alt="Coca Cola" width="50" height="50" class="product-image" />
+          </div>
+
+          <!-- Fallback to imageUrl if no condition matches -->
+          <div *ngIf="favorite.imageUrl && 
+            !favorite.productName.toLowerCase().includes('mleko') && 
+            !favorite.productName.toLowerCase().includes('masło') && 
+            !favorite.productName.toLowerCase().includes('szynka') && 
+            !favorite.productName.toLowerCase().includes('woda') && 
+            !favorite.productName.toLowerCase().includes('makaron') && 
+            !favorite.productName.toLowerCase().includes('chleb') && 
+            !favorite.productName.toLowerCase().includes('jajko') && 
+            !favorite.productName.toLowerCase().includes('jajka') && 
+            !favorite.productName.toLowerCase().includes('czekolad') && 
+            !favorite.productName.toLowerCase().includes('coca cola')">
+            <img [src]="favorite.imageUrl" alt="{{ favorite.productName }}" width="50" height="50" class="product-image">
+          </div>
+        </div>
+        <div class="favorite-details">
+          <p>Dodano: {{ favorite.dateAdded | date:'medium' }}</p>
+        </div>
+        <div class="favorite-actions">
+          <button class="add-to-list-btn" (click)="addToShoppingList(favorite)">
+            Znajdź w Sklepie
+          </button>
+          <button class="remove-btn" (click)="removeFromFavorites(favorite.id)">
+            Usuń
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="favorites.length === 0 && !isLoading && userEmail" class="empty-state">
+    <p>Nie masz jeszcze żadnych ulubionych produktów.</p>
+    <p>Przejdź do wyszukiwarki produktów, aby dodać produkty do ulubionych!</p>
+    <button class="search-btn" [routerLink]="['/product-search']">
+      Wyszukaj Produkty
+    </button>
+  </div>
+</div>

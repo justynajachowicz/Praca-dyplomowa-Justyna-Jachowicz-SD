@@ -22,7 +22,20 @@ export class FavoriteService {
   getFavorites(userEmail: string): Observable<FavoriteProduct[]> {
     const params = new HttpParams().set('email', userEmail);
 
-    return this.http.get<FavoriteProduct[]>(this.apiUrl, { params }).pipe(
+    return this.http.get<any[]>(this.apiUrl, { params }).pipe(
+      map(favorites => {
+        // Map backend response to frontend model
+        return favorites.map(favorite => ({
+          id: favorite.id,
+          productId: favorite.productId,
+          productName: favorite.productName,
+          userEmail: userEmail, // Add userEmail field
+          price: favorite.price,
+          notifyOnPromotion: favorite.notifyOnPromotion,
+          dateAdded: favorite.dateAdded, // Convert to string if needed
+          imageUrl: favorite.imageUrl
+        }));
+      }),
       catchError(error => {
         console.error('Error fetching favorites:', error);
         return of([]);
@@ -32,16 +45,22 @@ export class FavoriteService {
 
   // Add a product to favorites
   addToFavorites(product: Product, userEmail: string, notifyOnPromotion: boolean = true): Observable<any> {
-    const favoriteProduct: FavoriteProduct = {
-      productId: product.productId,
+    // Convert frontend Product to backend Product format
+    const backendProduct = {
+      id: product.productId,
       productName: product.name || product.productName,
-      userEmail: userEmail,
       price: product.price,
-      notifyOnPromotion: notifyOnPromotion,
-      dateAdded: new Date().toISOString()
+      store: product.store || '',
+      imageUrl: product.imageUrl || product.image || '',
+      city: product.city || ''
     };
 
-    return this.http.post(this.apiUrl, favoriteProduct, { responseType: 'text' }).pipe(
+    // Add query parameters for email and notifyOnPromotion
+    const params = new HttpParams()
+      .set('email', userEmail)
+      .set('notifyOnPromotion', notifyOnPromotion.toString());
+
+    return this.http.post(this.apiUrl, backendProduct, { params, responseType: 'text' }).pipe(
       catchError(error => {
         console.error('Error adding to favorites:', error);
         return of('Error adding to favorites');
@@ -50,7 +69,13 @@ export class FavoriteService {
   }
 
   // Remove a product from favorites
-  removeFromFavorites(favoriteId: number): Observable<any> {
+  removeFromFavorites(favoriteId: number | undefined): Observable<any> {
+    // If favoriteId is undefined, return an error observable
+    if (favoriteId === undefined) {
+      console.error('Cannot remove favorite: ID is undefined');
+      return of('Error: Favorite ID is undefined');
+    }
+
     return this.http.delete(`${this.apiUrl}/${favoriteId}`, { responseType: 'text' }).pipe(
       catchError(error => {
         console.error('Error removing from favorites:', error);
