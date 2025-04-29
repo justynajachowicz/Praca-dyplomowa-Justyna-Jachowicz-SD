@@ -36,4 +36,11 @@ public interface FavoriteService {
      * @return True if the product is in the user's favorites, false otherwise
      */
     boolean isProductInFavorites(Long productId, String email);
+
+    /**
+     * Get promotions for a user's favorite products
+     * @param email The email of the user
+     * @return A list of products that are on promotion and match the user's favorites
+     */
+    List<Product> getPromotionsForUser(String email);
 }

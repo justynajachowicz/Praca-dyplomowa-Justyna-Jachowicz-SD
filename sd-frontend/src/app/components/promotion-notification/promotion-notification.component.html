@@ -3,24 +3,85 @@
     <i class="material-icons">notifications</i>
     <span class="badge" *ngIf="promotions.length > 0">{{ promotions.length }}</span>
   </div>
-  
+
   <div class="notification-panel" *ngIf="showNotifications">
     <div class="notification-header">
       <h3>Promocje na ulubione produkty</h3>
       <button class="close-btn" (click)="toggleNotifications()">×</button>
     </div>
-    
+
     <div class="notification-content">
       <div *ngIf="loading" class="loading">Ładowanie promocji...</div>
-      
+
       <div *ngIf="error" class="error">{{ error }}</div>
-      
+
       <div *ngIf="!loading && !error && promotions.length === 0" class="empty-message">
         Brak aktualnych promocji na Twoje ulubione produkty.
       </div>
-      
+
       <div *ngIf="promotions.length > 0" class="promotions-list">
         <div *ngFor="let promotion of promotions" class="promotion-item">
+          <div class="product-image-container">
+            <!-- Warunek dla mleka -->
+            <div *ngIf="(promotion.name || promotion.productName) && (promotion.name || promotion.productName).toLowerCase().includes('mleko') && !(promotion.name || promotion.productName).toLowerCase().includes('masło') && !(promotion.name || promotion.productName).toLowerCase().includes('szynka') && !(promotion.name || promotion.productName).toLowerCase().includes('woda')">
+              <img src="assets/images/mleko.png" alt="Mleko" width="40" height="40" class="product-image" />
+            </div>
+
+            <!-- Warunek dla masła -->
+            <div *ngIf="(promotion.name || promotion.productName) && (promotion.name || promotion.productName).toLowerCase().includes('masło') && !(promotion.name || promotion.productName).toLowerCase().includes('mleko') && !(promotion.name || promotion.productName).toLowerCase().includes('szynka') && !(promotion.name || promotion.productName).toLowerCase().includes('woda')">
+              <img src="assets/images/maslo.png" alt="Masło" width="40" height="40" class="product-image" />
+            </div>
+
+            <!-- Warunek dla szynki -->
+            <div *ngIf="(promotion.name || promotion.productName) && (promotion.name || promotion.productName).toLowerCase().includes('szynka')">
+              <img src="assets/images/szynka.png" alt="Szynka" width="40" height="40" class="product-image" />
+            </div>
+
+            <!-- Warunek dla wody -->
+            <div *ngIf="(promotion.name || promotion.productName) && (promotion.name || promotion.productName).toLowerCase().includes('woda') && !(promotion.name || promotion.productName).toLowerCase().includes('szynka') && !(promotion.name || promotion.productName).toLowerCase().includes('masło') && !(promotion.name || promotion.productName).toLowerCase().includes('mleko')">
+              <img src="assets/images/woda.png" alt="Woda" width="40" height="40" class="product-image" />
+            </div>
+
+            <!-- Warunek dla makaronu -->
+            <div *ngIf="(promotion.name || promotion.productName) && (promotion.name || promotion.productName).toLowerCase().includes('makaron')">
+              <img src="assets/images/makaron.png" alt="Makaron" width="40" height="40" class="product-image" />
+            </div>
+
+            <!-- Warunek dla chleba -->
+            <div *ngIf="(promotion.name || promotion.productName) && !(promotion.name || promotion.productName).toLowerCase().includes('makaron') && ((promotion.name || promotion.productName).toLowerCase().includes('chleb') || (promotion.name || promotion.productName).toLowerCase().includes('chleba'))">
+              <img src="assets/images/chleb.png" alt="Chleb" width="40" height="40" class="product-image" />
+            </div>
+
+            <!-- Warunek dla jajek -->
+            <div *ngIf="(promotion.name || promotion.productName) && !(promotion.name || promotion.productName).toLowerCase().includes('makaron') && !(promotion.name || promotion.productName).toLowerCase().includes('chleb') && ((promotion.name || promotion.productName).toLowerCase().includes('jajko') || (promotion.name || promotion.productName).toLowerCase().includes('jajka'))">
+              <img src="assets/images/jajka.png" alt="Jajka" width="40" height="40" class="product-image" />
+            </div>
+
+            <!-- Warunek dla czekolady -->
+            <div *ngIf="(promotion.name || promotion.productName) && (promotion.name || promotion.productName).toLowerCase().includes('czekolad')">
+              <img src="assets/images/czekolada.png" alt="Czekolada" width="40" height="40" class="product-image" />
+            </div>
+
+            <!-- Warunek dla Coca Coli -->
+            <div *ngIf="(promotion.name || promotion.productName) && (promotion.name || promotion.productName).toLowerCase().includes('coca cola')">
+              <img src="assets/images/coca cola.png" alt="Coca Cola" width="40" height="40" class="product-image" />
+            </div>
+
+            <!-- Fallback to imageUrl if no condition matches -->
+            <div *ngIf="promotion.imageUrl && 
+              !(promotion.name || promotion.productName).toLowerCase().includes('mleko') && 
+              !(promotion.name || promotion.productName).toLowerCase().includes('masło') && 
+              !(promotion.name || promotion.productName).toLowerCase().includes('szynka') && 
+              !(promotion.name || promotion.productName).toLowerCase().includes('woda') && 
+              !(promotion.name || promotion.productName).toLowerCase().includes('makaron') && 
+              !(promotion.name || promotion.productName).toLowerCase().includes('chleb') && 
+              !(promotion.name || promotion.productName).toLowerCase().includes('jajko') && 
+              !(promotion.name || promotion.productName).toLowerCase().includes('jajka') && 
+              !(promotion.name || promotion.productName).toLowerCase().includes('czekolad') && 
+              !(promotion.name || promotion.productName).toLowerCase().includes('coca cola')">
+              <img [src]="promotion.imageUrl" alt="{{ promotion.name || promotion.productName }}" width="40" height="40" class="product-image">
+            </div>
+          </div>
           <div class="promotion-details">
             <h4>{{ promotion.name || promotion.productName }}</h4>
             <p class="store">Sklep: {{ promotion.store }}</p>

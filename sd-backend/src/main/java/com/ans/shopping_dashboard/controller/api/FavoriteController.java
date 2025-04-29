@@ -44,4 +44,10 @@ public class FavoriteController {
         boolean isInFavorites = favoriteService.isProductInFavorites(productId, email);
         return ResponseEntity.ok(isInFavorites);
     }
+
+    @GetMapping("/promotions")
+    public ResponseEntity<List<Product>> getPromotions(@RequestParam String email) {
+        List<Product> promotions = favoriteService.getPromotionsForUser(email);
+        return ResponseEntity.ok(promotions);
+    }
 }
