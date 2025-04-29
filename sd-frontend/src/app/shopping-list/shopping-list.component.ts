@@ -37,7 +37,7 @@ export class ShoppingListComponent implements OnInit {
     private shoppingListService: ShoppingListService,
     private productService: ProductService,
     private route: ActivatedRoute,
-    private favoriteService: FavoriteService
+    public favoriteService: FavoriteService
   ) {}
 
   ngOnInit(): void {

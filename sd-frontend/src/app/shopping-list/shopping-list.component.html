@@ -118,7 +118,7 @@
                 </div>
                 <div class="actions">
                     <button class="remove-btn" (click)="removeItem(item)">Usuń</button>
-                    <button class="favorite-btn" (click)="addToFavorites(item)">Dodaj do ulubionych</button>
+                    <button class="favorite-btn" *ngIf="favoriteService.canAccessFavorites()" (click)="addToFavorites(item)">Dodaj do ulubionych</button>
                 </div>
             </div>
         </div>

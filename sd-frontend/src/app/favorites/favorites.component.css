@@ -2,21 +2,24 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f8c3ec, #d3b0f9);
+  min-height: 100vh;
 }
 
 h2 {
-  color: #333;
+  color: #4b006e;
   margin-bottom: 20px;
   text-align: center;
 }
 
 .email-input-container {
-  background-color: #f8f9fa;
+  background-color: #f3d1f9;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: 20px;
   text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .email-input {
@@ -28,22 +31,24 @@ h2 {
 
 .email-field {
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 2px solid #d68cf2;
+  border-radius: 6px;
   width: 300px;
+  background-color: #fff0fb;
 }
 
 .load-btn {
   padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #ba45d6;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .load-btn:hover {
-  background-color: #0069d9;
+  background-color: #9e36b8;
 }
 
 .loading-indicator {
@@ -54,11 +59,11 @@ h2 {
 }
 
 .spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
+  border: 4px solid rgba(255, 255, 255, 0.2);
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border-left-color: #007bff;
+  border-left-color: #e754cf;
   animation: spin 1s linear infinite;
   margin-bottom: 10px;
 }
@@ -69,19 +74,19 @@ h2 {
 }
 
 .error-message {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: #fcd2e0;
+  color: #990033;
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 20px;
   text-align: center;
 }
 
 .success-message {
-  background-color: #d4edda;
-  color: #155724;
+  background-color: #e2f4ea;
+  color: #276f49;
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -93,30 +98,30 @@ h2 {
 }
 
 .favorite-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 2px solid #e7b5f3;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background-color: #fff0fb;
   transition: transform 0.3s ease;
 }
 
 .favorite-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
 }
 
 .favorite-header {
-  background-color: #f8f9fa;
+  background-color: #f4d2fa;
   padding: 15px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #e7b5f3;
 }
 
 .favorite-name {
   font-weight: bold;
   font-size: 18px;
-  color: #333;
+  color: #720075;
 }
 
-/* Kontener obrazu produktu */
 .product-image-container {
   display: flex;
   justify-content: center;
@@ -134,7 +139,7 @@ h2 {
 
 .favorite-details {
   padding: 15px;
-  color: #666;
+  color: #5f3d5a;
 }
 
 .favorite-details p {
@@ -145,55 +150,55 @@ h2 {
   display: flex;
   justify-content: space-between;
   padding: 15px;
-  background-color: #f8f9fa;
-  border-top: 1px solid #ddd;
+  background-color: #f4d2fa;
+  border-top: 2px solid #e7b5f3;
 }
 
 .add-to-list-btn, .remove-btn, .search-btn {
   padding: 8px 12px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
 }
 
 .add-to-list-btn {
-  background-color: #28a745;
+  background-color: #d63384;
   color: white;
 }
 
 .add-to-list-btn:hover {
-  background-color: #218838;
+  background-color: #b02a6e;
 }
 
 .remove-btn {
-  background-color: #dc3545;
+  background-color: #e83e8c;
   color: white;
 }
 
 .remove-btn:hover {
-  background-color: #c82333;
+  background-color: #c82368;
 }
 
 .search-btn {
-  background-color: #007bff;
+  background-color: #a74bff;
   color: white;
   margin-top: 10px;
 }
 
 .search-btn:hover {
-  background-color: #0069d9;
+  background-color: #843df2;
 }
 
 .empty-state {
   text-align: center;
   padding: 40px 20px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
+  background-color: #fce4fc;
+  border-radius: 12px;
   margin-top: 20px;
+  color: #933d9e;
 }
 
 .empty-state p {
   margin-bottom: 10px;
-  color: #666;
 }

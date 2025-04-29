@@ -33,6 +33,11 @@ public class FavoriteServiceImpl implements FavoriteService {
             return "User not found";
         }
 
+        // Check if user is an admin
+        if (user.isAdmin()) {
+            return "Administrators cannot add products to favorites";
+        }
+
         // Check if product is already in favorites
         if (isProductInFavorites(product.getId(), email)) {
             return "Product already in favorites";
@@ -54,7 +59,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public List<FavoriteProductDto> getFavoritesByEmail(String email) {
         User user = userRepository.findByEmail(email);
-        if (user == null) {
+        if (user == null || user.isAdmin()) {
             return new ArrayList<>();
         }
 
@@ -86,7 +91,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public boolean isProductInFavorites(Long productId, String email) {
         User user = userRepository.findByEmail(email);
-        if (user == null) {
+        if (user == null || user.isAdmin()) {
             return false;
         }
         return favoriteRepository.existsByUserAndProductId(user, productId);
