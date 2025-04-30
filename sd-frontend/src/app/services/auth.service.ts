@@ -64,4 +64,8 @@ export class AuthService {
     isUserRegistered(email: string): Observable<boolean> {
         return this.http.get<boolean>(`${this.apiUrl}/is-registered?email=${email}`);
     }
+
+    validateCredentials(email: string, password: string): Observable<boolean> {
+        return this.http.post<boolean>(`${this.apiUrl}/validate-credentials`, { email, password });
+    }
 }

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -21,11 +22,13 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
     private final UserRepository userRepository;
+    private final ProductService productService;
 
     @Autowired
-    public FavoriteServiceImpl(FavoriteRepository favoriteRepository, UserRepository userRepository) {
+    public FavoriteServiceImpl(FavoriteRepository favoriteRepository, UserRepository userRepository, ProductService productService) {
         this.favoriteRepository = favoriteRepository;
         this.userRepository = userRepository;
+        this.productService = productService;
     }
 
     @Override
@@ -97,6 +100,46 @@ public class FavoriteServiceImpl implements FavoriteService {
             return false;
         }
         return favoriteRepository.existsByUserAndProductId(user, productId);
+    }
+
+    @Override
+    public String addToFavoritesByProductId(Long productId, String email, boolean notifyOnPromotion) {
+        // Check if user exists
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return "User not found";
+        }
+
+        // Check if user is an admin
+        if (user.isAdmin()) {
+            return "Administrators cannot add products to favorites";
+        }
+
+        // Check if product is already in favorites
+        if (isProductInFavorites(productId, email)) {
+            return "Product already in favorites";
+        }
+
+        // Get product by ID
+        Optional<Product> productOptional = productService.getProductById(productId);
+        if (!productOptional.isPresent()) {
+            return "Product not found";
+        }
+
+        Product product = productOptional.get();
+
+        // Create and save favorite
+        Favorite favorite = new Favorite();
+        favorite.setProductId(product.getId());
+        favorite.setProductName(product.getProductName());
+        favorite.setUser(user);
+        favorite.setPrice(product.getPrice());
+        favorite.setNotifyOnPromotion(notifyOnPromotion);
+        favorite.setDateAdded(LocalDateTime.now());
+        favorite.setImageUrl(product.getImageUrl());
+
+        favoriteRepository.save(favorite);
+        return "Product added to favorites";
     }
 
     @Override

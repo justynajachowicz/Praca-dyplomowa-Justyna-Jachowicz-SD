@@ -4,7 +4,7 @@
         <h2>Wyszukiwanie produktów</h2>
         <div class="nav-buttons">
             <button class="nav-button" (click)="goToShoppingList()">Przejdź do listy zakupów</button>
-            <button class="nav-button" routerLink="/favorites">Ulubione produkty</button>
+            <button class="nav-button" (click)="goToFavorites()">Ulubione produkty</button>
         </div>
     </div>
 
@@ -19,7 +19,7 @@
             />
         </div>
 
-        <!-- Pole email -->
+        <!-- Pole email i hasło -->
         <div class="email-input">
             <label for="userEmailSearch">Twój e-mail (potrzebny do dodania produktów):</label>
             <input
@@ -28,6 +28,16 @@
                     [(ngModel)]="userEmail"
                     name="email"
                     placeholder="Twój e-mail"
+            />
+        </div>
+        <div class="password-input">
+            <label for="userPasswordSearch">Twoje hasło:</label>
+            <input
+                    id="userPasswordSearch"
+                    type="password"
+                    [(ngModel)]="userPassword"
+                    name="password"
+                    placeholder="Twoje hasło"
             />
         </div>
     </div>
@@ -159,6 +169,9 @@
                     <button class="add-to-list-btn" (click)="addToShoppingList(product)" [disabled]="addingToList">
                         <span *ngIf="!addingToList">Dodaj do listy zakupów</span>
                         <span *ngIf="addingToList">Dodawanie...</span>
+                    </button>
+                    <button class="add-to-favorites-btn" (click)="addToFavorites(product)">
+                        Dodaj do ulubionych
                     </button>
                 </div>
             </li>

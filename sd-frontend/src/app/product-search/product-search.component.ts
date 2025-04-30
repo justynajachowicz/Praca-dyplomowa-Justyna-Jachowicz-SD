@@ -25,6 +25,7 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
     selectedCity: string = '';   // Wybrane miasto (opcjonalnie)
     selectedProduct: any = null;
     userEmail: string = '';
+    userPassword: string = '';   // Hasło użytkownika
     purchaseFormVisible: boolean = false;
     addingToList: boolean = false;
     successMessage: string = '';
@@ -214,74 +215,89 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
         this.addingToList = true;
         this.selectedProduct = product;
 
-        if (this.userEmail) {
-            // Zapisz email użytkownika w localStorage
-            localStorage.setItem('userEmail', this.userEmail);
-
-            this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
-                if (isRegistered) {
-                    // Jeśli użytkownik jest zarejestrowany, dodaj produkt do listy zakupów
-                    this.productService.addToShoppingList(product, this.userEmail).subscribe(
-                        response => {
-                            console.log('Produkt dodany do listy zakupów:', response);
-                            this.successMessage = 'Produkt został dodany do Twojej listy zakupów!';
-                            this.addingToList = false;
-
-                            // Opcjonalnie: przekieruj do listy zakupów po krótkim opóźnieniu
-                            setTimeout(() => {
-                                this.router.navigate(['/shopping-list']);
-                            }, 2000);
-                        },
-                        error => {
-                            console.error('Błąd podczas dodawania produktu:', error);
-                            this.errorMessage = 'Nie udało się dodać produktu do listy zakupów.';
-                            this.addingToList = false;
-                        }
-                    );
-                } else {
-                    alert('Musisz być zarejestrowany, aby dodać produkt do listy zakupów.');
-                    this.addingToList = false;
-                }
-            });
-        } else {
+        if (!this.userEmail) {
             alert('Proszę podać e-mail!');
             this.addingToList = false;
+            return;
         }
+
+        if (!this.userPassword) {
+            alert('Proszę podać hasło!');
+            this.addingToList = false;
+            return;
+        }
+
+        // Zapisz email użytkownika w localStorage
+        localStorage.setItem('userEmail', this.userEmail);
+
+        // Walidacja email i hasła
+        this.authService.validateCredentials(this.userEmail, this.userPassword).subscribe(isValid => {
+            if (isValid) {
+                // Jeśli użytkownik jest zarejestrowany, dodaj produkt do listy zakupów
+                this.productService.addToShoppingList(product, this.userEmail).subscribe(
+                    response => {
+                        console.log('Produkt dodany do listy zakupów:', response);
+                        this.successMessage = 'Produkt został dodany do Twojej listy zakupów!';
+                        this.addingToList = false;
+
+                        // Opcjonalnie: przekieruj do listy zakupów po krótkim opóźnieniu
+                        setTimeout(() => {
+                            this.router.navigate(['/shopping-list']);
+                        }, 2000);
+                    },
+                    error => {
+                        console.error('Błąd podczas dodawania produktu:', error);
+                        this.errorMessage = 'Nie udało się dodać produktu do listy zakupów.';
+                        this.addingToList = false;
+                    }
+                );
+            } else {
+                alert('Nieprawidłowy email lub hasło.');
+                this.addingToList = false;
+            }
+        });
     }
 
     // Metoda submitPurchase() do obsługi formularza
     submitPurchase() {
-        if (this.userEmail) {
-            // Zapisz email użytkownika w localStorage
-            localStorage.setItem('userEmail', this.userEmail);
-
-            this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
-                if (isRegistered) {
-                    // Jeśli użytkownik jest zarejestrowany, dodaj produkt do listy zakupów
-                    this.productService.addToShoppingList(this.selectedProduct, this.userEmail).subscribe(
-                        response => {
-                            console.log('Produkt dodany do listy zakupów:', response);
-                            this.purchaseFormVisible = false; // Zamknij formularz
-                            this.successMessage = 'Produkt został dodany do Twojej listy zakupów!';
-
-                            // Opcjonalnie: przekieruj do listy zakupów po krótkim opóźnieniu
-                            setTimeout(() => {
-                                this.router.navigate(['/shopping-list']);
-                            }, 2000);
-                        },
-                        error => {
-                            console.error('Błąd podczas dodawania produktu:', error);
-                            this.errorMessage = 'Nie udało się dodać produktu do listy zakupów.';
-                            this.purchaseFormVisible = false;
-                        }
-                    );
-                } else {
-                    alert('Musisz być zarejestrowany, aby dodać produkt do listy zakupów.');
-                }
-            });
-        } else {
+        if (!this.userEmail) {
             alert('Proszę podać e-mail!');
+            return;
         }
+
+        if (!this.userPassword) {
+            alert('Proszę podać hasło!');
+            return;
+        }
+
+        // Zapisz email użytkownika w localStorage
+        localStorage.setItem('userEmail', this.userEmail);
+
+        // Walidacja email i hasła
+        this.authService.validateCredentials(this.userEmail, this.userPassword).subscribe(isValid => {
+            if (isValid) {
+                // Jeśli użytkownik jest zarejestrowany, dodaj produkt do listy zakupów
+                this.productService.addToShoppingList(this.selectedProduct, this.userEmail).subscribe(
+                    response => {
+                        console.log('Produkt dodany do listy zakupów:', response);
+                        this.purchaseFormVisible = false; // Zamknij formularz
+                        this.successMessage = 'Produkt został dodany do Twojej listy zakupów!';
+
+                        // Opcjonalnie: przekieruj do listy zakupów po krótkim opóźnieniu
+                        setTimeout(() => {
+                            this.router.navigate(['/shopping-list']);
+                        }, 2000);
+                    },
+                    error => {
+                        console.error('Błąd podczas dodawania produktu:', error);
+                        this.errorMessage = 'Nie udało się dodać produktu do listy zakupów.';
+                        this.purchaseFormVisible = false;
+                    }
+                );
+            } else {
+                alert('Nieprawidłowy email lub hasło.');
+            }
+        });
     }
 
     closePurchaseForm() {
@@ -291,16 +307,61 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
 
     // Przejdź do listy zakupów
     goToShoppingList() {
-        // Pobierz miasto z localStorage, jeśli istnieje
-        const storedCity = localStorage.getItem('selectedCity');
-
-        if (storedCity) {
-            this.router.navigate(['/shopping-list'], { 
-                queryParams: { city: storedCity }
-            });
-        } else {
-            this.router.navigate(['/shopping-list']);
+        if (!this.userEmail) {
+            alert('Proszę podać e-mail, aby przejść do listy zakupów!');
+            return;
         }
+
+        if (!this.userPassword) {
+            alert('Proszę podać hasło, aby przejść do listy zakupów!');
+            return;
+        }
+
+        // Zapisz email użytkownika w localStorage
+        localStorage.setItem('userEmail', this.userEmail);
+
+        // Walidacja email i hasła
+        this.authService.validateCredentials(this.userEmail, this.userPassword).subscribe(isValid => {
+            if (isValid) {
+                // Pobierz miasto z localStorage, jeśli istnieje
+                const storedCity = localStorage.getItem('selectedCity');
+
+                if (storedCity) {
+                    this.router.navigate(['/shopping-list'], { 
+                        queryParams: { city: storedCity }
+                    });
+                } else {
+                    this.router.navigate(['/shopping-list']);
+                }
+            } else {
+                alert('Nieprawidłowy email lub hasło.');
+            }
+        });
+    }
+
+    // Przejdź do ulubionych produktów
+    goToFavorites() {
+        if (!this.userEmail) {
+            alert('Proszę podać e-mail, aby przejść do ulubionych produktów!');
+            return;
+        }
+
+        if (!this.userPassword) {
+            alert('Proszę podać hasło, aby przejść do ulubionych produktów!');
+            return;
+        }
+
+        // Zapisz email użytkownika w localStorage
+        localStorage.setItem('userEmail', this.userEmail);
+
+        // Walidacja email i hasła
+        this.authService.validateCredentials(this.userEmail, this.userPassword).subscribe(isValid => {
+            if (isValid) {
+                this.router.navigate(['/favorites']);
+            } else {
+                alert('Nieprawidłowy email lub hasło.');
+            }
+        });
     }
 
     // Dodaj produkt do ulubionych
@@ -310,11 +371,17 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
             return;
         }
 
+        if (!this.userPassword) {
+            alert('Proszę podać hasło!');
+            return;
+        }
+
         // Zapisz email użytkownika w localStorage
         localStorage.setItem('userEmail', this.userEmail);
 
-        this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
-            if (isRegistered) {
+        // Walidacja email i hasła
+        this.authService.validateCredentials(this.userEmail, this.userPassword).subscribe(isValid => {
+            if (isValid) {
                 // Jeśli użytkownik jest zarejestrowany i nie jest adminem
                 if (!this.authService.isAdmin()) {
                     this.favoriteService.addToFavorites(product, this.userEmail).subscribe(
@@ -336,7 +403,7 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                     alert('Administratorzy nie mogą dodawać produktów do ulubionych.');
                 }
             } else {
-                alert('Musisz być zarejestrowany, aby dodać produkt do ulubionych.');
+                alert('Nieprawidłowy email lub hasło.');
             }
         });
     }

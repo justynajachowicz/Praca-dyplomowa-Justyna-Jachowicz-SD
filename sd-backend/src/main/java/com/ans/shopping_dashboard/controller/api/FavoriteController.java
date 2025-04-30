@@ -23,7 +23,20 @@ public class FavoriteController {
     @PostMapping
     public ResponseEntity<String> addToFavorites(@RequestBody Product product, @RequestParam String email, 
                                                 @RequestParam(defaultValue = "true") boolean notifyOnPromotion) {
+        if (email == null || email.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Email is required");
+        }
         String result = favoriteService.addToFavorites(product, email, notifyOnPromotion);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/byId")
+    public ResponseEntity<String> addToFavoritesByProductId(@RequestParam Long productId, @RequestParam String email, 
+                                                          @RequestParam(defaultValue = "true") boolean notifyOnPromotion) {
+        if (email == null || email.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Email is required");
+        }
+        String result = favoriteService.addToFavoritesByProductId(productId, email, notifyOnPromotion);
         return ResponseEntity.ok(result);
     }
 

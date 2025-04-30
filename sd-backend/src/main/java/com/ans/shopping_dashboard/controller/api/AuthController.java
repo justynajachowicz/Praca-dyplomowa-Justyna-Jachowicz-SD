@@ -76,4 +76,18 @@ public class AuthController {
         return ResponseEntity.ok(isRegistered); // Zwracamy odpowiedź z wartością true/false
     }
 
+    @PostMapping("/validate-credentials")
+    public ResponseEntity<Boolean> validateCredentials(@RequestBody LoginRequest loginRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
+            return ResponseEntity.ok(authentication.isAuthenticated());
+        } catch (Exception e) {
+            return ResponseEntity.ok(false);
+        }
+    }
 }

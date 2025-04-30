@@ -17,6 +17,15 @@ public interface FavoriteService {
     String addToFavorites(Product product, String email, boolean notifyOnPromotion);
 
     /**
+     * Add a product to a user's favorites by product ID
+     * @param productId The ID of the product to add to favorites
+     * @param email The email of the user
+     * @param notifyOnPromotion Whether to notify the user of promotions for this product
+     * @return A message indicating success or failure
+     */
+    String addToFavoritesByProductId(Long productId, String email, boolean notifyOnPromotion);
+
+    /**
      * Get all favorite products for a user
      * @param email The email of the user
      * @return A list of favorite products
