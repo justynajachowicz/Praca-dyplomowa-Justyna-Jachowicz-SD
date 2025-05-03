@@ -125,5 +125,33 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-
+    /**
+     * Finds a product by store and product name, or creates a new one if it doesn't exist.
+     * Always updates the price of the product.
+     *
+     * @param store The name of the store
+     * @param productName The name of the product
+     * @param price The price of the product
+     * @param city The city where the store is located
+     * @return The found or created product
+     */
+    public Product findOrCreateProductInStore(String store, String productName, Double price, String city) {
+        return productRepository.findByStoreIgnoreCaseAndProductNameIgnoreCase(store, productName)
+                .map(existingProduct -> {
+                    // Always update the price
+                    existingProduct.setPrice(price);
+                    return productRepository.save(existingProduct);
+                })
+                .orElseGet(() -> {
+                    Product newProduct = new Product();
+                    newProduct.setProductName(productName);
+                    newProduct.setStore(store);
+                    newProduct.setPrice(price);
+                    newProduct.setCity(city);
+                    newProduct.setPurchaseDate(LocalDate.now());
+                    // Set a default image URL or leave it null if it's not required
+                    newProduct.setImageUrl("default.jpg");
+                    return productRepository.save(newProduct);
+                });
+    }
 }

@@ -1,5 +1,6 @@
 package com.ans.shopping_dashboard.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 
@@ -19,6 +20,7 @@ public class ReceiptItem {
 
     @ManyToOne
     @JoinColumn(name = "receipt_id")
+    @JsonBackReference
     private Receipt receipt;  // Paragon, do którego należy ten produkt
 
     // Konstruktory

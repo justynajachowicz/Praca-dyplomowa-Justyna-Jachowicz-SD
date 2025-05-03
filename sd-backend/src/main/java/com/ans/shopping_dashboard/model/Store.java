@@ -21,5 +21,13 @@ public class Store {
     @Column(nullable = false)
     private String city;  // Miasto, w którym znajduje się sklep
 
-    // Możesz także dodać inne pola, jeśli są potrzebne, np. adres, kod pocztowy, etc.
+    @Column
+    private String address;  // Adres sklepu
+
+    // Konstruktor z polami name, city i address
+    public Store(String name, String city, String address) {
+        this.name = name;
+        this.city = city;
+        this.address = address;
+    }
 }

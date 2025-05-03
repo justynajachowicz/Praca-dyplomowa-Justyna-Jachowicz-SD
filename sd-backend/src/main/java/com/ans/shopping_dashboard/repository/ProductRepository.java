@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -18,6 +19,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // Wyszukiwanie po nazwie produktu i mieście (ignorując wielkość liter)
     List<Product> findByProductNameContainingIgnoreCaseAndCityIgnoreCase(String name, String city);
+
+    // Wyszukiwanie po nazwie sklepu i nazwie produktu (ignorując wielkość liter)
+    Optional<Product> findByStoreIgnoreCaseAndProductNameIgnoreCase(String store, String productName);
 
     @Query(value = "SELECT * FROM product p WHERE LOWER(p.product_name) ~* ('\\m' || :word || '\\M')", nativeQuery = true)
     List<Product> searchByWholeWord(@Param("word") String word);

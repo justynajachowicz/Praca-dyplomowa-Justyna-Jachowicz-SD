@@ -1,5 +1,6 @@
 package com.ans.shopping_dashboard.model;  // Ścieżka do pakietu
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 
@@ -24,6 +25,7 @@ public class Receipt {
 
     // Relacja 1 do N: Paragon ma wiele produktów
     @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ReceiptItem> items;  // Lista produktów na paragonie
 
     // Konstruktory

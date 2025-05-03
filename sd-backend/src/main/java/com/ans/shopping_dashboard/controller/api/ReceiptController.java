@@ -1,5 +1,6 @@
 package com.ans.shopping_dashboard.controller.api;
 
+import com.ans.shopping_dashboard.dto.ReceiptRequestDTO;
 import com.ans.shopping_dashboard.model.Receipt;
 import com.ans.shopping_dashboard.service.ReceiptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class ReceiptController {
         Receipt savedReceipt = receiptService.saveReceipt(receipt);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedReceipt);
     }
+
 
     // 📌 **Dodana metoda obsługująca przesyłanie zdjęcia paragonu**
     @PostMapping("/upload")
