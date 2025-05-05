@@ -136,7 +136,7 @@ public class ProductService {
      * @return The found or created product
      */
     public Product findOrCreateProductInStore(String store, String productName, Double price, String city) {
-        return productRepository.findByStoreIgnoreCaseAndProductNameIgnoreCase(store, productName)
+        return productRepository.findByStoreIgnoreCaseAndProductNameIgnoreCaseAndCityIgnoreCase(store, productName, city)
                 .map(existingProduct -> {
                     // Always update the price
                     existingProduct.setPrice(price);

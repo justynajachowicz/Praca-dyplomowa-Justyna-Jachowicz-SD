@@ -71,6 +71,8 @@ public class ReceiptService {
         receipt.setShopName(requestDTO.getStore());
         receipt.setDate(LocalDate.now().format(DateTimeFormatter.ISO_DATE));
         receipt.setTotalPrice(requestDTO.getTotalPrice());
+        receipt.setCity(requestDTO.getCity());
+        receipt.setStreet(requestDTO.getStreet());
 
         // Create receipt items
         List<ReceiptItem> items = new ArrayList<>();

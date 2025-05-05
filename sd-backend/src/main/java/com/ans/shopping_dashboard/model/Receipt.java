@@ -22,6 +22,8 @@ public class Receipt {
     private String shopName;   // Nazwa sklepu
     private String date;       // Data zakupu
     private double totalPrice; // Całkowita cena paragonu
+    private String city;       // Miasto
+    private String street;     // Ulica
 
     // Relacja 1 do N: Paragon ma wiele produktów
     @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL)
@@ -36,6 +38,16 @@ public class Receipt {
         this.shopName = shopName;
         this.date = date;
         this.totalPrice = totalPrice;
+        this.items = items;
+    }
+
+    public Receipt(String imagePath, String shopName, String date, double totalPrice, String city, String street, List<ReceiptItem> items) {
+        this.imagePath = imagePath;
+        this.shopName = shopName;
+        this.date = date;
+        this.totalPrice = totalPrice;
+        this.city = city;
+        this.street = street;
         this.items = items;
     }
 
@@ -86,5 +98,21 @@ public class Receipt {
 
     public void setItems(List<ReceiptItem> items) {
         this.items = items;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 }

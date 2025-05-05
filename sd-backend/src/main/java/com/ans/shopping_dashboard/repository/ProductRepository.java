@@ -23,6 +23,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // Wyszukiwanie po nazwie sklepu i nazwie produktu (ignorując wielkość liter)
     Optional<Product> findByStoreIgnoreCaseAndProductNameIgnoreCase(String store, String productName);
 
+    // Wyszukiwanie po nazwie sklepu, nazwie produktu i mieście (ignorując wielkość liter)
+    Optional<Product> findByStoreIgnoreCaseAndProductNameIgnoreCaseAndCityIgnoreCase(String store, String productName, String city);
+
     @Query(value = "SELECT * FROM product p WHERE LOWER(p.product_name) ~* ('\\m' || :word || '\\M')", nativeQuery = true)
     List<Product> searchByWholeWord(@Param("word") String word);
 
