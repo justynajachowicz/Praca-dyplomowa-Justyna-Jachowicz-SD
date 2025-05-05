@@ -5,7 +5,7 @@ import { ShoppingListItem } from '../models/shopping-list-item';
 import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 import { ProductService } from '../product.service';
 import { Product } from '../models/models';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -24,9 +24,7 @@ export class ShoppingListComponent implements OnInit {
   shoppingList: ShoppingListItem[] = [];
   filteredList: ShoppingListItem[] = [];
   userEmail: string = '';
-  selectedCity: string = '';
   searchTerm: string = '';
-  products: Product[] = [];
 
   // Variables for planned shopping
   shoppingPlanned: boolean = false;
@@ -36,30 +34,15 @@ export class ShoppingListComponent implements OnInit {
   constructor(
     private shoppingListService: ShoppingListService,
     private productService: ProductService,
-    private route: ActivatedRoute,
     public favoriteService: FavoriteService
   ) {}
 
   ngOnInit(): void {
     const email = localStorage.getItem('userEmail');
 
-    // Pobierz miasto z parametrów URL lub localStorage
-    this.route.queryParams.subscribe(params => {
-      if (params['city']) {
-        this.selectedCity = params['city'];
-        localStorage.setItem('selectedCity', this.selectedCity);
-      } else {
-        const storedCity = localStorage.getItem('selectedCity');
-        if (storedCity) {
-          this.selectedCity = storedCity;
-        }
-      }
-    });
-
     if (email) {
       this.userEmail = email;
       this.loadShoppingList();
-      this.loadProducts(); // Załaduj produkty dla wybranego miasta
     }
   }
 
@@ -75,48 +58,13 @@ export class ShoppingListComponent implements OnInit {
     });
   }
 
-  // Załaduj produkty dla wybranego miasta
-  loadProducts(): void {
-    if (this.selectedCity) {
-      this.productService.findCheapestProducts('', '', '', this.selectedCity).subscribe(
-        (products) => {
-          if (Array.isArray(products)) {
-            this.products = this.removeDuplicateProductNames(products);
-            console.log('Produkty dla miasta ' + this.selectedCity + ' (bez duplikatów):', this.products);
-          }
-        },
-        (error) => {
-          console.error('Błąd podczas pobierania produktów:', error);
-        }
-      );
-    }
-  }
 
-  // Metoda do usuwania duplikatów nazw produktów
-  private removeDuplicateProductNames(products: Product[]): Product[] {
-    const uniqueProductNames = new Set<string>();
-    return products.filter(product => {
-      const productName = product.name ? product.name.toLowerCase() : '';
-      if (productName && !uniqueProductNames.has(productName)) {
-        uniqueProductNames.add(productName);
-        return true;
-      }
-      return false;
-    });
-  }
-
-  // Filtruj elementy listy zakupów według miasta i wyszukiwanego terminu
+  // Filtruj elementy listy zakupów według wyszukiwanego terminu
   filterItems(): void {
     this.filteredList = this.shoppingList.filter(item => {
-      // Filtruj według miasta, jeśli wybrano miasto
-      const cityMatch = !this.selectedCity || 
-                        (item.city && item.city.toLowerCase() === this.selectedCity.toLowerCase());
-
       // Filtruj według wyszukiwanego terminu, jeśli podano
-      const searchMatch = !this.searchTerm || 
-                         (item.productName && item.productName.toLowerCase().includes(this.searchTerm.toLowerCase()));
-
-      return cityMatch && searchMatch;
+      return !this.searchTerm || 
+             (item.productName && item.productName.toLowerCase().includes(this.searchTerm.toLowerCase()));
     });
   }
 
@@ -221,24 +169,6 @@ export class ShoppingListComponent implements OnInit {
     return total;
   }
 
-  // Metoda do dodawania produktu do listy zakupów
-  addToShoppingList(product: Product): void {
-    if (!this.userEmail) {
-      alert('Proszę zalogować się, aby dodać produkt do listy zakupów.');
-      return;
-    }
-
-    this.productService.addToShoppingList(product, this.userEmail).subscribe({
-      next: () => {
-        console.log('Produkt dodany do listy zakupów:', product);
-        this.refreshList(); // Odśwież listę po dodaniu produktu
-      },
-      error: (err) => {
-        console.error('Błąd podczas dodawania produktu do listy zakupów:', err);
-        alert('Nie udało się dodać produktu do listy zakupów.');
-      }
-    });
-  }
 
   // Metoda do eksportu listy zakupów do PDF
   exportToPdf(): void {
@@ -307,11 +237,6 @@ export class ShoppingListComponent implements OnInit {
       const today = new Date();
       const dateStr = today.toLocaleDateString('pl-PL');
       pdf.text(`Data: ${dateStr}`, 105, 25, { align: 'center' });
-
-      // Dodajemy miasto
-      if (this.selectedCity) {
-        pdf.text(`Miasto: ${this.selectedCity}`, 105, 32, { align: 'center' });
-      }
 
       // Dodajemy obraz z canvas
       const imgData = canvas.toDataURL('image/png');

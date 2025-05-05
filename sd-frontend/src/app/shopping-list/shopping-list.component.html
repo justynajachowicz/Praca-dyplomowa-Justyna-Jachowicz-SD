@@ -7,11 +7,6 @@
         </div>
     </div>
 
-    <!-- Wyświetl wybrane miasto -->
-    <div *ngIf="selectedCity" class="selected-city">
-        <h3>Miasto: {{ selectedCity }}</h3>
-    </div>
-
     <!-- Wyszukiwarka produktów -->
     <div class="search-container">
         <input 
@@ -21,24 +16,6 @@
             placeholder="Wyszukaj produkt..." 
             class="search-input"
         />
-    </div>
-
-    <!-- Produkty dla wybranego miasta -->
-    <div *ngIf="products.length > 0" class="products-container">
-        <h3>Dostępne produkty w {{ selectedCity }}</h3>
-        <div class="products-grid">
-            <div *ngFor="let product of products" class="product-card">
-                <div class="product-header">
-                    <span class="product-name">{{ product.name }}</span>
-                </div>
-                <div class="product-details">
-                    <p *ngIf="product.weight">Waga: {{ product.weight }}</p>
-                </div>
-                <div class="product-actions">
-                    <button class="add-to-list-btn" (click)="addToShoppingList(product)">Dodaj do listy</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Lista zakupów -->

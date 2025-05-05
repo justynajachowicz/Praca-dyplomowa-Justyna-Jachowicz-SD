@@ -240,10 +240,10 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                         this.successMessage = 'Produkt został dodany do Twojej listy zakupów!';
                         this.addingToList = false;
 
-                        // Opcjonalnie: przekieruj do listy zakupów po krótkim opóźnieniu
+                        // Przekieruj do listy zakupów po dłuższym opóźnieniu, aby dać czas na zapisanie produktu w bazie danych
                         setTimeout(() => {
                             this.router.navigate(['/shopping-list']);
-                        }, 2000);
+                        }, 3500);
                     },
                     error => {
                         console.error('Błąd podczas dodawania produktu:', error);
@@ -283,10 +283,10 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                         this.purchaseFormVisible = false; // Zamknij formularz
                         this.successMessage = 'Produkt został dodany do Twojej listy zakupów!';
 
-                        // Opcjonalnie: przekieruj do listy zakupów po krótkim opóźnieniu
+                        // Przekieruj do listy zakupów po dłuższym opóźnieniu, aby dać czas na zapisanie produktu w bazie danych
                         setTimeout(() => {
                             this.router.navigate(['/shopping-list']);
-                        }, 2000);
+                        }, 3500);
                     },
                     error => {
                         console.error('Błąd podczas dodawania produktu:', error);
