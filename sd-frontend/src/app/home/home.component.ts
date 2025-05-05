@@ -40,6 +40,8 @@ export class HomeComponent {
 
     goToAddPurchase() {
         console.log(`Planowanie zakupów dla miasta: ${this.selectedCity}`);
+        // Store the selected city in localStorage
+        localStorage.setItem('selectedCity', this.selectedCity);
         this.router.navigate(['/add-purchase']);
     }
 

@@ -73,11 +73,12 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
 
     // Metoda do ładowania wszystkich produktów
     loadAllProducts(): void {
-        this.productService.getProducts().subscribe(
+        // Use findCheapestProducts with empty query and selected city to filter products by city
+        this.productService.findCheapestProducts('', '', '', this.selectedCity).subscribe(
             (products) => {
                 if (Array.isArray(products)) {
                     this.products = this.removeDuplicateProductNames(products);
-                    console.log('Wszystkie produkty (bez duplikatów):', this.products);
+                    console.log(`Wszystkie produkty dla miasta ${this.selectedCity} (bez duplikatów):`, this.products);
                 } else {
                     console.error('Odpowiedź z serwera nie jest tablicą.');
                     this.errorMessage = 'Brak produktów w odpowiedzi.';

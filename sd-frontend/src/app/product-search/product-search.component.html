@@ -45,6 +45,9 @@
 
     <!-- Wyniki wyszukiwania -->
     <div *ngIf="products.length > 0 && !isLoading" class="results-container">
+        <div class="city-indicator">
+            <h4>Wyświetlanie produktów dla miasta: <span class="city-name">{{ selectedCity }}</span></h4>
+        </div>
         <h3 *ngIf="query">Znalezione produkty dla: "{{ query }}"</h3>
         <h3 *ngIf="!query">Wszystkie dostępne produkty</h3>
 
