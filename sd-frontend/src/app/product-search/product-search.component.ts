@@ -221,18 +221,12 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (!this.userPassword) {
-            alert('Proszę podać hasło!');
-            this.addingToList = false;
-            return;
-        }
-
         // Zapisz email użytkownika w localStorage
         localStorage.setItem('userEmail', this.userEmail);
 
-        // Walidacja email i hasła
-        this.authService.validateCredentials(this.userEmail, this.userPassword).subscribe(isValid => {
-            if (isValid) {
+        // Walidacja tylko emaila
+        this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
+            if (isRegistered) {
                 // Jeśli użytkownik jest zarejestrowany, dodaj produkt do listy zakupów
                 this.productService.addToShoppingList(product, this.userEmail).subscribe(
                     response => {
@@ -252,7 +246,7 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                     }
                 );
             } else {
-                alert('Nieprawidłowy email lub hasło.');
+                alert('Nieprawidłowy email. Użytkownik nie jest zarejestrowany.');
                 this.addingToList = false;
             }
         });
@@ -265,17 +259,12 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (!this.userPassword) {
-            alert('Proszę podać hasło!');
-            return;
-        }
-
         // Zapisz email użytkownika w localStorage
         localStorage.setItem('userEmail', this.userEmail);
 
-        // Walidacja email i hasła
-        this.authService.validateCredentials(this.userEmail, this.userPassword).subscribe(isValid => {
-            if (isValid) {
+        // Walidacja tylko emaila
+        this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
+            if (isRegistered) {
                 // Jeśli użytkownik jest zarejestrowany, dodaj produkt do listy zakupów
                 this.productService.addToShoppingList(this.selectedProduct, this.userEmail).subscribe(
                     response => {
@@ -295,7 +284,7 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                     }
                 );
             } else {
-                alert('Nieprawidłowy email lub hasło.');
+                alert('Nieprawidłowy email. Użytkownik nie jest zarejestrowany.');
             }
         });
     }
@@ -312,17 +301,12 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (!this.userPassword) {
-            alert('Proszę podać hasło, aby przejść do listy zakupów!');
-            return;
-        }
-
         // Zapisz email użytkownika w localStorage
         localStorage.setItem('userEmail', this.userEmail);
 
-        // Walidacja email i hasła
-        this.authService.validateCredentials(this.userEmail, this.userPassword).subscribe(isValid => {
-            if (isValid) {
+        // Walidacja tylko emaila
+        this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
+            if (isRegistered) {
                 // Pobierz miasto z localStorage, jeśli istnieje
                 const storedCity = localStorage.getItem('selectedCity');
 
@@ -334,7 +318,7 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/shopping-list']);
                 }
             } else {
-                alert('Nieprawidłowy email lub hasło.');
+                alert('Nieprawidłowy email. Użytkownik nie jest zarejestrowany.');
             }
         });
     }
@@ -346,20 +330,15 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (!this.userPassword) {
-            alert('Proszę podać hasło, aby przejść do ulubionych produktów!');
-            return;
-        }
-
         // Zapisz email użytkownika w localStorage
         localStorage.setItem('userEmail', this.userEmail);
 
-        // Walidacja email i hasła
-        this.authService.validateCredentials(this.userEmail, this.userPassword).subscribe(isValid => {
-            if (isValid) {
+        // Walidacja tylko emaila
+        this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
+            if (isRegistered) {
                 this.router.navigate(['/favorites']);
             } else {
-                alert('Nieprawidłowy email lub hasło.');
+                alert('Nieprawidłowy email. Użytkownik nie jest zarejestrowany.');
             }
         });
     }
@@ -371,17 +350,12 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (!this.userPassword) {
-            alert('Proszę podać hasło!');
-            return;
-        }
-
         // Zapisz email użytkownika w localStorage
         localStorage.setItem('userEmail', this.userEmail);
 
-        // Walidacja email i hasła
-        this.authService.validateCredentials(this.userEmail, this.userPassword).subscribe(isValid => {
-            if (isValid) {
+        // Walidacja tylko emaila
+        this.authService.isUserRegistered(this.userEmail).subscribe(isRegistered => {
+            if (isRegistered) {
                 // Jeśli użytkownik jest zarejestrowany i nie jest adminem
                 if (!this.authService.isAdmin()) {
                     this.favoriteService.addToFavorites(product, this.userEmail).subscribe(
@@ -403,7 +377,7 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                     alert('Administratorzy nie mogą dodawać produktów do ulubionych.');
                 }
             } else {
-                alert('Nieprawidłowy email lub hasło.');
+                alert('Nieprawidłowy email. Użytkownik nie jest zarejestrowany.');
             }
         });
     }
