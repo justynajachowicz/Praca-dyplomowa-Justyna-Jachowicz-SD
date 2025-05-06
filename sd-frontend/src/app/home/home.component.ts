@@ -3,10 +3,11 @@ import { Router } from "@angular/router";
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import {FormsModule} from "@angular/forms";
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-home',
-    imports: [SlickCarouselModule, FormsModule, CommonModule],
+    imports: [SlickCarouselModule, FormsModule, CommonModule, RouterModule],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css'
 })

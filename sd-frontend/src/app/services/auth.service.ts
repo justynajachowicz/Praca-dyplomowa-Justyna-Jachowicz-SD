@@ -16,16 +16,19 @@ export class AuthService {
           // Clear any existing data
           localStorage.removeItem('jwt');
           localStorage.removeItem('role');
+          localStorage.removeItem('userEmail');
 
           // Save new data
           localStorage.setItem('jwt', response.token);  // Zapisz token
           localStorage.setItem('role', response.role);  // Zapisz rolę użytkownika
+          localStorage.setItem('userEmail', credentials.email);  // Zapisz email użytkownika
 
           // Enhanced logging
           console.log('Login successful');
           console.log('Token:', response.token);
           console.log('Role from server:', response.role);
           console.log('Role saved to localStorage:', localStorage.getItem('role'));
+          console.log('User email saved to localStorage:', localStorage.getItem('userEmail'));
 
           // Check if role is admin
           const isAdmin = response.role && response.role.toUpperCase() === 'ADMIN';

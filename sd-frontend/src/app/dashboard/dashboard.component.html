@@ -20,6 +20,10 @@
       <span class="menu-icon">❤️</span>
       Ulubione produkty
     </a>
+    <a class="menu-item" routerLink="/purchase-history" *ngIf="!authService.isAdmin()">
+      <span class="menu-icon">📜</span>
+      Historia zakupów
+    </a>
     <a class="menu-item" *ngIf="authService.isAdmin()" (click)="goToUserManagement()">
       <span class="menu-icon">👥</span>
       Zarządzaj użytkownikami

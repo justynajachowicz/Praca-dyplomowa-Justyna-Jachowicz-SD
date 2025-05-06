@@ -1,0 +1,136 @@
+<div class="purchase-history-container">
+  <div class="header-nav">
+    <h2>Historia zakupów</h2>
+    <div class="nav-buttons">
+      <button class="nav-button" routerLink="/shopping-list">Przejdź do listy zakupów</button>
+      <button class="nav-button" routerLink="/product-search">Wyszukaj produkty</button>
+    </div>
+  </div>
+
+  <!-- Email input for users who haven't set their email -->
+  <div *ngIf="!userEmail" class="email-input-container">
+    <p>Wprowadź swój email, aby zobaczyć historię zakupów:</p>
+    <div class="email-input">
+      <input 
+        type="email" 
+        [(ngModel)]="userEmail" 
+        placeholder="Twój email" 
+        class="email-field"
+      />
+      <button (click)="loadPurchaseHistory()" class="load-btn">Wczytaj historię</button>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="loading-indicator">
+    <div class="spinner"></div>
+    <p>Ładowanie historii zakupów...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Success message -->
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
+  <!-- Complete purchase button -->
+  <div *ngIf="userEmail && !isLoading" class="complete-purchase-container">
+    <button (click)="completePurchase()" class="complete-purchase-btn">
+      Zakończ bieżące zakupy i dodaj do historii
+    </button>
+    <p class="info-text">Kliknij, aby przenieść wszystkie produkty z listy zakupów do historii zakupów</p>
+  </div>
+
+  <!-- Filters -->
+  <div *ngIf="purchaseHistory.length > 0 && !isLoading" class="filters-container">
+    <h3>Filtruj historię zakupów</h3>
+    
+    <div class="filters-grid">
+      <div class="filter-group">
+        <label for="searchTerm">Szukaj produktu:</label>
+        <input 
+          type="text" 
+          id="searchTerm" 
+          [(ngModel)]="searchTerm" 
+          placeholder="Nazwa produktu" 
+          class="filter-input"
+        />
+      </div>
+      
+      <div class="filter-group">
+        <label for="storeFilter">Sklep:</label>
+        <select 
+          id="storeFilter" 
+          [(ngModel)]="selectedStore" 
+          class="filter-select"
+        >
+          <option value="">Wszystkie sklepy</option>
+          <option *ngFor="let store of availableStores" [value]="store">{{ store }}</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="startDate">Data od:</label>
+        <input 
+          type="date" 
+          id="startDate" 
+          [(ngModel)]="startDate" 
+          class="filter-input"
+        />
+      </div>
+      
+      <div class="filter-group">
+        <label for="endDate">Data do:</label>
+        <input 
+          type="date" 
+          id="endDate" 
+          [(ngModel)]="endDate" 
+          class="filter-input"
+        />
+      </div>
+    </div>
+    
+    <div class="filter-buttons">
+      <button (click)="applyFilters()" class="apply-filters-btn">Zastosuj filtry</button>
+      <button (click)="resetFilters()" class="reset-filters-btn">Resetuj filtry</button>
+    </div>
+  </div>
+
+  <!-- Purchase history list -->
+  <div *ngIf="filteredHistory.length > 0 && !isLoading" class="history-list">
+    <h3>Twoja historia zakupów</h3>
+    
+    <div class="history-grid">
+      <div class="history-header">
+        <span>Produkt</span>
+        <span>Sklep</span>
+        <span>Cena</span>
+        <span>Data zakupu</span>
+        <span>Akcje</span>
+      </div>
+      
+      <div *ngFor="let item of filteredHistory" class="history-item">
+        <div class="product-name">{{ item.productName }}</div>
+        <div class="store-name">{{ item.store }}</div>
+        <div class="price">{{ item.price | currency:'PLN' }}</div>
+        <div class="purchase-date">{{ item.purchaseDate }}</div>
+        <div class="actions">
+          <button (click)="deletePurchaseHistoryItem(item.id)" class="delete-btn">Usuń</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="purchaseHistory.length === 0 && !isLoading && userEmail" class="empty-state">
+    <p>Nie masz jeszcze żadnej historii zakupów.</p>
+    <p>Zakończ swoje zakupy, aby dodać je do historii!</p>
+    <button class="shopping-list-btn" routerLink="/shopping-list">
+      Przejdź do listy zakupów
+    </button>
+  </div>
+</div>
