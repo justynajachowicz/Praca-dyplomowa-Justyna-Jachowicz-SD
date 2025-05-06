@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class PromotionalFlyersComponent implements OnInit {
   // Store types
-  storeTypes = ['biedronka', 'lidl'];
+  storeTypes = ['biedronka', 'lidl', 'kaufland'];
   currentStore: string = 'biedronka';
 
   // Biedronka flyers
@@ -35,6 +35,15 @@ export class PromotionalFlyersComponent implements OnInit {
     'assets/images/lidl8.png'  // Corrected from lid18.png to lidl8.png
   ];
 
+  // Kaufland flyers
+  kauflandFlyers: string[] = [
+    'assets/images/k1.png',
+    'assets/images/k2.png',
+    'assets/images/k3.png',
+    'assets/images/k4.png',
+    'assets/images/k5.png'
+  ];
+
   currentFlyerIndex: number = 0;
   imageError: boolean = false;
 
@@ -49,7 +58,14 @@ export class PromotionalFlyersComponent implements OnInit {
 
   // Get the current flyers array based on selected store
   get flyers(): string[] {
-    return this.currentStore === 'biedronka' ? this.biedronkaFlyers : this.lidlFlyers;
+    if (this.currentStore === 'biedronka') {
+      return this.biedronkaFlyers;
+    } else if (this.currentStore === 'lidl') {
+      return this.lidlFlyers;
+    } else if (this.currentStore === 'kaufland') {
+      return this.kauflandFlyers;
+    }
+    return this.biedronkaFlyers; // Default to Biedronka
   }
 
   // Switch between stores
@@ -63,7 +79,14 @@ export class PromotionalFlyersComponent implements OnInit {
 
   // Get store name for display
   getStoreName(): string {
-    return this.currentStore === 'biedronka' ? 'Biedronki' : 'Lidla';
+    if (this.currentStore === 'biedronka') {
+      return 'Biedronki';
+    } else if (this.currentStore === 'lidl') {
+      return 'Lidla';
+    } else if (this.currentStore === 'kaufland') {
+      return 'Kauflandu';
+    }
+    return 'Biedronki'; // Default to Biedronka
   }
 
   nextFlyer(): void {

@@ -19,7 +19,14 @@ To make the promotional flyers feature work correctly, please add the following 
 7. lidl7.png
 8. lidl8.png
 
-These files should be promotional flyer images for Biedronka and Lidl.
+## Kaufland Flyers
+1. k1.png
+2. k2.png
+3. k3.png
+4. k4.png
+5. k5.png
+
+These files should be promotional flyer images for Biedronka, Lidl, and Kaufland.
 
 ## Alternative Solution
 

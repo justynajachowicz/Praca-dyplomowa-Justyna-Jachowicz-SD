@@ -17,6 +17,13 @@
     >
       Lidl
     </button>
+    <button 
+      class="store-button" 
+      [class.active]="currentStore === 'kaufland'"
+      (click)="switchStore('kaufland')"
+    >
+      Kaufland
+    </button>
   </div>
 
   <div class="flyer-viewer">
