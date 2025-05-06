@@ -126,6 +126,7 @@
                 <div *ngFor="let store of plannedShoppingStores" class="store-group">
                     <div class="store-header">
                         <h5>{{ store }}</h5>
+                        <p *ngIf="storeAddresses[store]" class="store-address">{{ storeAddresses[store] }}</p>
                     </div>
                     <div class="store-items">
                         <div class="store-item" *ngFor="let item of getItemsByStore(store)">

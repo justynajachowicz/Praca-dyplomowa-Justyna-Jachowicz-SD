@@ -12,6 +12,7 @@ import {ProductSearchComponent} from "./product-search/product-search.component"
 import { ProductSimulationComponent } from './product-simulation/product-simulation.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { AdminGuard } from './guards/admin.guard';
+import { PromotionalFlyersComponent } from './components/promotional-flyers/promotional-flyers.component';
 
 
 
@@ -27,6 +28,7 @@ export const routes: Routes = [
   { path: 'admin/users', component: AdminUserManagementComponent, canActivate: [AdminGuard] },
   { path: 'receipt-upload', component: ReceiptUploadComponent },
   { path: 'add-purchase', component: PurchaseFormComponent },  // Formularz dodania zakupu
+  { path: 'promotional-flyers', component: PromotionalFlyersComponent }, // Przeglądanie gazetek promocyjnych
   { path: 'product-simulation', component: ProductSimulationComponent, canActivate: [AdminGuard] }, // Symulacja produktów (tylko dla admina)
   { path: '**', redirectTo: '' },
 

@@ -10,13 +10,15 @@ import { FormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { FavoriteService } from '../services/favorite.service';
+import { ShoppingService } from './shopping.service';
 
 @Component({
   selector: 'app-shopping-list',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule], // Dodaj FormsModule i RouterModule
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.css']
+  styleUrls: ['./shopping-list.component.css'],
+  providers: [ShoppingService]
 })
 export class ShoppingListComponent implements OnInit {
   @ViewChild('plannedShoppingContent') plannedShoppingContent!: ElementRef;
@@ -30,11 +32,13 @@ export class ShoppingListComponent implements OnInit {
   shoppingPlanned: boolean = false;
   plannedShoppingStores: string[] = [];
   plannedShoppingItems: { [store: string]: ShoppingListItem[] } = {};
+  storeAddresses: { [store: string]: string } = {};
 
   constructor(
     private shoppingListService: ShoppingListService,
     private productService: ProductService,
-    public favoriteService: FavoriteService
+    public favoriteService: FavoriteService,
+    private shoppingService: ShoppingService
   ) {}
 
   ngOnInit(): void {
@@ -122,6 +126,7 @@ export class ShoppingListComponent implements OnInit {
     // Resetuj poprzednie planowanie
     this.plannedShoppingItems = {};
     this.plannedShoppingStores = [];
+    this.storeAddresses = {};
 
     // Grupuj produkty według sklepów
     const storeGroups: { [store: string]: ShoppingListItem[] } = {};
@@ -137,6 +142,13 @@ export class ShoppingListComponent implements OnInit {
     // Zapisz pogrupowane produkty
     this.plannedShoppingItems = storeGroups;
     this.plannedShoppingStores = Object.keys(storeGroups);
+
+    // Pobierz adresy sklepów
+    this.plannedShoppingStores.forEach(store => {
+      this.shoppingService.getStoreAddress(store).subscribe(address => {
+        this.storeAddresses[store] = address;
+      });
+    });
 
     // Oznacz, że zakupy zostały zaplanowane
     this.shoppingPlanned = true;

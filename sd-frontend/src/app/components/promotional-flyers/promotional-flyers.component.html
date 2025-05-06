@@ -1,0 +1,44 @@
+<div class="flyers-container">
+  <h2>Aktualne gazetki promocyjne Biedronki</h2>
+
+  <div class="flyer-viewer">
+    <div class="flyer-navigation">
+      <button 
+        class="nav-button prev-button" 
+        (click)="previousFlyer()" 
+        [disabled]="isFirstFlyer()"
+      >
+        &lt; Poprzednia
+      </button>
+
+      <span class="flyer-counter">
+        {{ currentFlyerIndex + 1 }} / {{ flyers.length }}
+      </span>
+
+      <button 
+        class="nav-button next-button" 
+        (click)="nextFlyer()" 
+        [disabled]="isLastFlyer()"
+      >
+        Następna &gt;
+      </button>
+    </div>
+
+    <div class="flyer-image-container">
+      <img 
+        [src]="getCurrentFlyer()" 
+        alt="Gazetka promocyjna Biedronki" 
+        class="flyer-image"
+        (error)="handleImageError($event)"
+      />
+      <div *ngIf="imageError" class="image-error-message">
+        <p>Przepraszamy, nie można załadować obrazu gazetki promocyjnej.</p>
+        <p>Prosimy spróbować ponownie później.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-button-container">
+    <button class="back-button" (click)="goBack()">Powrót</button>
+  </div>
+</div>

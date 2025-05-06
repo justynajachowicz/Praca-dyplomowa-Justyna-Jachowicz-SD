@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError } from 'rxjs';
-import { of } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { Shop, Product, ShoppingList, Purchase } from '../models/models';
 import {ShoppingListItem} from "../models/shopping-list-item";
 
@@ -69,4 +68,11 @@ export class ShoppingService {
     getShoppingList(userEmail: string): Observable<ShoppingListItem[]> {
         return this.http.get<ShoppingListItem[]>(`${this.apiUrl}?email=${userEmail}`);
     }
+
+  // Method to get store address by store name
+  getStoreAddress(storeName: string): Observable<string> {
+    // Since we don't have a direct API endpoint for this, we'll use a mock implementation
+    // In a real application, you would call an API endpoint to get the store address
+    return of(`ul. ${storeName} 123`); // Mock address: "ul. [StoreName] 123"
+  }
 }

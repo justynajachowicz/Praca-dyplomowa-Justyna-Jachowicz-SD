@@ -22,4 +22,8 @@ export class PurchaseFormComponent {
   goToProductSearch() {
     this.router.navigate(['/product-search']); // Przekierowanie na stronę wyszukiwania produktów
   }
+
+  goToPromotionalFlyers() {
+    this.router.navigate(['/promotional-flyers']); // Przekierowanie na stronę przeglądania gazetek promocyjnych
+  }
 }
