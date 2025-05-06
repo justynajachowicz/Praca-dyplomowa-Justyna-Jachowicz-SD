@@ -21,6 +21,9 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 export class ProductSearchComponent implements OnInit, OnDestroy {
     query: string = '';          // Nazwa produktu
     products: Product[] = [];    // Lista wyników
+    categorizedProducts: { [category: string]: Product[] } = {}; // Produkty pogrupowane według kategorii
+    categories: string[] = [];   // Lista kategorii
+    expandedCategories: { [category: string]: boolean } = {}; // Śledzi, które kategorie są rozwinięte
     errorMessage: string = '';   // Komunikaty o błędach
     selectedCity: string = '';   // Wybrane miasto (opcjonalnie)
     selectedProduct: any = null;
@@ -71,6 +74,73 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
         });
     }
 
+    // Metoda do przełączania widoczności kategorii
+    toggleCategory(category: string): void {
+        this.expandedCategories[category] = !this.expandedCategories[category];
+    }
+
+    // Sprawdza, czy kategoria jest rozwinięta
+    isCategoryExpanded(category: string): boolean {
+        return this.expandedCategories[category] === true;
+    }
+
+    // Metoda do kategoryzacji produktów
+    private categorizeProducts(products: Product[], isSearchResult: boolean = false): void {
+        // Resetuj kategoryzację
+        this.categorizedProducts = {};
+        this.categories = [];
+
+        // Definicje kategorii
+        const categories: { [key: string]: string[] } = {
+            'Nabiał': ['mleko', 'masło', 'ser'],
+            'Mięso': ['szynka'],
+            'Napoje': ['woda', 'coca cola'],
+            'Pieczywo': ['chleb'],
+            'Makarony': ['makaron'],
+            'Jajka': ['jajko', 'jajka'],
+            'Słodycze': ['czekolad'],
+            'Warzywa i owoce': ['pomidor', 'ogórek', 'ziemniak']
+        };
+
+        // Przypisz każdy produkt do odpowiedniej kategorii
+        products.forEach(product => {
+            const productName = product.name ? product.name.toLowerCase() : '';
+            let assigned = false;
+
+            for (const [category, keywords] of Object.entries(categories)) {
+                for (const keyword of keywords) {
+                    if (productName.includes(keyword)) {
+                        if (!this.categorizedProducts[category]) {
+                            this.categorizedProducts[category] = [];
+                        }
+                        this.categorizedProducts[category].push(product);
+                        assigned = true;
+                        break;
+                    }
+                }
+                if (assigned) break;
+            }
+
+            // Jeśli produkt nie pasuje do żadnej kategorii, dodaj go do kategorii "Inne"
+            if (!assigned) {
+                if (!this.categorizedProducts['Inne']) {
+                    this.categorizedProducts['Inne'] = [];
+                }
+                this.categorizedProducts['Inne'].push(product);
+            }
+        });
+
+        // Ustaw listę kategorii
+        this.categories = Object.keys(this.categorizedProducts);
+
+        // Inicjalizuj expandedCategories
+        this.categories.forEach(category => {
+            // Jeśli to wynik wyszukiwania, rozwiń wszystkie kategorie zawierające produkty
+            // W przeciwnym razie, wszystkie kategorie są początkowo zwinięte
+            this.expandedCategories[category] = isSearchResult;
+        });
+    }
+
     // Metoda do ładowania wszystkich produktów
     loadAllProducts(): void {
         // Use findCheapestProducts with empty query and selected city to filter products by city
@@ -79,6 +149,9 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
                 if (Array.isArray(products)) {
                     this.products = this.removeDuplicateProductNames(products);
                     console.log(`Wszystkie produkty dla miasta ${this.selectedCity} (bez duplikatów):`, this.products);
+
+                    // Kategoryzuj produkty
+                    this.categorizeProducts(this.products);
                 } else {
                     console.error('Odpowiedź z serwera nie jest tablicą.');
                     this.errorMessage = 'Brak produktów w odpowiedzi.';
@@ -137,6 +210,9 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
 
                         console.log('Najtańsze produkty po filtrowaniu:', this.products);
 
+                        // Kategoryzuj produkty i automatycznie rozwiń kategorie zawierające wyniki wyszukiwania
+                        this.categorizeProducts(this.products, true);
+
                         // Grupowanie produktów według miasta dla porównania cen
                         if (this.products.length > 0) {
                             console.log('Porównanie cen w różnych miastach:');
@@ -156,6 +232,9 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
             );
         } else {
             this.products = [];
+            // Resetuj kategoryzację gdy nie ma zapytania
+            this.categorizedProducts = {};
+            this.categories = [];
         }
     }
 

@@ -51,139 +51,140 @@
         <h3 *ngIf="query">Znalezione produkty dla: "{{ query }}"</h3>
         <h3 *ngIf="!query">Wszystkie dostępne produkty</h3>
 
-        <ul class="products-list">
-            <li *ngFor="let product of products" class="product-card">
+        <!-- Produkty pogrupowane według kategorii (rozwijana lista) -->
+        <div *ngFor="let category of categories" class="category-section">
+            <div class="category-header" (click)="toggleCategory(category)">
+                <h4 class="category-title">{{ category }}</h4>
+                <span class="category-toggle">{{ isCategoryExpanded(category) ? '▼' : '►' }}</span>
+            </div>
+            <ul *ngIf="isCategoryExpanded(category)" class="products-list">
+                <li *ngFor="let product of categorizedProducts[category]" class="product-card">
 
-                <!-- Warunek dla mleka -->
-                <div *ngIf="product.name && product.name.toLowerCase().includes('mleko') && !product.name.toLowerCase().includes('masło') && !product.name.toLowerCase().includes('szynka') && !product.name.toLowerCase().includes('woda')">
-                    <img
-                            src="assets/images/mleko.png"
-                            alt="Mleko"
-                            width="100"
-                            height="100"
-                            class="product-image"
-                    />
-                </div>
-
-                <!-- Warunek dla masła -->
-                <div *ngIf="product.name && product.name.toLowerCase().includes('masło') && !product.name.toLowerCase().includes('mleko') && !product.name.toLowerCase().includes('szynka') && !product.name.toLowerCase().includes('woda')">
-                    <img
-                            src="assets/images/maslo.png"
-                            alt="Masło"
-                            width="100"
-                            height="100"
-                            class="product-image"
-                    />
-                </div>
-
-                <!-- Warunek dla szynki -->
-                <div *ngIf="product.name && product.name.toLowerCase().includes('szynka')">
-                    <img
-                            src="assets/images/szynka.png"
-                            alt="Szynka"
-                            width="100"
-                            height="100"
-                            class="product-image"
-                    />
-                </div>
-
-                <!-- Warunek dla wody -->
-                <div *ngIf="product.name && product.name.toLowerCase().includes('woda') && !product.name.toLowerCase().includes('szynka') && !product.name.toLowerCase().includes('masło') && !product.name.toLowerCase().includes('mleko')">
-                    <img
-                            src="assets/images/woda.png"
-                            alt="Woda"
-                            width="100"
-                            height="100"
-                            class="product-image"
-                    />
-                </div>
-                <div *ngIf="product.name && product.name.toLowerCase().includes('makaron')">
-                    <img
-                            src="assets/images/makaron.png"
-                            alt="makaron"
-                            width="100"
-                            height="100"
-                            class="product-image"
-                    />
-                </div>
-                <!-- Warunek dla chleba -->
-                <div *ngIf="product.name
-                && !product.name.toLowerCase().includes('makaron')
-                && (product.name.toLowerCase().includes('chleb') || product.name.toLowerCase().includes('chleba'))">
-                    <img src="assets/images/chleb.png" alt="Chleb" width="100" height="100" class="product-image" />
-                </div>
-                <div *ngIf="product.name
-                && !product.name.toLowerCase().includes('makaron')
-                && !product.name.toLowerCase().includes('chleb')
-                && (product.name.toLowerCase().includes('jajko') || product.name.toLowerCase().includes('jajka'))">
-                    <img src="assets/images/jajka.png" alt="Jajka" width="100" height="100" class="product-image" />
-                </div>
-                <div *ngIf="product.name
-  && !product.name.toLowerCase().includes('makaron')
-  && !product.name.toLowerCase().includes('chleb')
-  && !product.name.toLowerCase().includes('jajko')
-  && !product.name.toLowerCase().includes('jajka')
-  && !product.name.toLowerCase().includes('masło')
-  && !product.name.toLowerCase().includes('mleko')
-  && product.name.toLowerCase().includes('ser')">
-                    <img src="assets/images/Ser.png" alt="Ser" width="100" height="100" class="product-image" />
-                </div>
-
-                <!-- Warunek dla czekolady -->
-                <div *ngIf="product.name && product.name.toLowerCase().includes('czekolad')">
-                    <img src="assets/images/czekolada.png" alt="Czekolada" width="100" height="100" class="product-image" />
-                </div>
-
-                <!-- Warunek dla Coca Coli -->
-                <div *ngIf="product.name && product.name.toLowerCase().includes('coca cola')">
-                    <img src="assets/images/coca cola.png" alt="Coca Cola" width="100" height="100" class="product-image" />
-                </div>
-                <div *ngIf="product.name && product.name.toLowerCase().includes('pomidorki papryczkowe')">
-                    <img src="assets/images/Pomidorki papryczkowe opak. 500 g.png" alt="Pomidorki papryczkowe opak. 500 g" width="100" height="100" class="product-image" />
-                </div>
-                <div *ngIf="product.name && product.name.toLowerCase().includes('ogórek szklarniowy')">
-                    <img src="assets/images/Ogórek szklarniowy.png" alt="Ogórek szklarniowy" width="100" height="100" class="product-image" />
-                </div>
-                <div *ngIf="product.name && product.name.toLowerCase().includes('ziemniak myty jadalny')">
-                    <img src="assets/images/Ziemniak myty jadalny opak. 2 kg.png" alt="Ziemniak myty jadalny" width="100" height="100" class="product-image" />
-                </div>
-                <div *ngIf="product.name && product.name.toLowerCase().includes('pomidor śliwkowy')">
-                    <img src="assets/images/pomidor-sliwkowy-opak-500g.png" alt="Pomidor śliwkowy" width="100" height="100" class="product-image" />
-                </div>
-
-
-
-
-
-
-
-                <div class="product-header">
-                    <span class="product-name">{{ product.name }}</span>
-                </div>
-
-                <div class="product-details">
-                    <div *ngIf="product.brand" class="product-brand">
-                        <span>Marka: {{ product.brand }}</span>
+                    <!-- Warunek dla mleka -->
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('mleko') && !product.name.toLowerCase().includes('masło') && !product.name.toLowerCase().includes('szynka') && !product.name.toLowerCase().includes('woda')">
+                        <img
+                                src="assets/images/mleko.png"
+                                alt="Mleko"
+                                width="100"
+                                height="100"
+                                class="product-image"
+                        />
                     </div>
-                    <div *ngIf="product.weight" class="product-weight">
-                        <span>Waga: {{ product.weight }}</span>
-                    </div>
-                    <div *ngIf="product.city" class="product-city">
-                        <span>Miasto: {{ product.city }}</span>
-                    </div>
-                </div>
 
-                <div class="product-actions">
-                    <button class="add-to-list-btn" (click)="addToShoppingList(product)" [disabled]="addingToList">
-                        <span *ngIf="!addingToList">Dodaj do listy zakupów</span>
-                        <span *ngIf="addingToList">Dodawanie...</span>
-                    </button>
-                    <button class="add-to-favorites-btn" (click)="addToFavorites(product)">
-                        Dodaj do ulubionych
-                    </button>
-                </div>
-            </li>
-        </ul>
+                    <!-- Warunek dla masła -->
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('masło') && !product.name.toLowerCase().includes('mleko') && !product.name.toLowerCase().includes('szynka') && !product.name.toLowerCase().includes('woda')">
+                        <img
+                                src="assets/images/maslo.png"
+                                alt="Masło"
+                                width="100"
+                                height="100"
+                                class="product-image"
+                        />
+                    </div>
+
+                    <!-- Warunek dla szynki -->
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('szynka')">
+                        <img
+                                src="assets/images/szynka.png"
+                                alt="Szynka"
+                                width="100"
+                                height="100"
+                                class="product-image"
+                        />
+                    </div>
+
+                    <!-- Warunek dla wody -->
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('woda') && !product.name.toLowerCase().includes('szynka') && !product.name.toLowerCase().includes('masło') && !product.name.toLowerCase().includes('mleko')">
+                        <img
+                                src="assets/images/woda.png"
+                                alt="Woda"
+                                width="100"
+                                height="100"
+                                class="product-image"
+                        />
+                    </div>
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('makaron')">
+                        <img
+                                src="assets/images/makaron.png"
+                                alt="makaron"
+                                width="100"
+                                height="100"
+                                class="product-image"
+                        />
+                    </div>
+                    <!-- Warunek dla chleba -->
+                    <div *ngIf="product.name
+                    && !product.name.toLowerCase().includes('makaron')
+                    && (product.name.toLowerCase().includes('chleb') || product.name.toLowerCase().includes('chleba'))">
+                        <img src="assets/images/chleb.png" alt="Chleb" width="100" height="100" class="product-image" />
+                    </div>
+                    <div *ngIf="product.name
+                    && !product.name.toLowerCase().includes('makaron')
+                    && !product.name.toLowerCase().includes('chleb')
+                    && (product.name.toLowerCase().includes('jajko') || product.name.toLowerCase().includes('jajka'))">
+                        <img src="assets/images/jajka.png" alt="Jajka" width="100" height="100" class="product-image" />
+                    </div>
+                    <div *ngIf="product.name
+      && !product.name.toLowerCase().includes('makaron')
+      && !product.name.toLowerCase().includes('chleb')
+      && !product.name.toLowerCase().includes('jajko')
+      && !product.name.toLowerCase().includes('jajka')
+      && !product.name.toLowerCase().includes('masło')
+      && !product.name.toLowerCase().includes('mleko')
+      && product.name.toLowerCase().includes('ser')">
+                        <img src="assets/images/Ser.png" alt="Ser" width="100" height="100" class="product-image" />
+                    </div>
+
+                    <!-- Warunek dla czekolady -->
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('czekolad')">
+                        <img src="assets/images/czekolada.png" alt="Czekolada" width="100" height="100" class="product-image" />
+                    </div>
+
+                    <!-- Warunek dla Coca Coli -->
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('coca cola')">
+                        <img src="assets/images/coca cola.png" alt="Coca Cola" width="100" height="100" class="product-image" />
+                    </div>
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('pomidorki papryczkowe')">
+                        <img src="assets/images/Pomidorki papryczkowe opak. 500 g.png" alt="Pomidorki papryczkowe opak. 500 g" width="100" height="100" class="product-image" />
+                    </div>
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('ogórek szklarniowy')">
+                        <img src="assets/images/Ogórek szklarniowy.png" alt="Ogórek szklarniowy" width="100" height="100" class="product-image" />
+                    </div>
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('ziemniak myty jadalny')">
+                        <img src="assets/images/Ziemniak myty jadalny opak. 2 kg.png" alt="Ziemniak myty jadalny" width="100" height="100" class="product-image" />
+                    </div>
+                    <div *ngIf="product.name && product.name.toLowerCase().includes('pomidor śliwkowy')">
+                        <img src="assets/images/pomidor-sliwkowy-opak-500g.png" alt="Pomidor śliwkowy" width="100" height="100" class="product-image" />
+                    </div>
+
+                    <div class="product-header">
+                        <span class="product-name">{{ product.name }}</span>
+                    </div>
+
+                    <div class="product-details">
+                        <div *ngIf="product.brand" class="product-brand">
+                            <span>Marka: {{ product.brand }}</span>
+                        </div>
+                        <div *ngIf="product.weight" class="product-weight">
+                            <span>Waga: {{ product.weight }}</span>
+                        </div>
+                        <div *ngIf="product.city" class="product-city">
+                            <span>Miasto: {{ product.city }}</span>
+                        </div>
+                    </div>
+
+                    <div class="product-actions">
+                        <button class="add-to-list-btn" (click)="addToShoppingList(product)" [disabled]="addingToList">
+                            <span *ngIf="!addingToList">Dodaj do listy zakupów</span>
+                            <span *ngIf="addingToList">Dodawanie...</span>
+                        </button>
+                        <button class="add-to-favorites-btn" (click)="addToFavorites(product)">
+                            Dodaj do ulubionych
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!-- Wiadomość, gdy brak wyników -->
