@@ -2,13 +2,24 @@
 
 To make the promotional flyers feature work correctly, please add the following image files to this directory:
 
+## Biedronka Flyers
 1. gazetka1.png
 2. gazetka2.png
 3. gazetka3.png
 4. gazetka4.png
 5. gazetka5.png
 
-These files should be promotional flyer images for Biedronka.
+## Lidl Flyers
+1. lidl1.png
+2. lidl2.png
+3. lidl3.png
+4. lidl4.png
+5. lidl5.png
+6. lidl6.png
+7. lidl7.png
+8. lidl8.png
+
+These files should be promotional flyer images for Biedronka and Lidl.
 
 ## Alternative Solution
 

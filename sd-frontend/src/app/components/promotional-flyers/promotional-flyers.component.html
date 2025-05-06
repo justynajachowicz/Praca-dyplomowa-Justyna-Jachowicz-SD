@@ -1,5 +1,23 @@
 <div class="flyers-container">
-  <h2>Aktualne gazetki promocyjne Biedronki</h2>
+  <h2>Aktualne gazetki promocyjne {{ getStoreName() }}</h2>
+
+  <!-- Store selection buttons -->
+  <div class="store-selector">
+    <button 
+      class="store-button" 
+      [class.active]="currentStore === 'biedronka'"
+      (click)="switchStore('biedronka')"
+    >
+      Biedronka
+    </button>
+    <button 
+      class="store-button" 
+      [class.active]="currentStore === 'lidl'"
+      (click)="switchStore('lidl')"
+    >
+      Lidl
+    </button>
+  </div>
 
   <div class="flyer-viewer">
     <div class="flyer-navigation">
@@ -27,7 +45,7 @@
     <div class="flyer-image-container">
       <img 
         [src]="getCurrentFlyer()" 
-        alt="Gazetka promocyjna Biedronki" 
+        alt="Gazetka promocyjna {{ getStoreName() }}" 
         class="flyer-image"
         (error)="handleImageError($event)"
       />
