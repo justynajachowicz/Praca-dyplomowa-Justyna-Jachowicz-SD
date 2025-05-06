@@ -1,34 +1,10 @@
 <div class="container">
-    <h2>Dodaj zakup</h2>
-    <form (ngSubmit)="onSubmit()" #purchaseForm="ngForm">
-        <div class="form-group">
-            <label for="productName">Nazwa produktu</label>
-            <input type="text" id="productName" class="form-control" [(ngModel)]="purchaseItem.productName" name="productName" required />
-        </div>
-
-        <div class="form-group">
-            <label for="price">Cena</label>
-            <input type="number" id="price" class="form-control" [(ngModel)]="purchaseItem.price" name="price" required />
-        </div>
-
-        <div class="form-group">
-            <label for="store">Sklep</label>
-            <input type="text" id="store" class="form-control" [(ngModel)]="purchaseItem.store" name="store" required />
-        </div>
-
-        <div class="form-group">
-            <label for="purchaseDate">Data zakupu</label>
-            <input type="date" id="purchaseDate" class="form-control" [(ngModel)]="purchaseItem.purchaseDate" name="purchaseDate" required />
-        </div>
-
-        <button type="submit" class="btn btn-primary" [disabled]="!purchaseForm.form.valid">Dodaj zakup</button>
+    <h2>Planowanie zakupów</h2>
+    <div class="message">
+        <p>Wybierz jedną z poniższych opcji:</p>
+    </div>
+    <div class="buttons">
         <button type="button" class="btn btn-secondary" (click)="goBack()">Powrót</button>
-    </form>
+        <button type="button" class="btn btn-primary" (click)="goToProductSearch()">Przejdź do wyszukiwarki produktów</button>
+    </div>
 </div>
-<!-- Dodajemy przycisk, który uruchomi symulację generowania 200 paragonów -->
-<button (click)="generateMultipleFakeReceipts()">Generuj 200 paragonów</button>
-
-
-``
-
-<button (click)="goToProductSearch()">Przejdź do wyszukiwarki produktów</button>
