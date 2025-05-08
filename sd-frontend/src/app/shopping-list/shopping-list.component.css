@@ -274,6 +274,37 @@
   border: 2px dashed #ce93d8;
 }
 
+/* Style dla komunikatów o planowaniu zakupów */
+.plan-success {
+  color: #4caf50;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.plan-warning {
+  color: #f44336;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.no-products-message {
+  background-color: #fff3e0;
+  border: 1px solid #ffcc80;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.no-products-message p {
+  margin: 10px 0;
+  color: #e65100;
+}
+
 .plan-shopping-btn {
   background: linear-gradient(135deg, #f06292, #ce93d8);
   color: white;

@@ -261,48 +261,12 @@ export class ShoppingListComponent implements OnInit {
                   this.storeAddresses[this.selectedStore] = address;
                 });
               }
-            } else {
-              // Jeśli nie znaleziono pasującego produktu, użyj oryginalnego
-              if (!this.plannedShoppingItems[this.selectedStore]) {
-                this.plannedShoppingItems[this.selectedStore] = [];
-              }
-
-              // Utwórz nowy ShoppingListItem na podstawie oryginalnego produktu
-              const newItem: ShoppingListItem = {
-                id: item.id,
-                productName: item.productName,
-                storeName: this.selectedStore,
-                price: item.price || 0,
-                quantity: item.quantity || 1
-              };
-
-              this.plannedShoppingItems[this.selectedStore].push(newItem);
-
-              // Pobierz adres sklepu
-              if (!this.storeAddresses[this.selectedStore]) {
-                this.shoppingService.getStoreAddress(this.selectedStore).subscribe(address => {
-                  this.storeAddresses[this.selectedStore] = address;
-                });
-              }
-            }
+            } 
+            // Usunięto dodawanie produktów, które nie są dostępne w wybranym sklepie
           }),
           catchError(error => {
             console.error(`Błąd podczas wyszukiwania produktu ${item.productName} w sklepie ${this.selectedStore}:`, error);
-            // W przypadku błędu, użyj oryginalnego produktu
-            if (!this.plannedShoppingItems[this.selectedStore]) {
-              this.plannedShoppingItems[this.selectedStore] = [];
-            }
-
-            // Utwórz nowy ShoppingListItem na podstawie oryginalnego produktu
-            const newItem: ShoppingListItem = {
-              id: item.id,
-              productName: item.productName,
-              storeName: this.selectedStore,
-              price: item.price || 0,
-              quantity: item.quantity || 1
-            };
-
-            this.plannedShoppingItems[this.selectedStore].push(newItem);
+            // W przypadku błędu, nie dodawaj produktu do listy zakupów
             return of(undefined);
           })
         );

@@ -1,13 +1,18 @@
 package com.ans.shopping_dashboard.service;
 
 import com.ans.shopping_dashboard.repository.ProductRepository;
+import com.ans.shopping_dashboard.repository.ReceiptRepository;
+import com.ans.shopping_dashboard.repository.ReceiptItemRepository;
 import com.ans.shopping_dashboard.dto.ProductDTO;
 import com.ans.shopping_dashboard.model.Product;
+import com.ans.shopping_dashboard.model.Receipt;
+import com.ans.shopping_dashboard.model.ReceiptItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +24,8 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ReceiptRepository receiptRepository;
+    private final ReceiptItemRepository receiptItemRepository;
 
 
 
@@ -168,15 +175,47 @@ public class ProductService {
 
     /**
      * Gets a list of products in a specific store and city.
+     * Only returns products that exist in the receipts table.
+     *
+     * @param store The store name
+     * @param city The city name
+     * @return A list of products from receipts
+     */
+    public List<ProductDTO> getProductsByStoreAndCity(String store, String city) {
+        // Only get products from receipts table
+        return getProductsFromReceipts(store, city);
+    }
+
+    /**
+     * Gets a list of products from receipts in a specific store and city.
      *
      * @param store The store name
      * @param city The city name
      * @return A list of products
      */
-    public List<ProductDTO> getProductsByStoreAndCity(String store, String city) {
-        List<Product> products = productRepository.findByStoreAndCity(store, city);
-        return products.stream()
-                .map(p -> new ProductDTO(p.getId(), p.getProductName(), p.getPrice(), p.getStore(), p.getCity()))
-                .collect(Collectors.toList());
+    private List<ProductDTO> getProductsFromReceipts(String store, String city) {
+        List<ProductDTO> result = new ArrayList<>();
+
+        // Find receipts by store name and city
+        List<Receipt> receipts = receiptRepository.findByShopNameIgnoreCaseAndCityIgnoreCase(store, city);
+
+        // For each receipt, get its items
+        for (Receipt receipt : receipts) {
+            List<ReceiptItem> items = receiptItemRepository.findByReceiptId(receipt.getId());
+
+            // Convert each item to a ProductDTO
+            for (ReceiptItem item : items) {
+                ProductDTO productDTO = new ProductDTO(
+                    item.getId(),
+                    item.getProductName(),
+                    item.getPrice(),
+                    receipt.getShopName(),
+                    receipt.getCity()
+                );
+                result.add(productDTO);
+            }
+        }
+
+        return result;
     }
 }

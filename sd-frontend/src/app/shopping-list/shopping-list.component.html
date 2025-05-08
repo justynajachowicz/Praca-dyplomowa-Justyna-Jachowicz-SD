@@ -133,7 +133,16 @@
         <!-- Widok po zaplanowaniu zakupów - pogrupowane według sklepów -->
         <div *ngIf="shoppingPlanned" class="planned-shopping-view">
             <h4>Twoje zakupy zostały zaplanowane</h4>
-            <p class="plan-success">Oto najtańszy sposób zrobienia zakupów:</p>
+
+            <!-- Komunikat gdy nie znaleziono produktów w wybranym sklepie -->
+            <div *ngIf="plannedShoppingStores.length === 0" class="no-products-message">
+                <p class="plan-warning">Nie znaleziono produktów z Twojej listy w wybranym sklepie.</p>
+                <p>Wybrane produkty nie są dostępne w sklepie {{ selectedStore }} w mieście {{ userCity || 'wybranym mieście' }}.</p>
+                <p>Spróbuj wybrać inny sklep lub sprawdź dostępność produktów w innym mieście.</p>
+            </div>
+
+            <!-- Komunikat gdy znaleziono produkty -->
+            <p *ngIf="plannedShoppingStores.length > 0" class="plan-success">Oto produkty dostępne w wybranym sklepie:</p>
 
             <div #plannedShoppingContent class="planned-shopping-content">
                 <div *ngFor="let store of plannedShoppingStores" class="store-group">
@@ -143,69 +152,6 @@
                     </div>
                     <div class="store-items">
                         <div class="store-item" *ngFor="let item of getItemsByStore(store)">
-                            <div class="item-image">
-                                <!-- Warunek dla mleka -->
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('mleko') && !item.productName.toLowerCase().includes('masło') && !item.productName.toLowerCase().includes('szynka') && !item.productName.toLowerCase().includes('woda')">
-                                    <img src="assets/images/mleko.png" alt="Mleko" width="30" height="30" class="product-image" />
-                                </div>
-
-                                <!-- Warunek dla masła -->
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('masło') && !item.productName.toLowerCase().includes('mleko') && !item.productName.toLowerCase().includes('szynka') && !item.productName.toLowerCase().includes('woda')">
-                                    <img src="assets/images/maslo.png" alt="Masło" width="30" height="30" class="product-image" />
-                                </div>
-
-                                <!-- Warunek dla szynki -->
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('szynka')">
-                                    <img src="assets/images/szynka.png" alt="Szynka" width="30" height="30" class="product-image" />
-                                </div>
-
-                                <!-- Warunek dla wody -->
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('woda') && !item.productName.toLowerCase().includes('szynka') && !item.productName.toLowerCase().includes('masło') && !item.productName.toLowerCase().includes('mleko')">
-                                    <img src="assets/images/woda.png" alt="Woda" width="30" height="30" class="product-image" />
-                                </div>
-
-                                <!-- Warunek dla makaronu -->
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('makaron')">
-                                    <img src="assets/images/makaron.png" alt="Makaron" width="30" height="30" class="product-image" />
-                                </div>
-
-                                <!-- Warunek dla chleba -->
-                                <div *ngIf="item.productName && !item.productName.toLowerCase().includes('makaron') && (item.productName.toLowerCase().includes('chleb') || item.productName.toLowerCase().includes('chleba'))">
-                                    <img src="assets/images/chleb.png" alt="Chleb" width="30" height="30" class="product-image" />
-                                </div>
-
-                                <!-- Warunek dla jajek -->
-                                <div *ngIf="item.productName && !item.productName.toLowerCase().includes('makaron') && !item.productName.toLowerCase().includes('chleb') && (item.productName.toLowerCase().includes('jajko') || item.productName.toLowerCase().includes('jajka'))">
-                                    <img src="assets/images/jajka.png" alt="Jajka" width="30" height="30" class="product-image" />
-                                </div>
-
-                                <!-- Warunek dla czekolady -->
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('czekolad')">
-                                    <img src="assets/images/czekolada.png" alt="Czekolada" width="30" height="30" class="product-image" />
-                                </div>
-
-                                <!-- Warunek dla Coca Coli -->
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('coca cola')">
-                                    <img src="assets/images/coca cola.png" alt="Coca Cola" width="30" height="30" class="product-image" />
-                                </div>
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('ogórek szklarniowy')">
-                                    <img src="assets/images/Ogorek_szklarniowy.png" alt="Ogórek szklarniowy" width="100" height="100" class="product-image" />
-                                </div>
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('ziemniak myty jadalny')">
-                                    <img src="assets/images/Ziemniak myty jadalny opak. 2 kg.png" alt="Ziemniak myty jadalny" width="100" height="100" class="product-image" />
-                                </div>
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('pomidor śliwkowy')">
-                                    <img src="assets/images/Pomidor śliwkowy opak. 500 g.png" alt="Pomidor śliwkowy opak. 500 g" width="100" height="100" class="product-image" />
-                                </div>
-                                <!-- Warunek dla sera -->
-                                <div *ngIf="item.productName && !item.productName.toLowerCase().includes('makaron') && !item.productName.toLowerCase().includes('chleb') && !item.productName.toLowerCase().includes('jajko') && !item.productName.toLowerCase().includes('jajka') && !item.productName.toLowerCase().includes('masło') && !item.productName.toLowerCase().includes('mleko') && item.productName.toLowerCase().includes('ser')">
-                                    <img src="assets/images/Ser.png" alt="Ser" width="100" height="100" class="product-image" />
-                                </div>
-                                <div *ngIf="item.productName && item.productName.toLowerCase().includes('pomidorki papryczkowe')">
-                                    <img src="assets/images/Pomidorki papryczkowe opak. 500 g.png" alt="Pomidorki papryczkowe" width="50" height="50" class="product-image" />
-                                </div>
-
-                            </div>
                             <span class="item-name">{{ item.productName }}</span>
                             <span class="item-price">{{ item.price | currency:'PLN' }}</span>
                         </div>
@@ -215,7 +161,7 @@
                     </div>
                 </div>
 
-                <div class="total-savings">
+                <div *ngIf="plannedShoppingStores.length > 0" class="total-savings">
                     <p>Całkowity koszt: {{ calculateTotalCost() | currency:'PLN' }}</p>
                 </div>
             </div>

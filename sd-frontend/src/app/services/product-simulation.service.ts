@@ -11,20 +11,21 @@ import { ShoppingService } from '../shopping-list/shopping.service';
 })
 export class ProductSimulationService {
   private apiUrl = environment.apiUrl;
-  
+
   // Food categories and sample products for simulation
   private foodCategories = [
-    'Nabiał', 'Pieczywo', 'Mięso', 'Owoce', 'Warzywa', 'Napoje', 
-    'Słodycze', 'Przekąski', 'Mrożonki', 'Konserwy', 'Przyprawy', 
-    'Produkty zbożowe', 'Oleje i tłuszcze', 'Sosy', 'Dania gotowe'
+    'Nabiał', 'Pieczywo', 'Piekarnia', 'Mięso', 'Owoce', 'Warzywa', 'Napoje', 
+    'Słodycze', 'Przekąski', 'Mrożonki', 'Mrożone', 'Konserwy', 'Przyprawy', 
+    'Produkty zbożowe', 'Oleje i tłuszcze', 'Sosy', 'Dania gotowe', 'Artykuły spożywcze',
+    'Drogeria', 'Dla domu', 'Dla dzieci'
   ];
-  
+
   private brands = [
     'Mlekovita', 'Piątnica', 'Sokołów', 'Indykpol', 'Hortex', 'Tymbark', 
     'Wedel', 'Wawel', 'Lubella', 'Pudliszki', 'Kamis', 'Knorr', 
     'Krakus', 'Winiary', 'Łowicz', 'Kotlin', 'Bakalland', 'Bonduelle'
   ];
-  
+
   private dairyProducts = ['Mleko', 'Ser żółty', 'Ser biały', 'Jogurt', 'Śmietana', 'Masło', 'Kefir', 'Maślanka'];
   private breadProducts = ['Chleb pszenny', 'Chleb żytni', 'Bułki', 'Bagietka', 'Ciabatta', 'Chleb tostowy', 'Rogaliki'];
   private meatProducts = ['Kurczak', 'Wołowina', 'Wieprzowina', 'Indyk', 'Kiełbasa', 'Parówki', 'Szynka', 'Boczek'];
@@ -41,9 +42,18 @@ export class ProductSimulationService {
   private sauceProducts = ['Ketchup', 'Majonez', 'Musztarda', 'Sos sojowy', 'Sos pomidorowy', 'Sos czosnkowy', 'Sos słodko-kwaśny'];
   private readyMealsProducts = ['Zupa pomidorowa', 'Zupa ogórkowa', 'Bigos', 'Gołąbki', 'Flaki', 'Pulpety w sosie', 'Fasolka po bretońsku'];
 
+  // New product categories
+  private bakeryProducts = ['Chleb razowy', 'Bułki pszenne', 'Drożdżówki', 'Pączki', 'Croissanty', 'Chleb wieloziarnisty', 'Bułki grahamki', 'Chałka'];
+  private frozenFoodProducts = ['Mrożona pizza', 'Mrożone warzywa', 'Lody familijne', 'Mrożone owoce', 'Mrożone pierogi', 'Mrożone ryby', 'Mrożone dania gotowe'];
+  private groceryProducts = ['Cukier', 'Mąka', 'Sól', 'Ryż', 'Makaron', 'Kasza', 'Płatki śniadaniowe', 'Konserwy', 'Dżemy', 'Miód'];
+  private drugsProducts = ['Szampon', 'Mydło', 'Pasta do zębów', 'Żel pod prysznic', 'Dezodorant', 'Papier toaletowy', 'Chusteczki', 'Kosmetyki'];
+  private homeProducts = ['Środki czystości', 'Płyn do naczyń', 'Proszek do prania', 'Płyn do płukania', 'Mopy', 'Ściereczki', 'Worki na śmieci', 'Świece'];
+  private childrenProducts = ['Pieluchy', 'Mleko modyfikowane', 'Kaszki dla dzieci', 'Słoiczki z jedzeniem', 'Soki dla dzieci', 'Zabawki', 'Akcesoria dla niemowląt'];
+
   private allProducts: { [key: string]: string[] } = {
     'Nabiał': this.dairyProducts,
     'Pieczywo': this.breadProducts,
+    'Piekarnia': this.bakeryProducts,
     'Mięso': this.meatProducts,
     'Owoce': this.fruitProducts,
     'Warzywa': this.vegetableProducts,
@@ -51,12 +61,17 @@ export class ProductSimulationService {
     'Słodycze': this.sweetsProducts,
     'Przekąski': this.snackProducts,
     'Mrożonki': this.frozenProducts,
+    'Mrożone': this.frozenFoodProducts,
     'Konserwy': this.cannedProducts,
     'Przyprawy': this.spiceProducts,
     'Produkty zbożowe': this.grainProducts,
     'Oleje i tłuszcze': this.oilProducts,
     'Sosy': this.sauceProducts,
-    'Dania gotowe': this.readyMealsProducts
+    'Dania gotowe': this.readyMealsProducts,
+    'Artykuły spożywcze': this.groceryProducts,
+    'Drogeria': this.drugsProducts,
+    'Dla domu': this.homeProducts,
+    'Dla dzieci': this.childrenProducts
   };
 
   private weights = ['100g', '250g', '500g', '1kg', '1.5kg', '2kg', '5kg', '10kg', '100ml', '250ml', '500ml', '1l', '1.5l', '2l'];

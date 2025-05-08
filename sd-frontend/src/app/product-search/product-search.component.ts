@@ -92,14 +92,21 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
 
         // Definicje kategorii
         const categories: { [key: string]: string[] } = {
-            'Nabiał': ['mleko', 'masło', 'ser'],
-            'Mięso': ['szynka'],
-            'Napoje': ['woda', 'coca cola'],
-            'Pieczywo': ['chleb'],
+            'Nabiał': ['mleko', 'masło', 'ser', 'jogurt', 'śmietana', 'kefir', 'maślanka'],
+            'Mięso': ['szynka', 'kurczak', 'wołowina', 'wieprzowina', 'indyk', 'kiełbasa', 'parówki', 'boczek', 'łosoś', 'filet'],
+            'Napoje': ['woda', 'coca cola', 'sok', 'herbata', 'kawa', 'napój'],
+            'Pieczywo': ['chleb', 'bułki', 'bagietka', 'ciabatta', 'tostowy'],
+            'Piekarnia': ['drożdżówki', 'pączki', 'croissanty', 'chałka', 'razowy', 'grahamki', 'wieloziarnisty', 'kajzerka'],
             'Makarony': ['makaron'],
             'Jajka': ['jajko', 'jajka'],
-            'Słodycze': ['czekolad'],
-            'Warzywa i owoce': ['pomidor', 'ogórek', 'ziemniak']
+            'Słodycze': ['czekolad', 'ciastka', 'batony', 'lody', 'cukierki', 'wafelki'],
+            'Warzywa i owoce': ['pomidor', 'ogórek', 'ziemniak', 'marchew', 'cebula', 'papryka', 'sałata', 'brokuły', 'jabłka', 'banany', 'pomarańcze', 'gruszki', 'winogrona', 'truskawki', 'maliny'],
+            'Mrożone': ['mrożona', 'mrożone', 'mrożony', 'frytki', 'lody'],
+            'Artykuły spożywcze': ['cukier', 'mąka', 'sól', 'ryż', 'kasza', 'płatki', 'konserwy', 'dżem', 'miód'],
+            'Drogeria': ['szampon', 'mydło', 'pasta', 'żel', 'dezodorant', 'papier toaletowy', 'chusteczki', 'kosmetyki'],
+            'Dla domu': ['środki czystości', 'płyn do naczyń', 'proszek do prania', 'płyn do płukania', 'mop', 'ściereczki', 'worki na śmieci', 'świece', 'ręczniki', 'ręczniki kuchenne', 'płyn do zmiękczania', 'silan', 'queen'],
+            'Dla dzieci': ['pieluchy', 'mleko modyfikowane', 'kaszki dla dzieci', 'słoiczki', 'soki dla dzieci', 'zabawki', 'akcesoria dla niemowląt'],
+            'Dania Gotowe': ['zupa', 'bigos', 'gołąbki', 'flaki', 'pulpety', 'fasolka', 'gotowe danie', 'danie gotowe']
         };
 
         // Przypisz każdy produkt do odpowiedniej kategorii
