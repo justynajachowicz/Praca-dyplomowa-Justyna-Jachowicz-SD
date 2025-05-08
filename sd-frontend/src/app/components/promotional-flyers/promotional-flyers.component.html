@@ -35,38 +35,64 @@
 
   <div class="flyer-viewer">
     <div class="flyer-navigation">
-      <button 
-        class="nav-button prev-button" 
-        (click)="previousFlyer()" 
-        [disabled]="isFirstFlyer()"
-      >
-        &lt; Poprzednia
-      </button>
-
       <span class="flyer-counter">
         {{ currentFlyerIndex + 1 }} / {{ flyers.length }}
       </span>
-
-      <button 
-        class="nav-button next-button" 
-        (click)="nextFlyer()" 
-        [disabled]="isLastFlyer()"
-      >
-        Następna &gt;
-      </button>
     </div>
 
-    <div class="flyer-image-container">
-      <img 
-        [src]="getCurrentFlyer()" 
-        alt="Gazetka promocyjna {{ getStoreName() }}" 
-        class="flyer-image"
-        (error)="handleImageError($event)"
-      />
+    <div class="book">
+      <div class="page-wrapper">
+        <div 
+          class="page page-left" 
+          [class.flipped]="pageFlipped" 
+          [class.disabled]="isFirstFlyer()"
+          (click)="flipPageBackward()"
+        >
+          <div class="page-content page-content-left">
+            <img 
+              *ngIf="!isFirstFlyer()"
+              [src]="getPreviousFlyer()" 
+              alt="Poprzednia strona gazetki {{ getStoreName() }}" 
+              class="flyer-image"
+              (error)="handleImageError($event)"
+            />
+          </div>
+        </div>
+
+        <div 
+          class="page page-right" 
+          [class.flipped]="!pageFlipped" 
+          [class.disabled]="isLastFlyer()"
+          (click)="flipPageForward()"
+        >
+          <div class="page-content page-content-right">
+            <img 
+              [src]="getCurrentFlyer()" 
+              alt="Gazetka promocyjna {{ getStoreName() }}" 
+              class="flyer-image"
+              (error)="handleImageError($event)"
+            />
+          </div>
+          <div class="page-content page-content-back">
+            <img 
+              *ngIf="!isLastFlyer()"
+              [src]="getNextFlyer()" 
+              alt="Następna strona gazetki {{ getStoreName() }}" 
+              class="flyer-image"
+              (error)="handleImageError($event)"
+            />
+          </div>
+        </div>
+      </div>
+
       <div *ngIf="imageError" class="image-error-message">
         <p>Przepraszamy, nie można załadować obrazu gazetki promocyjnej.</p>
         <p>Prosimy spróbować ponownie później.</p>
       </div>
+    </div>
+
+    <div class="page-turn-instructions">
+      <p>Kliknij na lewą lub prawą stronę, aby przewrócić kartkę</p>
     </div>
   </div>
 

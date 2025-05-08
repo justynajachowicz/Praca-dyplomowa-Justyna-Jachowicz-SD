@@ -63,6 +63,7 @@ export class PromotionalFlyersComponent implements OnInit {
 
   currentFlyerIndex: number = 0;
   imageError: boolean = false;
+  pageFlipped: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -110,18 +111,63 @@ export class PromotionalFlyersComponent implements OnInit {
     return 'Biedronki'; // Default to Biedronka
   }
 
-  nextFlyer(): void {
+  flipPageForward(): void {
     if (this.currentFlyerIndex < this.flyers.length - 1) {
-      this.currentFlyerIndex++;
-      this.imageError = false; // Reset error flag when navigating
+      this.pageFlipped = true;
+
+      // Wait for the animation to complete before changing the flyer
+      setTimeout(() => {
+        this.currentFlyerIndex++;
+        this.imageError = false; // Reset error flag when navigating
+
+        // Reset the page flip state after changing the flyer
+        setTimeout(() => {
+          this.pageFlipped = false;
+        }, 50);
+      }, 400);
     }
   }
 
-  previousFlyer(): void {
+  flipPageBackward(): void {
     if (this.currentFlyerIndex > 0) {
-      this.currentFlyerIndex--;
-      this.imageError = false; // Reset error flag when navigating
+      this.pageFlipped = true;
+
+      // Wait for the animation to complete before changing the flyer
+      setTimeout(() => {
+        this.currentFlyerIndex--;
+        this.imageError = false; // Reset error flag when navigating
+
+        // Reset the page flip state after changing the flyer
+        setTimeout(() => {
+          this.pageFlipped = false;
+        }, 50);
+      }, 400);
     }
+  }
+
+  // For backward compatibility
+  nextFlyer(): void {
+    this.flipPageForward();
+  }
+
+  previousFlyer(): void {
+    this.flipPageBackward();
+  }
+
+  // Get the previous flyer (for displaying on the left page)
+  getPreviousFlyer(): string {
+    if (this.currentFlyerIndex > 0) {
+      return this.flyers[this.currentFlyerIndex - 1];
+    }
+    return '';
+  }
+
+  // Get the next flyer (for displaying on the right page back)
+  getNextFlyer(): string {
+    if (this.currentFlyerIndex < this.flyers.length - 1) {
+      return this.flyers[this.currentFlyerIndex + 1];
+    }
+    return '';
   }
 
   getCurrentFlyer(): string {

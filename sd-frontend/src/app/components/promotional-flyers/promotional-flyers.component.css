@@ -59,23 +59,114 @@ h2 {
   color: #6a1b9a;
 }
 
-.flyer-image-container {
+/* Book and page flipping styles */
+.book {
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  perspective: 1500px;
+  position: relative;
+}
+
+.page-wrapper {
+  width: 100%;
+  height: 600px;
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1500px;
+}
+
+.page {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  top: 0;
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transform-style: preserve-3d;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.page-left {
+  left: 0;
+  z-index: 1;
+  transform-origin: right center;
+}
+
+.page-right {
+  right: 0;
+  z-index: 2;
+}
+
+.page-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  align-items: center;
+  backface-visibility: hidden;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.page-content-left {
+  transform: rotateY(0deg);
+}
+
+.page-content-right {
+  transform: rotateY(0deg);
+}
+
+.page-content-back {
+  transform: rotateY(180deg);
+}
+
+.page-left.flipped {
+  transform: rotateY(-180deg);
+}
+
+.page-right.flipped {
+  transform: rotateY(180deg);
+}
+
+.page.disabled {
+  cursor: default;
+  opacity: 0.7;
 }
 
 .flyer-image {
   max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 0;
+  box-shadow: none;
+  transition: none;
 }
 
-.flyer-image:hover {
-  transform: scale(1.02);
+.page-turn-instructions {
+  text-align: center;
+  margin-top: 20px;
+  color: #6a1b9a;
+  font-style: italic;
+}
+
+/* Book spine effect */
+.page-wrapper::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.2), rgba(0,0,0,0.1));
+  transform: translateX(-50%);
+  z-index: 3;
+  border-radius: 2px;
 }
 
 .image-error-message {
