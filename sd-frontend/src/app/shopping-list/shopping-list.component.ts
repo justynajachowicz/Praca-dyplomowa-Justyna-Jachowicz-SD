@@ -185,31 +185,91 @@ export class ShoppingListComponent implements OnInit {
     // Tablica do przechowywania zapytań o produkty
     const productQueries: Observable<void>[] = [];
 
-    if (this.selectedStore) {
-      // Jeśli wybrano sklep, ale nie wybrano miasta, użyj domyślnych danych produktu
-      if (!this.userCity) {
-        console.log(`Używam domyślnych danych dla produktów w sklepie ${this.selectedStore}`);
+    // Jeśli nie wybrano miasta, użyj domyślnych danych produktu
+    if (!this.userCity) {
+      console.log(`Używam domyślnych danych dla produktów`);
 
-        if (!this.plannedShoppingItems[this.selectedStore]) {
-          this.plannedShoppingItems[this.selectedStore] = [];
-        }
+      if (!this.plannedShoppingItems[this.selectedStore]) {
+        this.plannedShoppingItems[this.selectedStore] = [];
+      }
 
-        // Dodaj wszystkie produkty z listy do wybranego sklepu
-        this.filteredList.forEach(item => {
-          const newItem: ShoppingListItem = {
-            id: item.id,
-            productName: item.productName,
-            storeName: this.selectedStore,
-            price: item.price || 0,
-            quantity: item.quantity || 1
-          };
+      // Dodaj wszystkie produkty z listy do wybranego sklepu
+      this.filteredList.forEach(item => {
+        const newItem: ShoppingListItem = {
+          id: item.id,
+          productName: item.productName,
+          storeName: this.selectedStore,
+          price: item.price || 0,
+          quantity: item.quantity || 1
+        };
 
-          this.plannedShoppingItems[this.selectedStore].push(newItem);
-        });
+        this.plannedShoppingItems[this.selectedStore].push(newItem);
+      });
 
-        // Ustaw domyślny adres sklepu
-        this.storeAddresses[this.selectedStore] = `Adres sklepu ${this.selectedStore}`;
+      // Ustaw domyślny adres sklepu
+      this.storeAddresses[this.selectedStore] = `Adres sklepu ${this.selectedStore}`;
 
+      // Aktualizuj listę sklepów
+      this.plannedShoppingStores = Object.keys(this.plannedShoppingItems);
+
+      // Oznacz, że zakupy zostały zaplanowane i zakończ wybór sklepu
+      this.shoppingPlanned = true;
+      this.storeSelectionActive = false;
+
+      return;
+    }
+
+    // Jeśli wybrano miasto, znajdź najtańsze produkty dla każdego produktu z listy
+    this.filteredList.forEach(item => {
+      console.log(`Szukam najtańszych produktów dla ${item.productName} w mieście ${this.userCity}`);
+
+      const query = this.shoppingService.findCheapestProductsByCity(item.productName, this.userCity).pipe(
+        map(products => {
+          if (products.length > 0) {
+            // Sortuj produkty według ceny (od najtańszego)
+            const sortedProducts = products.sort((a, b) => a.price - b.price);
+            const cheapestProduct = sortedProducts[0];
+
+            // Dodaj produkt do odpowiedniego sklepu
+            const storeName = cheapestProduct.store;
+
+            if (!this.plannedShoppingItems[storeName]) {
+              this.plannedShoppingItems[storeName] = [];
+            }
+
+            // Utwórz nowy ShoppingListItem na podstawie najtańszego produktu
+            const newItem: ShoppingListItem = {
+              id: item.id,
+              productName: item.productName,
+              storeName: storeName,
+              price: cheapestProduct.price,
+              quantity: item.quantity || 1
+            };
+
+            this.plannedShoppingItems[storeName].push(newItem);
+
+            // Pobierz adres sklepu, jeśli jeszcze nie został pobrany
+            if (!this.storeAddresses[storeName]) {
+              // Pobierz adres sklepu z API (który korzysta z tabeli receipts)
+              this.shoppingService.getStoreAddress(storeName, this.userCity).subscribe(address => {
+                this.storeAddresses[storeName] = address;
+              });
+            }
+          }
+        }),
+        catchError(error => {
+          console.error(`Błąd podczas wyszukiwania najtańszych produktów dla ${item.productName}:`, error);
+          // W przypadku błędu, nie dodawaj produktu do listy zakupów
+          return of(undefined);
+        })
+      );
+
+      productQueries.push(query);
+    });
+
+    // Poczekaj na zakończenie wszystkich zapytań
+    forkJoin(productQueries).subscribe({
+      next: () => {
         // Aktualizuj listę sklepów
         this.plannedShoppingStores = Object.keys(this.plannedShoppingItems);
 
@@ -217,80 +277,12 @@ export class ShoppingListComponent implements OnInit {
         this.shoppingPlanned = true;
         this.storeSelectionActive = false;
 
-        return;
+        console.log('Zakupy zaplanowane:', this.plannedShoppingItems);
+      },
+      error: (err) => {
+        console.error('Błąd podczas planowania zakupów:', err);
       }
-
-      // Jeśli wybrano sklep i miasto, pobierz produkty z tego sklepu w mieście użytkownika
-      this.filteredList.forEach(item => {
-        console.log(`Szukam produktów dla ${item.productName} w sklepie ${this.selectedStore} w mieście ${this.userCity}`);
-
-        const query = this.shoppingService.getProductsByStoreAndCity(this.selectedStore, this.userCity).pipe(
-          map(products => {
-            // Filtruj produkty, aby znaleźć te, które pasują do nazwy produktu z listy
-            const matchingProducts = products.filter(p => 
-              p.name.toLowerCase().includes(item.productName.toLowerCase())
-            );
-
-            if (matchingProducts.length > 0) {
-              // Sortuj produkty według ceny (od najtańszego)
-              const sortedProducts = matchingProducts.sort((a, b) => a.price - b.price);
-              const cheapestProduct = sortedProducts[0];
-
-              // Dodaj produkt do odpowiedniego sklepu
-              if (!this.plannedShoppingItems[this.selectedStore]) {
-                this.plannedShoppingItems[this.selectedStore] = [];
-              }
-
-              // Utwórz nowy ShoppingListItem na podstawie najtańszego produktu
-              const newItem: ShoppingListItem = {
-                id: item.id,
-                productName: item.productName,
-                storeName: this.selectedStore,
-                price: cheapestProduct.price,
-                quantity: item.quantity || 1
-              };
-
-              this.plannedShoppingItems[this.selectedStore].push(newItem);
-
-              // Pobierz adres sklepu, jeśli jeszcze nie został pobrany
-              if (!this.storeAddresses[this.selectedStore] && cheapestProduct.city) {
-                this.storeAddresses[this.selectedStore] = `${cheapestProduct.city}, ul. ${this.selectedStore}`;
-              } else if (!this.storeAddresses[this.selectedStore]) {
-                // Pobierz adres sklepu z API
-                this.shoppingService.getStoreAddress(this.selectedStore).subscribe(address => {
-                  this.storeAddresses[this.selectedStore] = address;
-                });
-              }
-            } 
-            // Usunięto dodawanie produktów, które nie są dostępne w wybranym sklepie
-          }),
-          catchError(error => {
-            console.error(`Błąd podczas wyszukiwania produktu ${item.productName} w sklepie ${this.selectedStore}:`, error);
-            // W przypadku błędu, nie dodawaj produktu do listy zakupów
-            return of(undefined);
-          })
-        );
-
-        productQueries.push(query);
-      });
-
-      // Poczekaj na zakończenie wszystkich zapytań
-      forkJoin(productQueries).subscribe({
-        next: () => {
-          // Aktualizuj listę sklepów
-          this.plannedShoppingStores = Object.keys(this.plannedShoppingItems);
-
-          // Oznacz, że zakupy zostały zaplanowane i zakończ wybór sklepu
-          this.shoppingPlanned = true;
-          this.storeSelectionActive = false;
-
-          console.log('Zakupy zaplanowane:', this.plannedShoppingItems);
-        },
-        error: (err) => {
-          console.error('Błąd podczas planowania zakupów:', err);
-        }
-      });
-    }
+    });
   }
 
   // Metoda do resetowania planu zakupów

@@ -24,6 +24,13 @@
     >
       Kaufland
     </button>
+    <button 
+      class="store-button" 
+      [class.active]="currentStore === 'auchan'"
+      (click)="switchStore('auchan')"
+    >
+      Auchan
+    </button>
   </div>
 
   <div class="flyer-viewer">

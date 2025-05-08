@@ -70,10 +70,16 @@ export class ShoppingService {
         return this.http.get<ShoppingListItem[]>(`${this.apiUrl}?email=${userEmail}`);
     }
 
-  // Method to get store address by store name
-  getStoreAddress(storeName: string): Observable<string> {
+  // Method to get store address by store name and city
+  getStoreAddress(storeName: string, city?: string): Observable<string> {
+    // Build the URL with optional city parameter
+    let url = `http://localhost:8080/api/stores/address?name=${encodeURIComponent(storeName)}`;
+    if (city) {
+      url += `&city=${encodeURIComponent(city)}`;
+    }
+
     // Get real store address from the backend
-    return this.http.get<any>(`http://localhost:8080/api/stores/address?name=${encodeURIComponent(storeName)}`).pipe(
+    return this.http.get<any>(url).pipe(
       map(response => response.address),
       catchError(error => {
         console.error('Błąd podczas pobierania adresu sklepu:', error);

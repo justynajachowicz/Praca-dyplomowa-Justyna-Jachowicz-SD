@@ -26,7 +26,22 @@ To make the promotional flyers feature work correctly, please add the following 
 4. k4.png
 5. k5.png
 
-These files should be promotional flyer images for Biedronka, Lidl, and Kaufland.
+## Auchan Flyers
+1. a1.png
+2. a2.png
+3. a3.png
+4. a4.png
+5. a5.png
+6. a6.png
+7. a7.png
+8. a8.png
+9. a9.png
+10. a10.png
+11. a11.png
+12. a12.png
+13. a13.png
+
+These files should be promotional flyer images for Biedronka, Lidl, Kaufland, and Auchan.
 
 ## Alternative Solution
 
