@@ -2,6 +2,22 @@
 
 ## 1. Java (Spring Boot) i PostgreSQL
 
+Aby uruchomić backend, należy najpierw zbudować projekt za pomocą Mavena, wykonując polecenie:
+
+```
+mvn clean verify -DskipTests=true
+```
+
+Następnie należy włączyć przetwarzanie adnotacji (Annotation Processors) w środowisku programistycznym.
+
+Aplikacja wykorzystuje bazę danych PostgreSQL uruchamianą w kontenerze Docker. Aby ją uruchomić, przejdź do katalogu z plikiem `docker-compose.yml` i wykonaj polecenie:
+```
+docker-compose up -d
+```
+
+Teraz backend może zostać uruchomiony z głównego pliku ShoppingDashboardApplication.java. 
+
+
 Aplikacja **Spring Boot** łączy się z bazą danych **PostgreSQL** za pomocą JDBC. Połączenie do bazy danych konfiguruje się w pliku `application.properties` lub `application.yml`:
 
 ### Przykład konfiguracji `application.properties`:
@@ -117,13 +133,14 @@ Budowanie projektu:
 
 `mvn clean verify -DskipTests=true`
 
-
 ## Logowanie do aplikacji
 
 Jako admin: admin@gmail.com -> 123456
 
 Jako użytkownik: justyna@gmail.com -> 123456
-=======
+
+---
+
 # Praca dyplomowa - Justyna Jachowicz - ANS
 
 Repozytorium zawierające kod źródłowy aplikacji "Shopping Dashboard".
