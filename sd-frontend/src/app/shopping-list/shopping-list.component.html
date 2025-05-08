@@ -141,18 +141,46 @@
                 <p>Spróbuj wybrać inny sklep lub sprawdź dostępność produktów w innym mieście.</p>
             </div>
 
+            <!-- Opcje planu zakupów -->
+            <div *ngIf="plannedShoppingStores.length > 0" class="shopping-plan-options">
+                <h4>Opcje planu zakupów:</h4>
+                <button class="toggle-plan-btn" (click)="toggleOptimalPlan()">
+                    {{ optimalShoppingPlan ? 'Pokaż zakupy w jednym sklepie' : 'Pokaż optymalny plan zakupów' }}
+                </button>
+                <p class="plan-info">
+                    {{ optimalShoppingPlan ? 'Pokazuję optymalny plan zakupów (najtańsze produkty z różnych sklepów)' : 'Pokazuję zakupy w wybranych sklepach' }}
+                </p>
+            </div>
+
+            <!-- Podsumowanie najtańszych produktów -->
+            <div *ngIf="plannedShoppingStores.length > 0" class="cheapest-products-summary">
+                <h4>Najtańsze produkty według sklepów:</h4>
+                <div class="cheapest-products-list">
+                    <div *ngFor="let store of getObjectKeys(cheapestProductsByStore)" class="cheapest-store-item">
+                        <span class="store-name">{{ store }}:</span>
+                        <span class="product-count">{{ getCheapestProductsCountByStore(store) }} produktów</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Komunikat gdy znaleziono produkty -->
-            <p *ngIf="plannedShoppingStores.length > 0" class="plan-success">Oto produkty dostępne w wybranym sklepie:</p>
+            <p *ngIf="plannedShoppingStores.length > 0" class="plan-success">
+                {{ optimalShoppingPlan ? 'Oto optymalny plan zakupów:' : 'Oto produkty dostępne w wybranych sklepach:' }}
+            </p>
 
             <div #plannedShoppingContent class="planned-shopping-content">
                 <div *ngFor="let store of plannedShoppingStores" class="store-group">
                     <div class="store-header">
                         <h5>{{ store }}</h5>
                         <p *ngIf="storeAddresses[store]" class="store-address">{{ storeAddresses[store] }}</p>
+                        <p class="cheapest-products-info">
+                            Ten sklep ma {{ getCheapestProductsCountByStore(store) }} najtańszych produktów z Twojej listy
+                        </p>
                     </div>
                     <div class="store-items">
                         <div class="store-item" *ngFor="let item of getItemsByStore(store)">
                             <span class="item-name">{{ item.productName }}</span>
+                            <span class="item-quantity" *ngIf="item.quantity && item.quantity > 1">x{{ item.quantity }}</span>
                             <span class="item-price">{{ item.price | currency:'PLN' }}</span>
                         </div>
                     </div>
@@ -163,6 +191,12 @@
 
                 <div *ngIf="plannedShoppingStores.length > 0" class="total-savings">
                     <p>Całkowity koszt: {{ calculateTotalCost() | currency:'PLN' }}</p>
+
+                    <div *ngIf="optimalShoppingPlan" class="optimal-savings">
+                        <p>Oszczędność w porównaniu do zakupów w jednym sklepie: 
+                            {{ (calculateTotalCost() - calculateOptimalCost()) | currency:'PLN' }}
+                        </p>
+                    </div>
                 </div>
             </div>
 

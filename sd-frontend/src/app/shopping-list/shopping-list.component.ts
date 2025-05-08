@@ -41,6 +41,11 @@ export class ShoppingListComponent implements OnInit {
   plannedShoppingItems: { [store: string]: ShoppingListItem[] } = {};
   storeAddresses: { [store: string]: string } = {};
 
+  // Variables for optimal shopping plan
+  optimalShoppingPlan: boolean = false;
+  cheapestProductsByStore: { [store: string]: number } = {}; // Count of cheapest products by store
+  allCheapestProducts: { [productName: string]: ShoppingListItem } = {}; // All cheapest products
+
   constructor(
     private shoppingListService: ShoppingListService,
     private productService: ProductService,
@@ -175,6 +180,9 @@ export class ShoppingListComponent implements OnInit {
     this.plannedShoppingItems = {};
     this.plannedShoppingStores = [];
     this.storeAddresses = {};
+    this.cheapestProductsByStore = {};
+    this.allCheapestProducts = {};
+    this.optimalShoppingPlan = false;
 
     // Jeśli nie wybrano sklepu, pokaż wybór sklepu
     if (!this.selectedStore && !this.storeSelectionActive) {
@@ -233,12 +241,11 @@ export class ShoppingListComponent implements OnInit {
             // Dodaj produkt do odpowiedniego sklepu
             const storeName = cheapestProduct.store;
 
-            if (!this.plannedShoppingItems[storeName]) {
-              this.plannedShoppingItems[storeName] = [];
-            }
+            // Zwiększ licznik najtańszych produktów dla tego sklepu
+            this.cheapestProductsByStore[storeName] = (this.cheapestProductsByStore[storeName] || 0) + 1;
 
-            // Utwórz nowy ShoppingListItem na podstawie najtańszego produktu
-            const newItem: ShoppingListItem = {
+            // Zapisz najtańszy produkt w globalnej mapie
+            this.allCheapestProducts[item.productName] = {
               id: item.id,
               productName: item.productName,
               storeName: storeName,
@@ -246,7 +253,23 @@ export class ShoppingListComponent implements OnInit {
               quantity: item.quantity || 1
             };
 
-            this.plannedShoppingItems[storeName].push(newItem);
+            // Jeśli to wybrany sklep lub nie wybrano konkretnego sklepu, dodaj produkt do listy zakupów
+            if (!this.selectedStore || storeName === this.selectedStore) {
+              if (!this.plannedShoppingItems[storeName]) {
+                this.plannedShoppingItems[storeName] = [];
+              }
+
+              // Utwórz nowy ShoppingListItem na podstawie najtańszego produktu
+              const newItem: ShoppingListItem = {
+                id: item.id,
+                productName: item.productName,
+                storeName: storeName,
+                price: cheapestProduct.price,
+                quantity: item.quantity || 1
+              };
+
+              this.plannedShoppingItems[storeName].push(newItem);
+            }
 
             // Pobierz adres sklepu, jeśli jeszcze nie został pobrany
             if (!this.storeAddresses[storeName]) {
@@ -278,6 +301,7 @@ export class ShoppingListComponent implements OnInit {
         this.storeSelectionActive = false;
 
         console.log('Zakupy zaplanowane:', this.plannedShoppingItems);
+        console.log('Najtańsze produkty według sklepu:', this.cheapestProductsByStore);
       },
       error: (err) => {
         console.error('Błąd podczas planowania zakupów:', err);
@@ -290,6 +314,41 @@ export class ShoppingListComponent implements OnInit {
     this.shoppingPlanned = false;
     this.storeSelectionActive = false;
     this.selectedStore = '';
+    this.optimalShoppingPlan = false;
+  }
+
+  // Metoda do przełączania między planem zakupów w jednym sklepie a optymalnym planem zakupów
+  toggleOptimalPlan(): void {
+    this.optimalShoppingPlan = !this.optimalShoppingPlan;
+
+    if (this.optimalShoppingPlan) {
+      // Przygotuj optymalny plan zakupów
+      this.prepareOptimalShoppingPlan();
+    } else {
+      // Wróć do planu zakupów w wybranym sklepie
+      this.planShopping();
+    }
+  }
+
+  // Metoda do przygotowania optymalnego planu zakupów
+  prepareOptimalShoppingPlan(): void {
+    // Resetuj poprzednie planowanie
+    this.plannedShoppingItems = {};
+    this.plannedShoppingStores = [];
+
+    // Dla każdego produktu, dodaj go do odpowiedniego sklepu w optymalnym planie
+    Object.values(this.allCheapestProducts).forEach(item => {
+      const storeName = item.storeName;
+
+      if (!this.plannedShoppingItems[storeName]) {
+        this.plannedShoppingItems[storeName] = [];
+      }
+
+      this.plannedShoppingItems[storeName].push(item);
+    });
+
+    // Aktualizuj listę sklepów
+    this.plannedShoppingStores = Object.keys(this.plannedShoppingItems);
   }
 
   // Metoda do pobierania produktów dla danego sklepu
@@ -300,7 +359,7 @@ export class ShoppingListComponent implements OnInit {
   // Metoda do obliczania sumy dla danego sklepu
   calculateStoreTotal(store: string): number {
     const items = this.getItemsByStore(store);
-    return items.reduce((total, item) => total + item.price, 0);
+    return items.reduce((total, item) => total + (item.price * (item.quantity || 1)), 0);
   }
 
   // Metoda do obliczania całkowitego kosztu
@@ -310,6 +369,24 @@ export class ShoppingListComponent implements OnInit {
       total += this.calculateStoreTotal(store);
     });
     return total;
+  }
+
+  // Metoda do obliczania optymalnego kosztu (suma najtańszych cen)
+  calculateOptimalCost(): number {
+    return Object.values(this.allCheapestProducts).reduce(
+      (total, item) => total + (item.price * (item.quantity || 1)), 
+      0
+    );
+  }
+
+  // Metoda do pobierania liczby najtańszych produktów dla danego sklepu
+  getCheapestProductsCountByStore(store: string): number {
+    return this.cheapestProductsByStore[store] || 0;
+  }
+
+  // Metoda do pobierania kluczy obiektu (dla użycia w szablonie)
+  getObjectKeys(obj: any): string[] {
+    return Object.keys(obj);
   }
 
 

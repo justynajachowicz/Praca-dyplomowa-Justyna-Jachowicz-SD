@@ -376,6 +376,110 @@
   font-style: italic;
 }
 
+/* Style dla informacji o najtańszych produktach */
+.cheapest-products-info {
+  color: #4caf50;
+  font-size: 14px;
+  margin: 5px 0 0 0;
+  font-weight: bold;
+}
+
+/* Style dla opcji planu zakupów */
+.shopping-plan-options {
+  background-color: #f8f8f8;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: center;
+  border: 2px dashed #ce93d8;
+}
+
+.shopping-plan-options h4 {
+  color: #ad1457;
+  margin-bottom: 10px;
+}
+
+.toggle-plan-btn {
+  background: linear-gradient(135deg, #f06292, #ce93d8);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.toggle-plan-btn:hover {
+  background: linear-gradient(135deg, #ec407a, #ab47bc);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Style dla podsumowania najtańszych produktów */
+.cheapest-products-summary {
+  background-color: #f0f8ff;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 20px 0;
+  border: 1px solid #bbdefb;
+}
+
+.cheapest-products-summary h4 {
+  color: #1976d2;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.cheapest-products-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.cheapest-store-item {
+  background-color: #e3f2fd;
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.store-name {
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.product-count {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+/* Style dla optymalnych oszczędności */
+.optimal-savings {
+  background-color: #e8f5e9;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.optimal-savings p {
+  color: #2e7d32;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Style dla ilości produktu */
+.item-quantity {
+  color: #9e9e9e;
+  font-size: 14px;
+  margin-left: 5px;
+}
+
 /* Style dla wyboru sklepu */
 .store-selection-container {
   background-color: #f8f8f8;
