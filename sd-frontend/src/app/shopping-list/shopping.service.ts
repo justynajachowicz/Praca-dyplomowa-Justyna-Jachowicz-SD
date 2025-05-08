@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, map } from 'rxjs';
 import { Shop, Product, ShoppingList, Purchase } from '../models/models';
 import {ShoppingListItem} from "../models/shopping-list-item";
+import { ProductDTO } from '../models/product-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -71,8 +72,54 @@ export class ShoppingService {
 
   // Method to get store address by store name
   getStoreAddress(storeName: string): Observable<string> {
-    // Since we don't have a direct API endpoint for this, we'll use a mock implementation
-    // In a real application, you would call an API endpoint to get the store address
-    return of(`ul. ${storeName} 123`); // Mock address: "ul. [StoreName] 123"
+    // Get real store address from the backend
+    return this.http.get<any>(`http://localhost:8080/api/stores/address?name=${encodeURIComponent(storeName)}`).pipe(
+      map(response => response.address),
+      catchError(error => {
+        console.error('Błąd podczas pobierania adresu sklepu:', error);
+        // Fallback to mock address if real address is not available
+        return of(`ul. ${storeName} 123`);
+      })
+    );
+  }
+
+  // Method to find the cheapest products by name
+  findCheapestProducts(productName: string): Observable<ProductDTO[]> {
+    return this.http.get<ProductDTO[]>(`http://localhost:8080/api/products/cheapest?query=${encodeURIComponent(productName)}`).pipe(
+      catchError(error => {
+        console.error('Błąd podczas wyszukiwania najtańszych produktów:', error);
+        return of([]);
+      })
+    );
+  }
+
+  // Method to find the cheapest products by name and city
+  findCheapestProductsByCity(productName: string, city: string): Observable<ProductDTO[]> {
+    return this.http.get<ProductDTO[]>(`http://localhost:8080/api/products/cheapest?query=${encodeURIComponent(productName)}&city=${encodeURIComponent(city)}`).pipe(
+      catchError(error => {
+        console.error('Błąd podczas wyszukiwania najtańszych produktów w mieście:', error);
+        return of([]);
+      })
+    );
+  }
+
+  // Method to get available stores in a city
+  getStoresByCity(city: string): Observable<string[]> {
+    return this.http.get<string[]>(`http://localhost:8080/api/products/stores?city=${encodeURIComponent(city)}`).pipe(
+      catchError(error => {
+        console.error('Błąd podczas pobierania sklepów w mieście:', error);
+        return of([]);
+      })
+    );
+  }
+
+  // Method to get products by store and city
+  getProductsByStoreAndCity(store: string, city: string): Observable<ProductDTO[]> {
+    return this.http.get<ProductDTO[]>(`http://localhost:8080/api/products/by-store?store=${encodeURIComponent(store)}&city=${encodeURIComponent(city)}`).pipe(
+      catchError(error => {
+        console.error('Błąd podczas pobierania produktów w sklepie i mieście:', error);
+        return of([]);
+      })
+    );
   }
 }

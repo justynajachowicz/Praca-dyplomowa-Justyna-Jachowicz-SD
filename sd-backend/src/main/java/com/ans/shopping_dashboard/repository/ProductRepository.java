@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -48,4 +49,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
+
+    // Pobieranie unikalnych nazw sklepów w danym mieście
+    @Query("SELECT DISTINCT p.store FROM Product p WHERE LOWER(p.city) = LOWER(:city)")
+    Set<String> findDistinctStoresByCity(@Param("city") String city);
+
+    // Wyszukiwanie produktów po nazwie sklepu i mieście
+    @Query("SELECT p FROM Product p WHERE LOWER(p.store) = LOWER(:store) AND LOWER(p.city) = LOWER(:city)")
+    List<Product> findByStoreAndCity(@Param("store") String store, @Param("city") String city);
 }

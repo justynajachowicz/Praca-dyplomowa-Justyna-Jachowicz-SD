@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/products")
@@ -110,4 +111,38 @@ public class ProductController {
         return ResponseEntity.ok(products);  // Zwrócenie wyników wyszukiwania
     }
 
+    /**
+     * Gets a list of distinct store names in a given city.
+     *
+     * @param city The city to search in
+     * @return A set of distinct store names
+     */
+    @GetMapping("/stores")
+    public ResponseEntity<Set<String>> getStoresByCity(@RequestParam String city) {
+        Set<String> stores = productService.getStoresByCity(city);
+
+        if (stores.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(stores);
+    }
+
+    /**
+     * Gets a list of products in a specific store and city.
+     *
+     * @param store The store name
+     * @param city The city name
+     * @return A list of products
+     */
+    @GetMapping("/by-store")
+    public ResponseEntity<List<ProductDTO>> getProductsByStoreAndCity(
+            @RequestParam String store,
+            @RequestParam String city) {
+        List<ProductDTO> products = productService.getProductsByStoreAndCity(store, city);
+
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(products);
+    }
 }

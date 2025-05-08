@@ -24,14 +24,26 @@
         <h3>Twoje produkty</h3>
 
         <!-- Przyciski akcji -->
-        <div class="plan-shopping-container" *ngIf="!shoppingPlanned">
-            <button class="plan-shopping-btn" (click)="planShopping()">Zaplanuj zakupy</button>
+        <div class="plan-shopping-container" *ngIf="!shoppingPlanned && !storeSelectionActive">
+            <button class="plan-shopping-btn" (click)="initiateStoreSelection()">Zaplanuj zakupy</button>
             <button class="remove-all-btn" (click)="removeAllItems()">Usuń wszystkie produkty</button>
-            <p class="plan-info">Kliknij, aby wyliczyć gdzie będzie najtaniej zrobić zakupy</p>
+            <p class="plan-info">Kliknij, aby wybrać sklep i zaplanować zakupy</p>
+        </div>
+
+        <!-- Wybór sklepu -->
+        <div class="store-selection-container" *ngIf="storeSelectionActive">
+            <h4>Wybierz sklep</h4>
+            <p *ngIf="userCity">Wybierz sklep, w którym chcesz zrobić zakupy w mieście {{ userCity }}</p>
+            <p *ngIf="!userCity">Wybierz sklep, w którym chcesz zrobić zakupy. Aby zobaczyć sklepy w konkretnym mieście, wybierz miasto na stronie głównej.</p>
+            <div class="store-list">
+                <div class="store-item" *ngFor="let store of availableStores" (click)="selectStore(store)">
+                    <span>{{ store }}</span>
+                </div>
+            </div>
         </div>
 
         <!-- Widok przed zaplanowaniem zakupów -->
-        <div *ngIf="!shoppingPlanned" class="shopping-list-view">
+        <div *ngIf="!shoppingPlanned && !storeSelectionActive" class="shopping-list-view">
             <div class="shopping-list-header">
                 <span>Zdjęcie</span>
                 <span>Produkt</span>

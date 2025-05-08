@@ -5,4 +5,5 @@ export interface ShoppingListItem {
     price: number;
     city?: string;
     date?: string;
+    quantity?: number;
 }

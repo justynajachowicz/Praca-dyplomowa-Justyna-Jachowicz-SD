@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -153,5 +154,29 @@ public class ProductService {
                     newProduct.setImageUrl("default.jpg");
                     return productRepository.save(newProduct);
                 });
+    }
+
+    /**
+     * Gets a list of distinct store names in a given city.
+     *
+     * @param city The city to search in
+     * @return A set of distinct store names
+     */
+    public Set<String> getStoresByCity(String city) {
+        return productRepository.findDistinctStoresByCity(city);
+    }
+
+    /**
+     * Gets a list of products in a specific store and city.
+     *
+     * @param store The store name
+     * @param city The city name
+     * @return A list of products
+     */
+    public List<ProductDTO> getProductsByStoreAndCity(String store, String city) {
+        List<Product> products = productRepository.findByStoreAndCity(store, city);
+        return products.stream()
+                .map(p -> new ProductDTO(p.getId(), p.getProductName(), p.getPrice(), p.getStore(), p.getCity()))
+                .collect(Collectors.toList());
     }
 }

@@ -344,3 +344,51 @@
   margin: 5px 0 0 0;
   font-style: italic;
 }
+
+/* Style dla wyboru sklepu */
+.store-selection-container {
+  background-color: #f8f8f8;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  border: 2px dashed #ce93d8;
+  text-align: center;
+}
+
+.store-selection-container h4 {
+  color: #ad1457;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.store-selection-container p {
+  color: #757575;
+  margin-bottom: 20px;
+}
+
+.store-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.store-item {
+  background: linear-gradient(135deg, #f06292, #ce93d8);
+  color: white;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60px;
+}
+
+.store-item:hover {
+  background: linear-gradient(135deg, #ec407a, #ab47bc);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}

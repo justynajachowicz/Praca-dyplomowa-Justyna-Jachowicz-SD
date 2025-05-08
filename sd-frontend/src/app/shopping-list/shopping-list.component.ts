@@ -11,6 +11,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { FavoriteService } from '../services/favorite.service';
 import { ShoppingService } from './shopping.service';
+import { Observable, forkJoin, of, catchError, map } from 'rxjs';
 
 @Component({
   selector: 'app-shopping-list',
@@ -27,6 +28,12 @@ export class ShoppingListComponent implements OnInit {
   filteredList: ShoppingListItem[] = [];
   userEmail: string = '';
   searchTerm: string = '';
+  userCity: string = '';
+
+  // Variables for store selection
+  storeSelectionActive: boolean = false;
+  availableStores: string[] = [];
+  selectedStore: string = '';
 
   // Variables for planned shopping
   shoppingPlanned: boolean = false;
@@ -43,11 +50,15 @@ export class ShoppingListComponent implements OnInit {
 
   ngOnInit(): void {
     const email = localStorage.getItem('userEmail');
+    const city = localStorage.getItem('userCity');
 
     if (email) {
       this.userEmail = email;
       this.loadShoppingList();
     }
+
+    // Initialize user city from localStorage
+    this.userCity = city || ''; // No default city
   }
 
   loadShoppingList(): void {
@@ -121,6 +132,43 @@ export class ShoppingListComponent implements OnInit {
     }
   }
 
+  // Metoda do inicjowania wyboru sklepu
+  initiateStoreSelection(): void {
+    // Resetuj poprzednie planowanie
+    this.plannedShoppingItems = {};
+    this.plannedShoppingStores = [];
+    this.storeAddresses = {};
+    this.selectedStore = '';
+
+    // Jeśli nie wybrano miasta, pokaż domyślną listę sklepów
+    if (!this.userCity) {
+      this.availableStores = ['Biedronka', 'Lidl', 'Żabka', 'Auchan', 'Carrefour'];
+      this.storeSelectionActive = true;
+      return;
+    }
+
+    // Pobierz dostępne sklepy w mieście użytkownika
+    this.shoppingService.getStoresByCity(this.userCity).subscribe({
+      next: (stores) => {
+        this.availableStores = stores;
+        this.storeSelectionActive = true;
+        console.log('Dostępne sklepy:', this.availableStores);
+      },
+      error: (err) => {
+        console.error('Błąd podczas pobierania sklepów:', err);
+        // W przypadku błędu, użyj domyślnej listy sklepów
+        this.availableStores = ['Biedronka', 'Lidl', 'Żabka', 'Auchan', 'Carrefour'];
+        this.storeSelectionActive = true;
+      }
+    });
+  }
+
+  // Metoda do wyboru sklepu
+  selectStore(store: string): void {
+    this.selectedStore = store;
+    this.planShopping();
+  }
+
   // Metoda do planowania zakupów
   planShopping(): void {
     // Resetuj poprzednie planowanie
@@ -128,37 +176,164 @@ export class ShoppingListComponent implements OnInit {
     this.plannedShoppingStores = [];
     this.storeAddresses = {};
 
-    // Grupuj produkty według sklepów
-    const storeGroups: { [store: string]: ShoppingListItem[] } = {};
+    // Jeśli nie wybrano sklepu, pokaż wybór sklepu
+    if (!this.selectedStore && !this.storeSelectionActive) {
+      this.initiateStoreSelection();
+      return;
+    }
 
-    this.filteredList.forEach(item => {
-      const store = item.storeName;
-      if (!storeGroups[store]) {
-        storeGroups[store] = [];
+    // Tablica do przechowywania zapytań o produkty
+    const productQueries: Observable<void>[] = [];
+
+    if (this.selectedStore) {
+      // Jeśli wybrano sklep, ale nie wybrano miasta, użyj domyślnych danych produktu
+      if (!this.userCity) {
+        console.log(`Używam domyślnych danych dla produktów w sklepie ${this.selectedStore}`);
+
+        if (!this.plannedShoppingItems[this.selectedStore]) {
+          this.plannedShoppingItems[this.selectedStore] = [];
+        }
+
+        // Dodaj wszystkie produkty z listy do wybranego sklepu
+        this.filteredList.forEach(item => {
+          const newItem: ShoppingListItem = {
+            id: item.id,
+            productName: item.productName,
+            storeName: this.selectedStore,
+            price: item.price || 0,
+            quantity: item.quantity || 1
+          };
+
+          this.plannedShoppingItems[this.selectedStore].push(newItem);
+        });
+
+        // Ustaw domyślny adres sklepu
+        this.storeAddresses[this.selectedStore] = `Adres sklepu ${this.selectedStore}`;
+
+        // Aktualizuj listę sklepów
+        this.plannedShoppingStores = Object.keys(this.plannedShoppingItems);
+
+        // Oznacz, że zakupy zostały zaplanowane i zakończ wybór sklepu
+        this.shoppingPlanned = true;
+        this.storeSelectionActive = false;
+
+        return;
       }
-      storeGroups[store].push(item);
-    });
 
-    // Zapisz pogrupowane produkty
-    this.plannedShoppingItems = storeGroups;
-    this.plannedShoppingStores = Object.keys(storeGroups);
+      // Jeśli wybrano sklep i miasto, pobierz produkty z tego sklepu w mieście użytkownika
+      this.filteredList.forEach(item => {
+        console.log(`Szukam produktów dla ${item.productName} w sklepie ${this.selectedStore} w mieście ${this.userCity}`);
 
-    // Pobierz adresy sklepów
-    this.plannedShoppingStores.forEach(store => {
-      this.shoppingService.getStoreAddress(store).subscribe(address => {
-        this.storeAddresses[store] = address;
+        const query = this.shoppingService.getProductsByStoreAndCity(this.selectedStore, this.userCity).pipe(
+          map(products => {
+            // Filtruj produkty, aby znaleźć te, które pasują do nazwy produktu z listy
+            const matchingProducts = products.filter(p => 
+              p.name.toLowerCase().includes(item.productName.toLowerCase())
+            );
+
+            if (matchingProducts.length > 0) {
+              // Sortuj produkty według ceny (od najtańszego)
+              const sortedProducts = matchingProducts.sort((a, b) => a.price - b.price);
+              const cheapestProduct = sortedProducts[0];
+
+              // Dodaj produkt do odpowiedniego sklepu
+              if (!this.plannedShoppingItems[this.selectedStore]) {
+                this.plannedShoppingItems[this.selectedStore] = [];
+              }
+
+              // Utwórz nowy ShoppingListItem na podstawie najtańszego produktu
+              const newItem: ShoppingListItem = {
+                id: item.id,
+                productName: item.productName,
+                storeName: this.selectedStore,
+                price: cheapestProduct.price,
+                quantity: item.quantity || 1
+              };
+
+              this.plannedShoppingItems[this.selectedStore].push(newItem);
+
+              // Pobierz adres sklepu, jeśli jeszcze nie został pobrany
+              if (!this.storeAddresses[this.selectedStore] && cheapestProduct.city) {
+                this.storeAddresses[this.selectedStore] = `${cheapestProduct.city}, ul. ${this.selectedStore}`;
+              } else if (!this.storeAddresses[this.selectedStore]) {
+                // Pobierz adres sklepu z API
+                this.shoppingService.getStoreAddress(this.selectedStore).subscribe(address => {
+                  this.storeAddresses[this.selectedStore] = address;
+                });
+              }
+            } else {
+              // Jeśli nie znaleziono pasującego produktu, użyj oryginalnego
+              if (!this.plannedShoppingItems[this.selectedStore]) {
+                this.plannedShoppingItems[this.selectedStore] = [];
+              }
+
+              // Utwórz nowy ShoppingListItem na podstawie oryginalnego produktu
+              const newItem: ShoppingListItem = {
+                id: item.id,
+                productName: item.productName,
+                storeName: this.selectedStore,
+                price: item.price || 0,
+                quantity: item.quantity || 1
+              };
+
+              this.plannedShoppingItems[this.selectedStore].push(newItem);
+
+              // Pobierz adres sklepu
+              if (!this.storeAddresses[this.selectedStore]) {
+                this.shoppingService.getStoreAddress(this.selectedStore).subscribe(address => {
+                  this.storeAddresses[this.selectedStore] = address;
+                });
+              }
+            }
+          }),
+          catchError(error => {
+            console.error(`Błąd podczas wyszukiwania produktu ${item.productName} w sklepie ${this.selectedStore}:`, error);
+            // W przypadku błędu, użyj oryginalnego produktu
+            if (!this.plannedShoppingItems[this.selectedStore]) {
+              this.plannedShoppingItems[this.selectedStore] = [];
+            }
+
+            // Utwórz nowy ShoppingListItem na podstawie oryginalnego produktu
+            const newItem: ShoppingListItem = {
+              id: item.id,
+              productName: item.productName,
+              storeName: this.selectedStore,
+              price: item.price || 0,
+              quantity: item.quantity || 1
+            };
+
+            this.plannedShoppingItems[this.selectedStore].push(newItem);
+            return of(undefined);
+          })
+        );
+
+        productQueries.push(query);
       });
-    });
 
-    // Oznacz, że zakupy zostały zaplanowane
-    this.shoppingPlanned = true;
+      // Poczekaj na zakończenie wszystkich zapytań
+      forkJoin(productQueries).subscribe({
+        next: () => {
+          // Aktualizuj listę sklepów
+          this.plannedShoppingStores = Object.keys(this.plannedShoppingItems);
 
-    console.log('Zakupy zaplanowane:', this.plannedShoppingItems);
+          // Oznacz, że zakupy zostały zaplanowane i zakończ wybór sklepu
+          this.shoppingPlanned = true;
+          this.storeSelectionActive = false;
+
+          console.log('Zakupy zaplanowane:', this.plannedShoppingItems);
+        },
+        error: (err) => {
+          console.error('Błąd podczas planowania zakupów:', err);
+        }
+      });
+    }
   }
 
   // Metoda do resetowania planu zakupów
   resetPlan(): void {
     this.shoppingPlanned = false;
+    this.storeSelectionActive = false;
+    this.selectedStore = '';
   }
 
   // Metoda do pobierania produktów dla danego sklepu
