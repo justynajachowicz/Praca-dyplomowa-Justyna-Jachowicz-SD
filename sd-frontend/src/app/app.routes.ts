@@ -28,9 +28,8 @@ export const routes: Routes = [
   { path: 'favorites', component: FavoritesComponent, canActivate: [UserGuard] },
   { path: 'admin/users', component: AdminUserManagementComponent, canActivate: [AdminGuard] },
   { path: 'receipt-upload', component: ReceiptUploadComponent, canActivate: [UserGuard] },
-  { path: 'add-purchase', component: PurchaseFormComponent },  // Formularz dodania zakupu
+  { path: 'add-purchase', component: PurchaseFormComponent, canActivate: [UserGuard] },  // Formularz dodania zakupu
   { path: 'promotional-flyers', component: PromotionalFlyersComponent }, // Przeglądanie gazetek promocyjnych
-  { path: 'product-simulation', component: ProductSimulationComponent, canActivate: [AdminGuard] }, // Symulacja produktów (tylko dla admina)
   { path: 'purchase-history', component: PurchaseHistoryComponent, canActivate: [UserGuard] }, // Historia zakupów
   { path: '**', redirectTo: '' },
 
