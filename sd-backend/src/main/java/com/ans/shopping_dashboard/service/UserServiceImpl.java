@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -123,15 +124,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateUserRole(Long userId, String roleName) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Użytkownik nie znaleziony"));
 
-        Role role = roleRepository.findByName(roleName);
+        // Try to find the role by name (case-insensitive)
+        List<Role> allRoles = roleRepository.findAll();
+        Role role = allRoles.stream()
+                .filter(r -> r.getName().equalsIgnoreCase(roleName))
+                .findFirst()
+                .orElse(null);
+
+        // If role doesn't exist, create it
         if (role == null) {
-            role = roleRepository.save(new Role(roleName));
+            role = new Role(roleName);
+            role = roleRepository.save(role);
         }
-        user.setRoles(List.of(role));
+
+        // Use a mutable list instead of List.of() which creates an immutable list
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+        user.setRoles(roles);
         userRepository.save(user);
     }
     @Override
