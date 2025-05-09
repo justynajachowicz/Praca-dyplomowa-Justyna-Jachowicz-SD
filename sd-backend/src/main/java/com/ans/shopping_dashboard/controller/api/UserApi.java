@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -38,6 +40,15 @@ public class UserApi {
         Map<String, String> response = new HashMap<>();
         response.put("message", "Użytkownik usunięty");
         return ResponseEntity.ok(response);
+    }
 
+    @PutMapping("/api/admin/update-role/{userId}")
+    public ResponseEntity<Map<String, String>> updateUserRole(@PathVariable Long userId, @RequestBody Map<String, String> request) {
+        String role = request.get("role");
+        userService.updateUserRole(userId, role);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Rola użytkownika zmieniona");
+        return ResponseEntity.ok(response);
     }
 }

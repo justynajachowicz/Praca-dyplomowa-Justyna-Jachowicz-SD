@@ -1,24 +1,52 @@
-<h2>Zarządzanie użytkownikami</h2>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Email</th>
-        <th>Rola</th>
-        <th>Akcje</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let user of users">
-        <td>{{ user.id }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.roles?.join(', ') }}</td>
+<div class="admin-container">
+    <h2 class="admin-title">Zarządzanie użytkownikami</h2>
 
-        <td>
-            <button (click)="openDeleteDialog(user.id, user.email)">Usuń</button>
-            <button (click)="updateRole(user.id, 'ADMIN')">Ustaw Admina</button>
-            <button (click)="updateRole(user.id, 'USER')">Ustaw Użytkownika</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Ładowanie...</p>
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="errorMessage" class="error-message">
+        <p>{{ errorMessage }}</p>
+        <button class="btn btn-primary" (click)="getUsers()">Spróbuj ponownie</button>
+    </div>
+
+    <!-- User table -->
+    <div class="table-container" *ngIf="!isLoading && !errorMessage">
+        <table class="user-table" *ngIf="users.length > 0">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Rola</th>
+                <th>Akcje</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of users">
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <span class="role-badge" [ngClass]="{'admin-role': user.roles?.includes('ADMIN'), 'user-role': user.roles?.includes('USER')}">
+                        {{ user.roles?.join(', ') }}
+                    </span>
+                </td>
+                <td class="action-buttons">
+                    <button class="btn btn-danger" (click)="openDeleteDialog(user.id, user.email)" [disabled]="isLoading">Usuń</button>
+                    <button class="btn btn-primary" (click)="updateRole(user.id, 'ADMIN')" 
+                            [disabled]="isLoading || user.roles?.includes('ADMIN')">Ustaw Admina</button>
+                    <button class="btn btn-secondary" (click)="updateRole(user.id, 'USER')" 
+                            [disabled]="isLoading || (user.roles?.includes('USER') && !user.roles?.includes('ADMIN'))">Ustaw Użytkownika</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- No users message -->
+        <div *ngIf="users.length === 0" class="no-users-message">
+            <p>Brak użytkowników do wyświetlenia.</p>
+        </div>
+    </div>
+</div>

@@ -1,14 +1,25 @@
 package com.ans.shopping_dashboard.service;
 
 import com.ans.shopping_dashboard.dto.UserDto;
+import com.ans.shopping_dashboard.model.Favorite;
+import com.ans.shopping_dashboard.model.PurchaseHistory;
+import com.ans.shopping_dashboard.model.PurchaseItem;
+import com.ans.shopping_dashboard.model.Receipt;
 import com.ans.shopping_dashboard.model.Role;
+import com.ans.shopping_dashboard.model.ShoppingList;
 import com.ans.shopping_dashboard.model.User;
+import com.ans.shopping_dashboard.repository.FavoriteRepository;
+import com.ans.shopping_dashboard.repository.PurchaseHistoryRepository;
+import com.ans.shopping_dashboard.repository.PurchaseItemRepository;
+import com.ans.shopping_dashboard.repository.ReceiptRepository;
 import com.ans.shopping_dashboard.repository.RoleRepository;
+import com.ans.shopping_dashboard.repository.ShoppingListRepository;
 import com.ans.shopping_dashboard.repository.UserRepository;
 import com.ans.shopping_dashboard.util.TbConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +35,21 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ShoppingListRepository shoppingListRepository;
+
+    @Autowired
+    private PurchaseHistoryRepository purchaseHistoryRepository;
+
+    @Autowired
+    private FavoriteRepository favoriteRepository;
+
+    @Autowired
+    private PurchaseItemRepository purchaseItemRepository;
+
+    @Autowired
+    private ReceiptRepository receiptRepository;
 
     @Override
     public void saveUser(UserDto userDto) {
@@ -64,8 +90,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        // Delete shopping lists
+        List<ShoppingList> shoppingLists = shoppingListRepository.findShoppingListsByUserId(userId);
+        shoppingListRepository.deleteAll(shoppingLists);
+
+        // Delete purchase history
+        List<PurchaseHistory> purchaseHistories = purchaseHistoryRepository.findByUser(user);
+        purchaseHistoryRepository.deleteAll(purchaseHistories);
+
+        // Delete favorites
+        List<Favorite> favorites = favoriteRepository.findByUser(user);
+        favoriteRepository.deleteAll(favorites);
+
+        // Delete purchase items
+        List<PurchaseItem> purchaseItems = purchaseItemRepository.findByUser(user);
+        purchaseItemRepository.deleteAll(purchaseItems);
+
+        // Delete receipts
+        List<Receipt> receipts = receiptRepository.findByUserId(userId);
+        receiptRepository.deleteAll(receipts);
+
+        // Delete user roles
         roleRepository.deleteUserRolesById(userId);
+
+        // Delete user
         userRepository.deleteById(userId);
     }
 

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from '../services/user.service';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
+import {finalize} from 'rxjs/operators';
 
 @Component({
     selector: 'app-admin-user-management',
@@ -11,6 +12,8 @@ import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component
 })
 export class AdminUserManagementComponent implements OnInit {
     users: any[] = [];
+    isLoading: boolean = false;
+    errorMessage: string = '';
 
     constructor(private userService: UserService, private dialog: MatDialog) {
     }
@@ -20,12 +23,18 @@ export class AdminUserManagementComponent implements OnInit {
     }
 
     getUsers(): void {
-        this.userService.getUsers().subscribe(
+        this.isLoading = true;
+        this.errorMessage = '';
+
+        this.userService.getUsers().pipe(
+            finalize(() => this.isLoading = false)
+        ).subscribe(
             (data) => {
                 this.users = data;
             },
             (error) => {
                 console.error('Błąd podczas pobierania użytkowników', error);
+                this.errorMessage = 'Nie udało się pobrać listy użytkowników. Spróbuj ponownie później.';
             }
         );
     }
@@ -33,21 +42,52 @@ export class AdminUserManagementComponent implements OnInit {
     openDeleteDialog(userId: number, email: string): void {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             width: '350px',
-            data: {userId, email}
+            data: {
+                title: 'Potwierdź usunięcie',
+                message: `Czy na pewno chcesz usunąć użytkownika ${email}?`,
+                userId, 
+                email
+            }
         });
 
         dialogRef.afterClosed().subscribe((result: any) => {
             if (result) {
-                this.userService.deleteUser(userId).subscribe(() => {
-                    this.getUsers();
-                });
+                this.deleteUser(userId);
             }
         });
     }
 
+    deleteUser(userId: number): void {
+        this.isLoading = true;
+        this.errorMessage = '';
+
+        this.userService.deleteUser(userId).pipe(
+            finalize(() => this.isLoading = false)
+        ).subscribe(
+            () => {
+                this.getUsers();
+            },
+            (error) => {
+                console.error('Błąd podczas usuwania użytkownika', error);
+                this.errorMessage = 'Nie udało się usunąć użytkownika. Spróbuj ponownie później.';
+            }
+        );
+    }
+
     updateRole(userId: number, newRole: string): void {
-        this.userService.updateUserRole(userId, newRole).subscribe(() => {
-            this.getUsers();
-        });
+        this.isLoading = true;
+        this.errorMessage = '';
+
+        this.userService.updateUserRole(userId, newRole).pipe(
+            finalize(() => this.isLoading = false)
+        ).subscribe(
+            () => {
+                this.getUsers();
+            },
+            (error) => {
+                console.error('Błąd podczas aktualizacji roli użytkownika', error);
+                this.errorMessage = 'Nie udało się zaktualizować roli użytkownika. Spróbuj ponownie później.';
+            }
+        );
     }
 }
