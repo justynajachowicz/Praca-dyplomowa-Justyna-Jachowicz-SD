@@ -2,6 +2,7 @@ package com.ans.shopping_dashboard.service;
 
 import com.ans.shopping_dashboard.dto.UserDto;
 import com.ans.shopping_dashboard.model.Favorite;
+import com.ans.shopping_dashboard.model.Purchase;
 import com.ans.shopping_dashboard.model.PurchaseHistory;
 import com.ans.shopping_dashboard.model.PurchaseItem;
 import com.ans.shopping_dashboard.model.Receipt;
@@ -11,6 +12,7 @@ import com.ans.shopping_dashboard.model.User;
 import com.ans.shopping_dashboard.repository.FavoriteRepository;
 import com.ans.shopping_dashboard.repository.PurchaseHistoryRepository;
 import com.ans.shopping_dashboard.repository.PurchaseItemRepository;
+import com.ans.shopping_dashboard.repository.PurchaseRepository;
 import com.ans.shopping_dashboard.repository.ReceiptRepository;
 import com.ans.shopping_dashboard.repository.RoleRepository;
 import com.ans.shopping_dashboard.repository.ShoppingListRepository;
@@ -51,6 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ReceiptRepository receiptRepository;
+
+    @Autowired
+    private PurchaseRepository purchaseRepository;
 
     @Override
     public void saveUser(UserDto userDto) {
@@ -96,25 +101,41 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
+        // Delete purchases associated with user's shopping lists
+        List<Purchase> purchases = purchaseRepository.findAllByUserId(userId);
+        for (Purchase purchase : purchases) {
+            purchaseRepository.delete(purchase);
+        }
+
         // Delete shopping lists
         List<ShoppingList> shoppingLists = shoppingListRepository.findShoppingListsByUserId(userId);
-        shoppingListRepository.deleteAll(shoppingLists);
+        for (ShoppingList shoppingList : shoppingLists) {
+            shoppingListRepository.delete(shoppingList);
+        }
 
         // Delete purchase history
         List<PurchaseHistory> purchaseHistories = purchaseHistoryRepository.findByUser(user);
-        purchaseHistoryRepository.deleteAll(purchaseHistories);
+        for (PurchaseHistory purchaseHistory : purchaseHistories) {
+            purchaseHistoryRepository.delete(purchaseHistory);
+        }
 
         // Delete favorites
         List<Favorite> favorites = favoriteRepository.findByUser(user);
-        favoriteRepository.deleteAll(favorites);
+        for (Favorite favorite : favorites) {
+            favoriteRepository.delete(favorite);
+        }
 
         // Delete purchase items
         List<PurchaseItem> purchaseItems = purchaseItemRepository.findByUser(user);
-        purchaseItemRepository.deleteAll(purchaseItems);
+        for (PurchaseItem purchaseItem : purchaseItems) {
+            purchaseItemRepository.delete(purchaseItem);
+        }
 
         // Delete receipts
         List<Receipt> receipts = receiptRepository.findByUserId(userId);
-        receiptRepository.deleteAll(receipts);
+        for (Receipt receipt : receipts) {
+            receiptRepository.delete(receipt);
+        }
 
         // Delete user roles
         roleRepository.deleteUserRolesById(userId);
