@@ -57,12 +57,9 @@ export class AuthService {
 
   isAdmin(): boolean {
     const role = this.getUserRole();
-    const userEmail = localStorage.getItem('userEmail');
     const isAdminByRole = role !== null && role.toUpperCase() === 'ADMIN';
-    const isAdminByEmail = userEmail === 'admin@gmail.com';
-    const isAdminUser = isAdminByRole || isAdminByEmail;
-    console.log('isAdmin check - Role:', role, 'Email:', userEmail, 'Is Admin:', isAdminUser);
-    return isAdminUser;
+    console.log('isAdmin check - Role:', role, 'Is Admin:', isAdminByRole);
+    return isAdminByRole;
   }
     isUserRegistered(email: string): Observable<boolean> {
         return this.http.get<boolean>(`${this.apiUrl}/is-registered?email=${email}`);
