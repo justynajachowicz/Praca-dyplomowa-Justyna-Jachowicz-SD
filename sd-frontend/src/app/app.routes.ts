@@ -12,6 +12,7 @@ import {ProductSearchComponent} from "./product-search/product-search.component"
 import { ProductSimulationComponent } from './product-simulation/product-simulation.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { AdminGuard } from './guards/admin.guard';
+import { UserGuard } from './guards/user.guard';
 import { PromotionalFlyersComponent } from './components/promotional-flyers/promotional-flyers.component';
 import { PurchaseHistoryComponent } from './purchase-history/purchase-history.component';
 
@@ -23,14 +24,14 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent }, // Ekran logowania
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent }, // Panel użytkownika];
-  { path: 'shopping-list', component: ShoppingListComponent },
-  { path: 'favorites', component: FavoritesComponent },
+  { path: 'shopping-list', component: ShoppingListComponent, canActivate: [UserGuard] },
+  { path: 'favorites', component: FavoritesComponent, canActivate: [UserGuard] },
   { path: 'admin/users', component: AdminUserManagementComponent, canActivate: [AdminGuard] },
-  { path: 'receipt-upload', component: ReceiptUploadComponent },
+  { path: 'receipt-upload', component: ReceiptUploadComponent, canActivate: [UserGuard] },
   { path: 'add-purchase', component: PurchaseFormComponent },  // Formularz dodania zakupu
   { path: 'promotional-flyers', component: PromotionalFlyersComponent }, // Przeglądanie gazetek promocyjnych
   { path: 'product-simulation', component: ProductSimulationComponent, canActivate: [AdminGuard] }, // Symulacja produktów (tylko dla admina)
-  { path: 'purchase-history', component: PurchaseHistoryComponent }, // Historia zakupów
+  { path: 'purchase-history', component: PurchaseHistoryComponent, canActivate: [UserGuard] }, // Historia zakupów
   { path: '**', redirectTo: '' },
 
   // Inne ścieżki...

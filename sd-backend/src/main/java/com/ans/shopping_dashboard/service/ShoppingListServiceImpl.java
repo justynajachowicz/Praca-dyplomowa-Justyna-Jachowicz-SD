@@ -46,6 +46,10 @@ public class ShoppingListServiceImpl implements ShoppingListService {
 
     @Override
     public ShoppingList save(ShoppingList shoppingListService) {
+        // Prevent admin users from creating shopping lists
+        if (shoppingListService.getUser() != null && shoppingListService.getUser().isAdmin()) {
+            throw new RuntimeException("Administratorzy nie mogą tworzyć list zakupowych.");
+        }
         return shoppingListRepository.save(shoppingListService);
     }
     @Override
@@ -53,6 +57,11 @@ public class ShoppingListServiceImpl implements ShoppingListService {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new RuntimeException("Użytkownik o podanym e-mailu nie istnieje.");
+        }
+
+        // Prevent admin users from adding products to shopping lists
+        if (user.isAdmin()) {
+            throw new RuntimeException("Administratorzy nie mogą dodawać produktów do listy zakupowej.");
         }
 
         PurchaseItem item = new PurchaseItem();
