@@ -13,13 +13,13 @@ export class UserGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    // Check if user is logged in and is NOT an admin
-    if (this.authService.isLoggedIn() && !this.authService.isAdmin()) {
+    // Check if user is logged in (allow both regular users and admins)
+    if (this.authService.isLoggedIn()) {
       return true;
     }
 
-    // If admin or not logged in, redirect to dashboard
-    this.router.navigate(['/dashboard']);
+    // If not logged in, redirect to login page
+    this.router.navigate(['/login']);
     return false;
   }
 }

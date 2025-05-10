@@ -8,14 +8,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class LoginResponse {
 
     private String token;
-    private String Token;
+    private String role;
 
     public LoginResponse(String token) {
         this.token = token;
+    }
+
+    public LoginResponse(String token, String role) {
+        this.token = token;
+        this.role = role;
     }
 
 }

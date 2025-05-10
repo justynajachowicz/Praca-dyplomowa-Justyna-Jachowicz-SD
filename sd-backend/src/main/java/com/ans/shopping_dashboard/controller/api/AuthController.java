@@ -40,8 +40,9 @@ public class AuthController {
         User user = userService.findUserByEmail(loginRequest.getEmail());
 
         String token = jwtTokenProvider.generateToken(user.getEmail());
+        String role = user.isAdmin() ? "ADMIN" : "USER";
 
-        return ResponseEntity.ok(new LoginResponse(token));
+        return ResponseEntity.ok(new LoginResponse(token, role));
     }
 
     @PostMapping("/logout")

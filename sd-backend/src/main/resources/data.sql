@@ -17,9 +17,11 @@ INSERT INTO "roles" (id, name) VALUES (2, 'ROLE_USER') ON CONFLICT (id) DO NOTHI
 
 INSERT INTO "users" (id, email, name, password) VALUES(1,'admin@gmail.com', 'ADMIN', '$2a$10$bYbrEoMdvkh/ToEXBbn6p.C0tiRBz/iqy4HZaG1/8gtif23VA4peK') ON CONFLICT (email) DO NOTHING;
 INSERT INTO "users" (id, email, name, password) VALUES(2, 'justyna@gmail.com', 'Justyna', '$2a$10$bYbrEoMdvkh/ToEXBbn6p.C0tiRBz/iqy4HZaG1/8gtif23VA4peK') ON CONFLICT (email) DO NOTHING;
+INSERT INTO "users" (id, email, name, password) VALUES(3, 'adminj@gmail.com', 'ADMINJ', '$2a$10$bYbrEoMdvkh/ToEXBbn6p.C0tiRBz/iqy4HZaG1/8gtif23VA4peK') ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO "users_roles" (user_id, role_id) VALUES(1, 1) ON CONFLICT (user_id, role_id) DO NOTHING;
 INSERT INTO "users_roles" (user_id, role_id) VALUES(2, 2) ON CONFLICT (user_id, role_id) DO NOTHING;
+INSERT INTO "users_roles" (user_id, role_id) VALUES(3, 1) ON CONFLICT (user_id, role_id) DO NOTHING;
 
 INSERT INTO "shopping_list" (id, created_at, list_name, user_id, shop_id)
 VALUES(1, now(), 'testowa lista 1', (select id from users where email = 'justyna@gmail.com'), 1) ON CONFLICT (id) DO NOTHING;
